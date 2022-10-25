@@ -59,8 +59,8 @@ const LoginScreen = ({navigation}) => {
         console.log(responseJson);
         // If server response message same as Data Matched
         if (responseJson.status === 'success') {
-          AsyncStorage.setItem('user_id', responseJson.userData);
-          console.log(responseJson.userData);
+          AsyncStorage.setItem('user_id', JSON.stringify(responseJson.user_data));
+          console.log(responseJson.user_data);
           navigation.replace('DrawerNavigationRoutes');
         } else {
           setErrortext(responseJson.msg);

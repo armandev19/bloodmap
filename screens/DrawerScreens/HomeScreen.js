@@ -18,9 +18,7 @@ const HomeScreen = () => {
               marginBottom: 16,
               color: 'black'
             }}>
-            Example of Splash, Login and Sign Up in React Native
-            {'\n\n'}
-            This is the Home Screen
+              Home screen
           </Text>
         </View>
       </View>

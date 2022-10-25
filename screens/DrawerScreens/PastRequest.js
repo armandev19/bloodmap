@@ -18,9 +18,7 @@ const PastRequestScreen = () => {
               marginBottom: 16,
               color: 'black'
             }}>
-            Example of Splash, Login and Sign Up in React Native
-            {'\n\n'}
-            This is the Home Screen
+            Past request screen
           </Text>
         </View>
       </View>

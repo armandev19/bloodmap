@@ -17,9 +17,7 @@ const ProfileScreen = () => {
               textAlign: 'center',
               marginBottom: 16,
             }}>
-            Example of Splash, Login and Sign Up in React Native
-            {'\n\n'}
-            This is the Settings Screen
+            Profile screen
           </Text>
         </View>
       </View>
