@@ -1,4 +1,5 @@
 import React, {useState, createRef} from 'react';
+import SelectDropdown from 'react-native-select-dropdown';
 import {
   StyleSheet,
   TextInput,
@@ -12,13 +13,17 @@ import {
 } from 'react-native';
  
 import Loader from './Components/loader';
- 
+
+
+const countries = ["A", "B", "AB", "O", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
+
 const RegisterScreen = (props) => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userAge, setUserAge] = useState('');
   const [userAddress, setUserAddress] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  const [userBloodType, setUserBloodType] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
   const [
@@ -53,6 +58,7 @@ const RegisterScreen = (props) => {
       alert('Please fill Password');
       return;
     }
+
     //Show Loader
     setLoading(true);
     var dataToSend = {
@@ -61,6 +67,7 @@ const RegisterScreen = (props) => {
       age: userAge,
       address: userAddress,
       password: userPassword,
+      bloodtype: userBloodType
     };
     var formBody = [];
     for (var key in dataToSend) {
@@ -78,7 +85,7 @@ const RegisterScreen = (props) => {
         'application/x-www-form-urlencoded;charset=UTF-8',
       },
     })
-      .then((response) => response.text())
+      .then((response) => response.json())
       .then((responseJson) => {
         alert(responseJson);
         //Hide Loader
@@ -129,7 +136,7 @@ const RegisterScreen = (props) => {
     );
   }
   return (
-    <View style={{flex: 1, backgroundColor: '#ff3333'}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <Loader loading={loading} />
       <ScrollView
         keyboardShouldPersistTaps="handled"
@@ -233,6 +240,26 @@ const RegisterScreen = (props) => {
               blurOnSubmit={false}
             />
           </View>
+          <View style={styles.SectionStyle}>
+            <SelectDropdown
+                data={countries}
+                defaultButtonText="Select Blood Type"
+                buttonStyle={styles.selectDropdown}
+                onSelect={(selectedItem, index) => {
+                  setUserBloodType(selectedItem);
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  // text represented after item is selected
+                  // if data array is an array of objects then return selectedItem.property to render after item is selected
+                  return selectedItem
+                }}
+                rowTextForSelection={(item, index) => {
+                  // text represented for each item in dropdown
+                  // if data array is an array of objects then return item.property to represent item in dropdown
+                  return item
+                }}
+              />
+          </View>
           {errortext != '' ? (
             <Text style={styles.errorTextStyle}>
               {errortext}
@@ -252,6 +279,13 @@ const RegisterScreen = (props) => {
 export default RegisterScreen;
  
 const styles = StyleSheet.create({
+  selectDropdown: {
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderWidth: 1,
+    borderRadius: 30,
+    height: 40,
+  },
   SectionStyle: {
     flexDirection: 'row',
     height: 40,
