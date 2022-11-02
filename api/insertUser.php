@@ -5,17 +5,19 @@ $database = mysqli_select_db($conn, 'bloodmap');
 $obj = file_get_contents('php://input');
 $obj = json_decode($obj, true);
 
-var_dump($_POST);
+// var_dump($_POST);
 $dataArr = array();
-$username = $_POST['email'];
+$username = $_POST['username'];
 $password = $_POST['password'];
-$firstname = $_POST['name'];
-$lastname = "";
-$phone_number = "";
+$firstname = $_POST['firstname'];
+$lastname = $_POST['middlename'];
+$phone_number = $_POST['lastname'];
 $address = $_POST['address'];
 $email = $_POST['email'];
+$bloodtype = $_POST['bloodtype'];
+$gender = $_POST['gender'];
 
-$insertQuery = "INSERT INTO users (`username`, `password`, `firstname`, `lastname`, `phone_number`, `address`, `email`) VALUES ('$username', '$password', '$firstname', '$lastname', '$phone_number', '$address', '$email')";
+$insertQuery = "INSERT INTO users (`username`, `password`, `firstname`, `middlename`, `lastname`, `phone_number`, `address`, `email`, `gender`, `bloodtype`) VALUES ('$username', '$password', '$firstname', '$bloodtype', '$lastname', '$phone_number', '$address', '$email', '$gender', '$bloodtype')";
 
 $return = mysqli_query($conn, $insertQuery);
 if($return){
@@ -26,6 +28,8 @@ if($return){
 
 $response = array();
 $response['message'] = $message;
+$response['status'] = "success";
+
 echo json_encode($response);
 
 ?>
