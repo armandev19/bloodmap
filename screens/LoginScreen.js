@@ -43,7 +43,7 @@ const LoginScreen = ({navigation}) => {
     }
     formBody = formBody.join('&');
  
-    fetch('http://192.168.1.6/bloodmap/loginValidation.php', {
+    fetch('http://192.168.1.5/bloodmap/loginValidation.php', {
       method: 'POST',
       body: formBody,
       headers: {
@@ -87,7 +87,7 @@ const LoginScreen = ({navigation}) => {
         <View>
           <KeyboardAvoidingView enabled>
             <View style={{alignItems: 'center'}}>
-              <Text style={styles.appNameStyle}>BLOOD MAP</Text>
+              <Text style={styles.appNameStyle}>BLOOD SAVER APP</Text>
             </View>
             <View style={styles.SectionStyle}>
               <TextInput
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   appNameStyle: { 
-    fontSize: 50,
+    fontSize: 45,
     fontWeight: 'bold',
     color: '#f2f2f2',
     fontFamily: '',

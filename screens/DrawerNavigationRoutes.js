@@ -119,15 +119,15 @@ const MyRaisedRequestStack = ({navigation}) => {
 const DrawerNavigatorRoutes = (props) => {
   return (
     <Drawer.Navigator
-      drawerContentOptions={{
-        textColor: 'yellow',
-        activeTintColor: 'red',
-        activeBackgroundColor: 'white',
-        inactiveTintColor: 'blue',
-        inactiveBackgroundColor: 'white',
-        itemStyle: {marginVertical: 5, color: 'red'},
-        backgroundColor: '#cc0000'
-      }}
+      // drawerContentOptions={{
+      //   textColor: 'yellow',
+      //   activeTintColor: 'red',
+      //   activeBackgroundColor: 'white',
+      //   inactiveTintColor: 'blue',
+      //   inactiveBackgroundColor: 'white',
+      //   itemStyle: {marginVertical: 5, color: 'red'},
+      //   backgroundColor: '#cc0000'
+      // }}
       screenOptions={{headerShown: false, color: 'red'}}
       drawerContent={CustomSidebarMenu}>
       <Drawer.Screen

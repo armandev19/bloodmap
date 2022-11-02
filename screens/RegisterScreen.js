@@ -16,11 +16,16 @@ import Loader from './Components/loader';
 
 
 const countries = ["A", "B", "AB", "O", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
+const gender = ["Male", "Female"];
 
 const RegisterScreen = (props) => {
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
+  const [userFirstname, setUserFirstname] = useState('');
+  const [userMiddlename, setUserMiddlename] = useState('');
+  const [userLastname, setUserLastname] = useState('');
   const [userAge, setUserAge] = useState('');
+  const [userGender, setUserGender] = useState('');
+  const [userUserName, setUsername] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const [userAddress, setUserAddress] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userBloodType, setUserBloodType] = useState('');
@@ -38,8 +43,8 @@ const RegisterScreen = (props) => {
  
   const handleSubmitButton = () => {
     setErrortext('');
-    if (!userName) {
-      alert('Please fill Name');
+    if (!userUserName) {
+      alert('Please fill Username');
       return;
     }
     if (!userEmail) {
@@ -62,12 +67,16 @@ const RegisterScreen = (props) => {
     //Show Loader
     setLoading(true);
     var dataToSend = {
-      name: userName,
+      firstname: userFirstname,
+      middlename: userMiddlename,
+      lastname: userLastname,
+      username: userUserName,
       email: userEmail,
       age: userAge,
       address: userAddress,
       password: userPassword,
-      bloodtype: userBloodType
+      bloodtype: userBloodType,
+      gender: userGender
     };
     var formBody = [];
     for (var key in dataToSend) {
@@ -76,7 +85,7 @@ const RegisterScreen = (props) => {
       formBody.push(encodedKey + '=' + encodedValue);
     }
     formBody = formBody.join('&');
-    fetch('http://192.168.1.6/bloodmap/insertUser.php', {
+    fetch('http://192.168.1.5/bloodmap/insertUser.php', {
       method: 'POST',
       body: formBody,
       headers: {
@@ -87,11 +96,11 @@ const RegisterScreen = (props) => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        alert(responseJson);
         //Hide Loader
         setLoading(false);
         // console.log(responseJson);
         // If server response message same as Data Matched
+        console.log(responseJson.status);
         if (responseJson.status === 'success') {
           setIsRegistraionSuccess(true);
           console.log(
@@ -159,9 +168,9 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserName) => setUserName(UserName)}
+              onChangeText={(Firstname) => setUserFirstname(Firstname)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Name"
+              placeholder="Firstname"
               placeholderTextColor="#8b9cb5"
               autoCapitalize="sentences"
               returnKeyType="next"
@@ -174,16 +183,14 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserEmail) => setUserEmail(UserEmail)}
+              onChangeText={(Middlename) => setUserMiddlename(Middlename)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Email"
+              placeholder="Middlename"
               placeholderTextColor="#8b9cb5"
-              keyboardType="email-address"
-              ref={emailInputRef}
+              autoCapitalize="sentences"
               returnKeyType="next"
               onSubmitEditing={() =>
-                passwordInputRef.current &&
-                passwordInputRef.current.focus()
+                emailInputRef.current && emailInputRef.current.focus()
               }
               blurOnSubmit={false}
             />
@@ -191,18 +198,14 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserPassword) =>
-                setUserPassword(UserPassword)
-              }
+              onChangeText={(Lastname) => setUserLastname(Lastname)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Password"
+              placeholder="Lastname"
               placeholderTextColor="#8b9cb5"
-              ref={passwordInputRef}
+              autoCapitalize="sentences"
               returnKeyType="next"
-              secureTextEntry={true}
               onSubmitEditing={() =>
-                ageInputRef.current &&
-                ageInputRef.current.focus()
+                emailInputRef.current && emailInputRef.current.focus()
               }
               blurOnSubmit={false}
             />
@@ -212,7 +215,7 @@ const RegisterScreen = (props) => {
               style={styles.inputStyle}
               onChangeText={(UserAge) => setUserAge(UserAge)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Age"
+              placeholder="Age"
               placeholderTextColor="#8b9cb5"
               keyboardType="numeric"
               ref={ageInputRef}
@@ -223,6 +226,27 @@ const RegisterScreen = (props) => {
               }
               blurOnSubmit={false}
             />
+          </View>
+          <View style={styles.SectionStyle}>
+            <SelectDropdown
+                data={gender}
+                defaultButtonText="Gender"
+                buttonStyle={styles.selectDropdown}
+                buttonTextStyle={styles.selectButtonTextStyle}
+                onSelect={(selectedItem, index) => {
+                  setUserGender(selectedItem);
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  // text represented after item is selected
+                  // if data array is an array of objects then return selectedItem.property to render after item is selected
+                  return selectedItem
+                }}
+                rowTextForSelection={(item, index) => {
+                  // text represented for each item in dropdown
+                  // if data array is an array of objects then return item.property to represent item in dropdown
+                  return item
+                }}
+              />
           </View>
           <View style={styles.SectionStyle}>
             <TextInput
@@ -241,10 +265,64 @@ const RegisterScreen = (props) => {
             />
           </View>
           <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(UserEmail) => setUserEmail(UserEmail)}
+              underlineColorAndroid="#f000"
+              placeholder="Email"
+              placeholderTextColor="#8b9cb5"
+              keyboardType="email-address"
+              ref={emailInputRef}
+              returnKeyType="next"
+              onSubmitEditing={() =>
+                passwordInputRef.current &&
+                passwordInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(UserUsername) => setUsername(UserUsername)}
+              underlineColorAndroid="#f000"
+              placeholder="Email"
+              placeholderTextColor="#8b9cb5"
+              keyboardType="email-address"
+              ref={emailInputRef}
+              returnKeyType="next"
+              onSubmitEditing={() =>
+                passwordInputRef.current &&
+                passwordInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(UserPassword) =>
+                setUserPassword(UserPassword)
+              }
+              underlineColorAndroid="#f000"
+              placeholder="Password"
+              placeholderTextColor="#8b9cb5"
+              ref={passwordInputRef}
+              returnKeyType="next"
+              secureTextEntry={true}
+              onSubmitEditing={() =>
+                ageInputRef.current &&
+                ageInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
             <SelectDropdown
                 data={countries}
                 defaultButtonText="Select Blood Type"
                 buttonStyle={styles.selectDropdown}
+                buttonTextStyle={styles.selectButtonTextStyle}
                 onSelect={(selectedItem, index) => {
                   setUserBloodType(selectedItem);
                 }}
@@ -285,14 +363,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
     height: 40,
+    borderColor: '#dadae8',
+    backgroundColor: 'white',
+    width: '100%'
   },
   SectionStyle: {
     flexDirection: 'row',
     height: 40,
-    marginTop: 20,
+    marginTop: 10,
     marginLeft: 35,
     marginRight: 35,
-    margin: 10,
+    margin: 5,
   },
   buttonStyle: {
     backgroundColor: '#00b300',
@@ -333,4 +414,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 30,
   },
+  selectButtonTextStyle: {
+    color: '#000000',
+    fontSize: 13,
+    alignSelf: 'center'
+  }
 });
