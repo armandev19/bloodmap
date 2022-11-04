@@ -16,8 +16,9 @@ const ProfileScreen = () => {
               fontSize: 20,
               textAlign: 'center',
               marginBottom: 16,
+              color: 'black'
             }}>
-            Profile screen
+            Profile Screen
           </Text>
         </View>
       </View>

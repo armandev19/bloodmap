@@ -43,7 +43,7 @@ const LoginScreen = ({navigation}) => {
     }
     formBody = formBody.join('&');
  
-    fetch('http://192.168.1.5/bloodmap/loginValidation.php', {
+    fetch('http://192.168.7.196/bloodmap/loginValidation.php', {
       method: 'POST',
       body: formBody,
       headers: {
@@ -63,12 +63,13 @@ const LoginScreen = ({navigation}) => {
           console.log(responseJson.user_data);
           navigation.replace('DrawerNavigationRoutes');
         } else {
-          setErrortext(responseJson.msg);
+          setErrortext(responseJson.message);
           console.log('Please check your email id or password');
         }
       })
       .catch((error) => {
         //Hide Loader
+        alert(error);
         setLoading(false);
         console.error(error);
       });

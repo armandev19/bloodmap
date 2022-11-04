@@ -9,6 +9,9 @@ import HomeScreen from './DrawerScreens/HomeScreen';
 import SettingsScreen from './DrawerScreens/ProfileScreen';
 import AcceptedScreen from './DrawerScreens/AcceptedScreen';
 import MyRaisedRequestScreen from './DrawerScreens/MyRaisedRequestScreen';
+import MyProfileScreen from './DrawerScreens/ProfileScreen';
+import DonationHistoryScreen from './DrawerScreens/DonationHistoryScreen';
+import PastRequestScreen from './DrawerScreens/PastRequestScreen';
 
 
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
@@ -29,7 +32,7 @@ const HomeScreenStack = ({navigation}) => {
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
           headerStyle: {
-            backgroundColor: 'orange', //Set Header color
+            backgroundColor: '#ff3333', //Set Header color
           },
           headerTintColor: '#fff', //Set Header text color
           headerTitleStyle: {
@@ -40,7 +43,31 @@ const HomeScreenStack = ({navigation}) => {
     </Stack.Navigator>
   );
 };
- 
+
+const PastRequestStack = ({navigation}) => {
+  return (
+    <Stack.Navigator initialRouteName="PastRequestScreen">
+      <Stack.Screen
+        name="PastRequestScreen"
+        component={PastRequestScreen}
+        options={{
+          title: 'Past Request', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerHeader navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#ff3333', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const SettingScreenStack = ({navigation}) => {
   return (
     <Stack.Navigator
@@ -72,7 +99,7 @@ const AcceptedRequestStack = ({navigation}) => {
   return (
     <Stack.Navigator initialRouteName="AcceptedScreen">
       <Stack.Screen
-        name="AcceptedRequestScreen"
+        name="AcceptedRequest"
         component={AcceptedScreen}
         options={{
           title: 'Accepted Requests', //Set Header Title
@@ -96,10 +123,58 @@ const MyRaisedRequestStack = ({navigation}) => {
   return (
     <Stack.Navigator initialRouteName="MyRaisedRequestScreen">
       <Stack.Screen
-        name="MyRaisedRequestScreen"
+        name="MyRaisedRequest"
         component={MyRaisedRequestScreen}
         options={{
           title: 'My Raised Requests', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerHeader navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#ff3333', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const DonationHistoryStack = ({navigation}) => {
+  return (
+    <Stack.Navigator initialRouteName="DonationHistoryScreen">
+      <Stack.Screen
+        name="DonationHistory"
+        component={DonationHistoryScreen}
+        options={{
+          title: 'Donation History', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerHeader navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#ff3333', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const MyProfileStack = ({navigation}) => {
+  return (
+    <Stack.Navigator initialRouteName="MyProfile">
+      <Stack.Screen
+        name="MyRaisedRequestScreen"
+        component={MyProfileScreen}
+        options={{
+          title: 'Profile', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
@@ -128,7 +203,13 @@ const DrawerNavigatorRoutes = (props) => {
       //   itemStyle: {marginVertical: 5, color: 'red'},
       //   backgroundColor: '#cc0000'
       // }}
-      screenOptions={{headerShown: false, color: 'red'}}
+      screenOptions={{headerShown: false, color: 'red', textColor: 'yellow',
+        activeTintColor: 'red',
+        activeBackgroundColor: 'white',
+        inactiveTintColor: 'blue',
+        inactiveBackgroundColor: 'white',
+        itemStyle: {marginVertical: 5, color: 'red'},
+        backgroundColor: '#cc0000'}}
       drawerContent={CustomSidebarMenu}>
       <Drawer.Screen
         name="HomeScreenStack"
@@ -136,9 +217,9 @@ const DrawerNavigatorRoutes = (props) => {
         component={HomeScreenStack}
       />
       <Drawer.Screen
-        name="ProfileScreenStack"
+        name="MyProfileStack"
         options={{drawerLabel: 'My Profile'}}
-        component={HomeScreenStack}
+        component={MyProfileStack}
       />
       <Drawer.Screen
         name="AcceptedScreen"
@@ -153,12 +234,12 @@ const DrawerNavigatorRoutes = (props) => {
       <Drawer.Screen
         name="DonationHistoryScreen"
         options={{drawerLabel: 'Donation History'}}
-        component={HomeScreenStack}
+        component={DonationHistoryStack}
       />
       <Drawer.Screen
-        name="PastRequest"
+        name="PastRequestScreen"
         options={{drawerLabel: 'Past Requests'}}
-        component={HomeScreenStack}
+        component={PastRequestStack}
       />
        
     </Drawer.Navigator>
