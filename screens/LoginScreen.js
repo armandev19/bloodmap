@@ -43,7 +43,7 @@ const LoginScreen = ({navigation}) => {
     }
     formBody = formBody.join('&');
  
-    fetch('http://192.168.1.5/bloodmap/loginValidation.php', {
+    fetch('http://192.168.7.196/bloodmap/loginValidation.php', {
       method: 'POST',
       body: formBody,
       headers: {
@@ -207,10 +207,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#f2f2f2',
     fontFamily: '',
-    marginTop: -50
+    marginTop: -50,
+    textAlign: 'center'
   },
   errorTextStyle: {
-    color: 'red',
+    color: '#FFFFFF',
     textAlign: 'center',
     fontSize: 14,
   },

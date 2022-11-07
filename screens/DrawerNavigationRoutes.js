@@ -1,9 +1,9 @@
 import React from 'react';
- 
+import Icon from 'react-native-vector-icons/MaterialIcons';
 // Import Navigators from React Navigation
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
- 
+
 // Import Screens
 import HomeScreen from './DrawerScreens/HomeScreen';
 import SettingsScreen from './DrawerScreens/ProfileScreen';
@@ -248,7 +248,8 @@ const DrawerNavigatorRoutes = (props) => {
       />
       <Drawer.Screen
         name="MyProfileStack"
-        options={{drawerLabel: 'My Profile'}}
+        options={{drawerLabel: 'My Profile', drawerIcon: (({focused}) => <Icon name="home" size={30} color="#900" />)}}
+        
         component={MyProfileStack}
       />
       <Drawer.Screen
