@@ -238,38 +238,37 @@ const DrawerNavigatorRoutes = (props) => {
       drawerContent={CustomSidebarMenu}>
       <Drawer.Screen
         name="HomeScreenStack"
-        options={{drawerLabel: 'Home'}}
+        options={{drawerLabel: 'Home', drawerIcon: (({focused}) => <Icon name="home" size={30} color="#900" />)}}
         component={HomeScreenStack}
       />
       <Drawer.Screen
         name="MapViewScreen"
-        options={{drawerLabel: 'Map View'}}
+        options={{drawerLabel: 'Map View', drawerIcon: (({focused}) => <Icon name="map" size={30} color="#900" />)}}
         component={MapViewStack}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="MyProfileStack"
-        options={{drawerLabel: 'My Profile', drawerIcon: (({focused}) => <Icon name="home" size={30} color="#900" />)}}
-        
+        options={{drawerLabel: 'My Profile', drawerIcon: (({focused}) => <Icon name="user" size={30} color="#900" />)}}
         component={MyProfileStack}
-      />
+      /> */}
       <Drawer.Screen
         name="AcceptedScreen"
-        options={{drawerLabel: 'Accepted Request'}}
+        options={{drawerLabel: 'Accepted Request', drawerIcon: (({focused}) => <Icon name="list" size={30} color="#900" />)}}
         component={AcceptedRequestStack}
       />
       <Drawer.Screen
         name="MyRaisedRequestScreen"
-        options={{drawerLabel: 'My Raised Request'}}
+        options={{drawerLabel: 'My Raised Request', drawerIcon: (({focused}) => <Icon name="list" size={30} color="#900" />)}}
         component={MyRaisedRequestStack}
       />
       <Drawer.Screen
         name="DonationHistoryScreen"
-        options={{drawerLabel: 'Donation History'}}
+        options={{drawerLabel: 'Donation History', drawerIcon: (({focused}) => <Icon name="history" size={30} color="#900" />)}}
         component={DonationHistoryStack}
       />
       <Drawer.Screen
         name="PastRequestScreen"
-        options={{drawerLabel: 'Past Requests'}}
+        options={{drawerLabel: 'Past Requests', drawerIcon: (({focused}) => <Icon name="history" size={30} color="#900" />)}}
         component={PastRequestStack}
       />
        

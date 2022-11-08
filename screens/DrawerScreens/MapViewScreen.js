@@ -51,6 +51,7 @@ const MapViewScreen = () => {
         <Marker
           coordinate={{ latitude : parseFloat(10.629551823160902) , longitude : parseFloat(122.9372239864562) }}
           image={{uri: 'custom_pin'}}
+          description={"This is a marker in React Natve"}
         />
         </MapView>
     </View>
