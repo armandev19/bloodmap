@@ -19,7 +19,7 @@ import {
 import Loader from './Components/loader';
 import Geolocation from '@react-native-community/geolocation';
 
-const countries = ["A", "B", "AB", "O", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
+const bloodtype = ["A", "B", "AB", "O", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const gender = ["Male", "Female"];
 
 const RegisterScreen = (props) => {
@@ -425,7 +425,7 @@ const RegisterScreen = (props) => {
           </View>
           <View style={styles.SectionStyle}>
             <SelectDropdown
-                data={countries}
+                data={bloodtype}
                 defaultButtonText="Select Blood Type"
                 buttonStyle={styles.selectDropdown}
                 buttonTextStyle={styles.selectButtonTextStyle}
