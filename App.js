@@ -1,5 +1,4 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
- 
 // Import React and Component
 import React from 'react';
  
@@ -41,8 +40,10 @@ const Auth = () => {
     </Stack.Navigator>
   );
 };
- 
+
+
 const App = () => {
+  
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen">

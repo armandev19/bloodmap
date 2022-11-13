@@ -1,11 +1,7 @@
 import React, {useState} from 'react';
-import {View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity, Button, Modal, Pressable, Alert, TextInput} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import SelectDropdown from 'react-native-select-dropdown';
-// import { TextInput } from 'react-native-gesture-handler';
-
+import {View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity, Button, Modal, ToastAndroid, Alert, TextInput} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-
+import Loader from './../Components/loader';
 const DATA = [
   {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
@@ -23,13 +19,18 @@ const DATA = [
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <Text style={[styles.title, textColor]}>{item.title}</Text>
+    <Text style={[styles.qty, textColor]}>{item.qty}</Text>
   </TouchableOpacity>
 );
 
 const MyRaisedRequestScreen = ({navigation}) => {
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});
+  const [toastMsg, setToastMsg] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [bloodtype, setBloodType] = useState();
+  const [qty, setQty] = useState();
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -48,6 +49,84 @@ const MyRaisedRequestScreen = ({navigation}) => {
     {label: "O-", value: 'O-'},
   ]);
 
+  const [requests, setRequests] = useState([]);
+
+  const toastMessage = (toastMsg) => {
+    ToastAndroid.showWithGravityAndOffset(
+      toastMsg,
+      ToastAndroid.SHORT,
+      ToastAndroid.TOP,
+      25,
+      50
+    )
+  }
+
+  const saveBloodRequest = () => {
+    let dataToSend = {qty: qty, bloodtype: value};
+    let formBody = [];
+    for (let key in dataToSend) {
+      let encodedKey = encodeURIComponent(key);
+      let encodedValue = encodeURIComponent(dataToSend[key]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+    formBody = formBody.join('&');
+    setLoading(true);
+    fetch('http://192.168.1.5/bloodmap/insertBloodRequest.php', {
+      method: 'POST',
+      body: formBody,
+      headers: {
+        //Header Defination
+        'Content-Type':
+        'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    })
+      .then((response) => response.text())
+      .then((responseJson) => {
+        setLoading(false);
+        alert(responseJson);
+        if(responseJson.status === 'success') {
+          console.log(responseJson.status)
+        }else{
+          console.log(responseJson.status);
+        }
+      })
+      .catch((error) => {
+        alert(error);
+        setLoading(false);
+        console.error(error);
+      });
+  }
+
+  const getAllRequest = () => {
+    setLoading
+    fetch('http://192.168.1.5/bloodmap/fetchBloodRequest.php', {
+      method: 'POST',
+      headers: {
+        //Header Defination
+        'Content-Type':
+        'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    })
+      .then((response) => response.text())
+      .then((responseJson) => {
+        
+        alert(responseJson);
+        setLoading(false);
+        setRequests(responseJson);
+      })
+      .catch((error) => {
+        alert(error);
+        setLoading(false);
+        console.error(error);
+      });
+  }
+
+  useState(() => {
+    getAllRequest();
+  });
+  
+  
+
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
     const color = item.id === selectedId ? 'white' : 'black';
@@ -64,11 +143,12 @@ const MyRaisedRequestScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
+      <Loader loading={loading} />
       <View style={{padding: 10}}>
         <Button style={{marginHorizontal: 10}} title='Add Request' onPress={() => setModalVisible(true)}></Button>
       </View>
       <FlatList
-        data={DATA}
+        data={requests}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         extraData={selectedId}
@@ -86,30 +166,41 @@ const MyRaisedRequestScreen = ({navigation}) => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>Add New Blood Request</Text>
+              <Text style={styles.modalText}>NEW BLOOD DONATION REQUEST</Text>
               <View style={styles.SectionStyle}>
-              <DropDownPicker
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                containerStyle={{ width: "100%" }}
-              />
-              </View>
-              <View style={styles.SectionStyle}>
-                <TextInput placeholder="Qty" style={styles.inputStyle}></TextInput>
-              </View>
-              <View styles={styles.viewButtons}>
-                <Button
-                  onPress={() => setModalVisible(!modalVisible)}
-                  title="Save"
-                />  
-                <Button
-                  onPress={() => setModalVisible(!modalVisible)}
-                  title="Cancel"
-                />  
+                <DropDownPicker
+                  open={open}
+                  value={value}
+                  items={items}
+                  setOpen={setOpen}
+                  setValue={setValue}
+                  setItems={setItems}
+                  containerStyle={{ width: "100%" }}
+                  placeholder="Select Blood Type"
+                />
+                <TextInput placeholder="Qty" placeholderTextColor={'black'} style={styles.inputStyle} onChangeText={(qty) =>
+                    setQty(qty)
+                  }></TextInput>
+                <TextInput 
+                  placeholder="Needed Date" 
+                  placeholderTextColor={'black'} 
+                  style={styles.inputStyle}
+                  
+                />
+                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1}}>
+                  <View style={{flex: 1, padding: 10, margin: 0}}>
+                    <Button
+                      onPress={() => saveBloodRequest()}
+                      title="Save"
+                    />  
+                  </View>
+                  <View style={{flex: 1, padding: 10, margin: 0}}>
+                    <Button
+                      onPress={() => setModalVisible(!modalVisible)}
+                      title="Cancel"
+                    />  
+                  </View>
+                </View>
               </View>
             </View>
           </View>
@@ -138,8 +229,8 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   modalView: {
-    height: "85%",
-    width: "85%",
+    height: "50%",
+    width: "90%",
     marginTop: 20,
     backgroundColor: "white",
     borderRadius: 10,
@@ -178,22 +269,15 @@ const styles = StyleSheet.create({
     width: '80%'
   },
   inputStyle: {
-    color: 'red',
-    paddingLeft: 15,
-    paddingRight: 15,
+    color: 'black',
     borderWidth: 1,
     borderRadius: 5,
     borderColor: 'black',
-    backgroundColor: 'white',
-    width: "100%"
+    marginTop: 10,
   },
   SectionStyle: {
-    flexDirection: 'row',
-    height: 40,
-    marginTop: 10,
-    marginLeft: 35,
-    marginRight: 35,
-    margin: 5,
+    flex: 1,
+    margin: 20,
   },
   viewButtons: {
     flexDirection: 'row',
