@@ -1,12 +1,12 @@
 <?php
-$conn = mysqli_connect('localhost', 'root', ''); 
+$conn = mysqli_connect('localhost', 'root', 'YgtDGdmoEn'); 
 $database = mysqli_select_db($conn, 'bloodmap');
 
 $response = array();
 $username = $_POST['email'];
 $password = $_POST['password'];
 
-$selectQuery = "SELECT * FROM users WHERE username='$username' AND password='$password' ";
+$selectQuery = "SELECT * FROM users WHERE `username`='$username' AND `password`='$password' ";
 $return = mysqli_query($conn, $selectQuery);
 if ($return){
       $rowcount = mysqli_num_rows($return);
