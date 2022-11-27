@@ -1,27 +1,9 @@
 import React, {useState} from 'react';
 import {View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity, Button, Modal, ToastAndroid, Alert, TextInput} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
 import Loader from './../Components/loader';
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-];
 
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <Text style={[styles.qty, textColor]}>{item.id}</Text><Text>{item.bloodtype}</Text>
-  </TouchableOpacity>
-);
 
 const MyRaisedRequestScreen = ({navigation}) => {
   const [selectedId, setSelectedId] = useState(null);
@@ -71,7 +53,7 @@ const MyRaisedRequestScreen = ({navigation}) => {
     }
     formBody = formBody.join('&');
     setLoading(true);
-    fetch('http://192.168.1.5/bloodmap/insertBloodRequest.php', {
+    fetch('http://192.168.1.6/bloodmap/insertBloodRequest.php', {
       method: 'POST',
       body: formBody,
       headers: {
@@ -99,7 +81,7 @@ const MyRaisedRequestScreen = ({navigation}) => {
 
   const getAllRequest = () => {
     setLoading
-    fetch('http://192.168.1.5/bloodmap/fetchBloodRequest.php', {
+    fetch('http://192.168.1.6/bloodmap/fetchBloodRequest.php', {
       method: 'POST',
       headers: {
         //Header Defination
@@ -126,8 +108,8 @@ const MyRaisedRequestScreen = ({navigation}) => {
   
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-    const color = item.id === selectedId ? 'white' : 'black';
+    const backgroundColor = item.id === selectedId ? "#f2f2f2" : "white";
+    const color = item.id === selectedId ? 'black' : 'black';
 
     return (
       <Item
@@ -139,12 +121,34 @@ const MyRaisedRequestScreen = ({navigation}) => {
     );
   };
 
+  const Item = ({ item, onPress, backgroundColor, textColor }) => (
+    // <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+    //   <Card.Title
+    //     title={item.id}
+    //     subtitle="Card Subtitle"
+    //   />
+    //   {/* <Text style={{color: 'black'}}>Reference: {item.id}</Text> 
+    //   <Text style={{textAlign: "center"}}> QTY: {item.qty} </Text>
+    //   <Text style={{color: 'black'}}>Blood Type: </Text>
+    //   <Text style={{color: 'black'}}>{item.bloodtype}</Text> 
+    //   <Text style={{color: 'black'}}>Purpose: {item.purpose}</Text> */}
+    // </TouchableOpacity>
+    <List.Item
+    style={[styles.item, backgroundColor]}
+    title={item.id}
+    description={item.purpose}
+    left={props => <List.Icon {...props} icon="camera" />}
+    right={props => <List.Icon {...props} icon="camera" />}
+    onPress={() => alert('asdasd')}
+  />
+  );
+  
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <Loader loading={loading} />
       <View style={{padding: 10}}>
         <Button style={{marginHorizontal: 10}} title='Add Request' onPress={() => setModalVisible(true)}></Button>
-        <Button title="Test" onPress={() => getAllRequest()}></Button>
       </View>
       <FlatList
         data={requests}
