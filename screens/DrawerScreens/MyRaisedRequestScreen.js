@@ -3,19 +3,22 @@ import {View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity, Button
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
 import Loader from './../Components/loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import DetailScreen from './DetailScreen';
 
 
 const MyRaisedRequestScreen = ({navigation}) => {
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});
   const [toastMsg, setToastMsg] = useState("");
-
   const [loading, setLoading] = useState(false);
   const [bloodtype, setBloodType] = useState();
   const [qty, setQty] = useState();
-
+  const [purpose, setPurpose] = useState();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
+  const [userID, setUserId] = useState(null);
+
   const [items, setItems] = useState([
     {label: "A", value: 'A'},
     {label: "B", value: 'B'},
@@ -44,7 +47,7 @@ const MyRaisedRequestScreen = ({navigation}) => {
   }
 
   const saveBloodRequest = () => {
-    let dataToSend = {qty: qty, bloodtype: value};
+    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose};
     let formBody = [];
     for (let key in dataToSend) {
       let encodedKey = encodeURIComponent(key);
@@ -53,7 +56,7 @@ const MyRaisedRequestScreen = ({navigation}) => {
     }
     formBody = formBody.join('&');
     setLoading(true);
-    fetch('http://192.168.1.6/bloodmap/insertBloodRequest.php', {
+    fetch('http://192.168.1.5/bloodmap/insertBloodRequest.php', {
       method: 'POST',
       body: formBody,
       headers: {
@@ -65,12 +68,8 @@ const MyRaisedRequestScreen = ({navigation}) => {
       .then((response) => response.text())
       .then((responseJson) => {
         setLoading(false);
-        alert(responseJson);
-        if(responseJson.status === 'success') {
-          console.log(responseJson.status)
-        }else{
-          console.log(responseJson.status);
-        }
+        getAllRequest();
+        setModalVisible(!modalVisible);
       })
       .catch((error) => {
         alert(error);
@@ -80,8 +79,8 @@ const MyRaisedRequestScreen = ({navigation}) => {
   }
 
   const getAllRequest = () => {
-    setLoading
-    fetch('http://192.168.1.6/bloodmap/fetchBloodRequest.php', {
+    setLoading(true)
+    fetch('http://192.168.1.5/bloodmap/fetchBloodRequest.php', {
       method: 'POST',
       headers: {
         //Header Defination
@@ -103,6 +102,10 @@ const MyRaisedRequestScreen = ({navigation}) => {
 
   useState(() => {
     getAllRequest();
+    AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
+      setUserId(value);
+    });
+    console.log(userID);
   });
   
   
@@ -122,25 +125,13 @@ const MyRaisedRequestScreen = ({navigation}) => {
   };
 
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    // <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    //   <Card.Title
-    //     title={item.id}
-    //     subtitle="Card Subtitle"
-    //   />
-    //   {/* <Text style={{color: 'black'}}>Reference: {item.id}</Text> 
-    //   <Text style={{textAlign: "center"}}> QTY: {item.qty} </Text>
-    //   <Text style={{color: 'black'}}>Blood Type: </Text>
-    //   <Text style={{color: 'black'}}>{item.bloodtype}</Text> 
-    //   <Text style={{color: 'black'}}>Purpose: {item.purpose}</Text> */}
-    // </TouchableOpacity>
     <List.Item
-    style={[styles.item, backgroundColor]}
-    title={item.id}
-    description={item.purpose}
-    left={props => <List.Icon {...props} icon="camera" />}
-    right={props => <List.Icon {...props} icon="camera" />}
-    onPress={() => alert('asdasd')}
-  />
+      style={[styles.item, backgroundColor]}
+      title={item.request_number}
+      description={item.purpose}
+      left={props => <List.Icon {...props} icon="email-plus-outline" />}
+      onPress={() => navigation.navigate('DetailScreen', {item})}
+    />
   );
   
 
@@ -155,6 +146,7 @@ const MyRaisedRequestScreen = ({navigation}) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         extraData={selectedId}
+        style={{marginBottom: 15}}
       />
       <View style={styles.centeredView}>
         <Modal
@@ -165,6 +157,7 @@ const MyRaisedRequestScreen = ({navigation}) => {
             Alert.alert("Modal has been closed.");
             setModalVisible(!modalVisible);
           }}
+          backdropOpacity={0.9}
           style={{height: 100}}
         >
           <View style={styles.centeredView}>
@@ -181,15 +174,20 @@ const MyRaisedRequestScreen = ({navigation}) => {
                   containerStyle={{ width: "100%" }}
                   placeholder="Select Blood Type"
                 />
-                <TextInput placeholder="Qty" placeholderTextColor={'black'} style={styles.inputStyle} onChangeText={(qty) =>
+                <TextInput placeholder="Qty" placeholderTextColor={'black'} keyboardType="numeric" style={styles.inputStyle} onChangeText={(qty) =>
                     setQty(qty)
-                  }></TextInput>
+                  }>
+                </TextInput>
                 <TextInput 
                   placeholder="Needed Date" 
                   placeholderTextColor={'black'} 
                   style={styles.inputStyle}
                   
                 />
+                <TextInput multiline numberOfLines={4} placeholder="Purpose" placeholderTextColor={'black'} style={styles.inputStyle} onChangeText={(purpose) =>
+                    setPurpose(purpose)
+                  }>
+                </TextInput>
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1}}>
                   <View style={{flex: 1, padding: 10, margin: 0}}>
                     <Button
@@ -247,12 +245,12 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 20
   },
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   modalText: {
     marginTop: 15,
@@ -278,6 +276,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: 'black',
     marginTop: 10,
+    flex: 1
   },
   SectionStyle: {
     flex: 1,
