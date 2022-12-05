@@ -11,6 +11,7 @@ import SplashScreen from './screens/SplashScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import DrawerNavigationRoutes from './screens/DrawerNavigationRoutes';
+import DetailScreen from './screens/DetailScreen'
  
 const Stack = createStackNavigator();
  
@@ -66,6 +67,13 @@ const App = () => {
           component={DrawerNavigationRoutes}
           // Hiding header for Navigation Drawer
           options={{headerShown: false}}
+        />
+        
+        <Stack.Screen
+          name="DetailScreen"
+          title="Request Details"
+          component={DetailScreen}
+          options={{title: "Request Details"}}
         />
       </Stack.Navigator>
     </NavigationContainer>

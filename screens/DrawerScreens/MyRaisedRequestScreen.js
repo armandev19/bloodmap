@@ -4,7 +4,6 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
 import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import DetailScreen from './DetailScreen';
 
 
 const MyRaisedRequestScreen = ({navigation}) => {
@@ -36,16 +35,6 @@ const MyRaisedRequestScreen = ({navigation}) => {
 
   const [requests, setRequests] = useState([]);
 
-  const toastMessage = (toastMsg) => {
-    ToastAndroid.showWithGravityAndOffset(
-      toastMsg,
-      ToastAndroid.SHORT,
-      ToastAndroid.TOP,
-      25,
-      50
-    )
-  }
-
   const saveBloodRequest = () => {
     let dataToSend = {qty: qty, bloodtype: value, purpose: purpose};
     let formBody = [];
@@ -56,7 +45,7 @@ const MyRaisedRequestScreen = ({navigation}) => {
     }
     formBody = formBody.join('&');
     setLoading(true);
-    fetch('http://192.168.1.5/bloodmap/insertBloodRequest.php', {
+    fetch('http://192.168.7.196/bloodmap/insertBloodRequest.php', {
       method: 'POST',
       body: formBody,
       headers: {
@@ -80,7 +69,7 @@ const MyRaisedRequestScreen = ({navigation}) => {
 
   const getAllRequest = () => {
     setLoading(true)
-    fetch('http://192.168.1.5/bloodmap/fetchBloodRequest.php', {
+    fetch('http://192.168.7.196/bloodmap/fetchBloodRequest.php', {
       method: 'POST',
       headers: {
         //Header Defination
@@ -117,23 +106,33 @@ const MyRaisedRequestScreen = ({navigation}) => {
     return (
       <Item
         item={item}
-        onPress={() => setSelectedId(item.id)}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }} 
+        
       />
     );
   };
 
-  const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  const tempDescription = (description, bloodtype, qty) => {
+    var temp = "QTY: "+qty+"\nBLOODTYPE: "+bloodtype
+    return temp
+  }
+  const Item = ({ item, onPress, backgroundColor, textColor }) => {
+    return(
     <List.Item
       style={[styles.item, backgroundColor]}
       title={item.request_number}
-      description={item.purpose}
-      left={props => <List.Icon {...props} icon="email-plus-outline" />}
-      onPress={() => navigation.navigate('DetailScreen', {item})}
+      description={tempDescription(item.purpose, item.bloodtype, item.qty)}
+      left={props => <List.Icon {...props} icon="clock-alert-outline" color="orange" />}
+      right={props => 
+        <View style={{flexDirection: 'row'}}>
+          <Text style={{color: 'orange', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Pending</Text>
+        </View>
+      }
+      onPress={() => navigation.navigate('DetailScreen', item)}
     />
-  );
-  
+    )
+  };
 
   return (
     <SafeAreaView style={{flex: 1}}>

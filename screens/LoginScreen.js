@@ -43,7 +43,7 @@ const LoginScreen = ({navigation}) => {
     }
     formBody = formBody.join('&');
  
-    fetch('http://192.168.1.6/bloodmap/loginValidation.php', {
+    fetch('http://192.168.7.196/bloodmap/loginValidation.php', {
       method: 'POST',
       body: formBody,
       headers: {

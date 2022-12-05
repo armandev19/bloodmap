@@ -13,7 +13,7 @@ import MyProfileScreen from './DrawerScreens/ProfileScreen';
 import DonationHistoryScreen from './DrawerScreens/DonationHistoryScreen';
 import PastRequestScreen from './DrawerScreens/PastRequestScreen';
 import MapViewScreen from './DrawerScreens/MapViewScreen';
-import DetailScreen from './DrawerScreens/DetailScreen';
+import DetailScreen from './DetailScreen';
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
 import NavigationDrawerHeader from './Components/NavigationDrawerHead';
  
@@ -26,30 +26,6 @@ const HomeScreenStack = ({navigation}) => {
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
-        options={{
-          title: 'HOME', //Set Header Title
-          headerLeft: () => (
-            <NavigationDrawerHeader navigationProps={navigation} />
-          ),
-          headerStyle: {
-            backgroundColor: '#ff3333', //Set Header color
-          },
-          headerTintColor: '#fff', //Set Header text color
-          headerTitleStyle: {
-            fontWeight: 'bold', //Set Header text style
-          },
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
-
-const DetailScreenStack = ({navigation}) => {
-  return (
-    <Stack.Navigator initialRouteName="DetailScreen">
-      <Stack.Screen
-        name="DetailScreen"
-        component={DetailScreen}
         options={{
           title: 'HOME', //Set Header Title
           headerLeft: () => (
@@ -277,7 +253,7 @@ const DrawerNavigatorRoutes = (props) => {
       /> */}
       <Drawer.Screen
         name="AcceptedScreen"
-        options={{drawerLabel: 'Accepted Request', drawerIcon: (({focused}) => <Icon name="list" size={30} color="#900" />)}}
+        options={{drawerLabel: 'Accepted Request', drawerIcon: (({focused}) => <Icon name="check-circle-outline" size={30} color="#900" />)}}
         component={AcceptedRequestStack}
       />
       <Drawer.Screen

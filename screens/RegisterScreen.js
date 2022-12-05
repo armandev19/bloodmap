@@ -191,7 +191,7 @@ const RegisterScreen = (props) => {
       formBody.push(encodedKey + '=' + encodedValue);
     }
     formBody = formBody.join('&');
-    fetch('http://192.168.1.6/bloodmap/insertUser.php', {
+    fetch('http://192.168.7.196/bloodmap/insertUser.php', {
       method: 'POST',
       body: formBody,
       headers: {
@@ -456,7 +456,7 @@ const RegisterScreen = (props) => {
             <Text style={styles.buttonTextStyle}>REGISTER</Text>
           </TouchableOpacity>
 
-          <Text style={{
+          {/* <Text style={{
               justifyContent: 'center',
               alignItems: 'center',
               marginTop: 16,
@@ -487,7 +487,7 @@ const RegisterScreen = (props) => {
               title="Button"
               onPress={getOneTimeLocation}
             />
-          </View>
+          </View> */}
 
         </KeyboardAvoidingView>
       </ScrollView>
