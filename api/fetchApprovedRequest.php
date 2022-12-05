@@ -4,7 +4,7 @@ $database = mysqli_select_db($conn, 'bloodmap');
 
 $response = array();
 $testArr = array();
-$selectQuery = "SELECT * FROM blood_request WHERE `status` = 'Pending'";
+$selectQuery = "SELECT * FROM blood_request WHERE `status` = 'Approved'";
 $return = mysqli_query($conn, $selectQuery);
 if ($return){
       $rowcount = mysqli_num_rows($return);
