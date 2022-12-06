@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 // Import Navigators from React Navigation
 import {createStackNavigator} from '@react-navigation/stack';
@@ -16,10 +16,13 @@ import MapViewScreen from './DrawerScreens/MapViewScreen';
 import DetailScreen from './DetailScreen';
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
 import NavigationDrawerHeader from './Components/NavigationDrawerHead';
- 
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
- 
+
 const HomeScreenStack = ({navigation}) => {
   return (
     <Stack.Navigator initialRouteName="HomeScreen">
@@ -217,6 +220,11 @@ const MapViewStack = ({navigation}) => {
 };
 
 const DrawerNavigatorRoutes = (props) => {
+
+  const [userData, setUserData] = useState();
+  
+
+  
   return (
     <Drawer.Navigator
       // drawerContentOptions={{
@@ -240,6 +248,7 @@ const DrawerNavigatorRoutes = (props) => {
         name="HomeScreenStack"
         options={{drawerLabel: 'Home', drawerIcon: (({focused}) => <Icon name="home" size={30} color="#900" />)}}
         component={HomeScreenStack}
+        initialParams={{ id: "test" }}
       />
       <Drawer.Screen
         name="MapViewScreen"

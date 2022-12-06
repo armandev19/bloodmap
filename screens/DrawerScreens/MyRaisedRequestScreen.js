@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity, Button, Modal, ToastAndroid, Alert, TextInput} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
@@ -6,7 +6,7 @@ import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const MyRaisedRequestScreen = ({navigation}) => {
+const MyRaisedRequestScreen = ({navigation, routes}) => {
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});
   const [toastMsg, setToastMsg] = useState("");
@@ -16,7 +16,8 @@ const MyRaisedRequestScreen = ({navigation}) => {
   const [purpose, setPurpose] = useState();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [userID, setUserId] = useState(null);
+  const [userdata, setUserData] = useState('');
+  const [userAccess, setUserAccess] = useState(null);
 
   const [items, setItems] = useState([
     {label: "A", value: 'A'},
@@ -36,7 +37,7 @@ const MyRaisedRequestScreen = ({navigation}) => {
   const [requests, setRequests] = useState([]);
 
   const saveBloodRequest = () => {
-    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose, userID: userID};
+    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose, userdata: userdata.id};
     let formBody = [];
     for (let key in dataToSend) {
       let encodedKey = encodeURIComponent(key);
@@ -45,7 +46,7 @@ const MyRaisedRequestScreen = ({navigation}) => {
     }
     formBody = formBody.join('&');
     setLoading(true);
-    fetch('http://192.168.1.6/bloodmap/insertBloodRequest.php', {
+    fetch('http://192.168.7.196/bloodmap/insertBloodRequest.php', {
       method: 'POST',
       body: formBody,
       headers: {
@@ -69,8 +70,17 @@ const MyRaisedRequestScreen = ({navigation}) => {
 
   const getAllRequest = () => {
     setLoading(true)
-    fetch('http://192.168.1.6/bloodmap/fetchBloodRequest.php', {
+    let postData = {userAccess: userAccess, userID: userdata.id, userAccess: userdata.access};
+    let formBody = [];
+    for (let key in postData) {
+      let encodedKey = encodeURIComponent(key);
+      let encodedValue = encodeURIComponent(postData[key]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+    formBody = formBody.join('&');
+    fetch('http://192.168.7.196/bloodmap/fetchBloodRequest.php', {
       method: 'POST',
+      body: formBody,
       headers: {
         //Header Defination
         'Content-Type':
@@ -89,16 +99,36 @@ const MyRaisedRequestScreen = ({navigation}) => {
       });
   }
 
-  useState( async() => {
-    getAllRequest();
-    try{
+  const retrieveData = async () => {
+    try {
       await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
-        setUserId(value);
+        setUserData(value);
       });
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-  });
+  };
+
+  // useState( async() => {
+  //   // try{
+  //   //   await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
+  //   //     setUserData(value)
+  //   //   });
+  //   // }catch(error){
+  //   //   console.log(error);
+  //   // }
+  //   getAllRequest();
+  // });
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getAllRequest();
+    });
+    retrieveData();
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation])
   
   
 
@@ -176,7 +206,6 @@ const MyRaisedRequestScreen = ({navigation}) => {
                   containerStyle={{ width: "100%" }}
                   placeholder="Select Blood Type"
                 />
-                <TextInput value={userID} style={{color: 'black'}}></TextInput>
                 <TextInput placeholder="Qty" placeholderTextColor={'black'} keyboardType="numeric" style={styles.inputStyle} onChangeText={(qty) =>
                     setQty(qty)
                   }>

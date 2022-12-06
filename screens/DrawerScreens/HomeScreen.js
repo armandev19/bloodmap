@@ -5,25 +5,50 @@ import MapView, {Marker} from 'react-native-maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const HomeScreen = () => {
-      
+const HomeScreen = (navigation) => {
+const [userdata, setUserData] = useState('');
+
+const retrieveData = async () => {
+  try {
+    await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
+      setUserData(value);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+useEffect(() => {
+  retrieveData()
+}, [])
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{flex: 1, padding: 16}}>
         <View
           style={{
-            flex: 1,
-            alignItems: 'center',
             justifyContent: 'center',
           }}>
           <Text
             style={{
               fontSize: 20,
-              textAlign: 'center',
               marginBottom: 16,
-              color: 'black'
+              color: 'black',
+              fontWeight: 'bold',
+              textTransform: 'uppercase'
             }}>
-            Home Screen
+              Welcome 
+          </Text>
+          <Text
+            style={{
+              fontSize: 20,
+              marginBottom: 16,
+              color: 'black',
+              fontWeight: 'bold',
+              fontStyle: 'italic',
+              textTransform: 'uppercase'
+            }}>
+            {userdata.firstname}
           </Text>
         </View>
       </View>

@@ -67,12 +67,7 @@ const DetailScreen = ({route, navigation}) => {
             <Text style={{color: '#030000'}}>Status:</Text>
             <Text style={{color: 'orange', fontWeight: 'bold'}}> {params.status} </Text>
           </Text>
-          <TextInput 
-            placeholder='Enter quantity to donate' 
-            placeholderTextColor="black"
-            style={{ color: 'black', fontSize: 20, borderColor: 'black', borderWidth: 1, borderRadius: 5, backgroundColor: 'white', marginTop: 20, marginBottom: 10 }} 
-          />
-            <Button title="Save" style={{ alignContents: "center"}}></Button>
+          {/* <Button title="Save" style={{ alignContents: "center"}}></Button> */}
         </View>
       </SafeAreaView>
     )  
