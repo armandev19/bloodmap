@@ -37,7 +37,7 @@ const MyRaisedRequestScreen = ({navigation, routes}) => {
   const [requests, setRequests] = useState([]);
 
   const saveBloodRequest = () => {
-    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose, userdata: userdata.id};
+    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose, userdata: userdata };
     let formBody = [];
     for (let key in dataToSend) {
       let encodedKey = encodeURIComponent(key);
@@ -70,7 +70,7 @@ const MyRaisedRequestScreen = ({navigation, routes}) => {
 
   const getAllRequest = () => {
     setLoading(true)
-    let postData = {userAccess: userAccess, userID: userdata.id, userAccess: userdata.access};
+    let postData = {userAccess: userdata.access, userID: userdata.id};
     let formBody = [];
     for (let key in postData) {
       let encodedKey = encodeURIComponent(key);
@@ -89,6 +89,7 @@ const MyRaisedRequestScreen = ({navigation, routes}) => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
+        console.log(responseJson)
         setLoading(false);
         setRequests(responseJson.data);
       })
@@ -108,25 +109,12 @@ const MyRaisedRequestScreen = ({navigation, routes}) => {
       console.log(error);
     }
   };
-
-  // useState( async() => {
-  //   // try{
-  //   //   await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
-  //   //     setUserData(value)
-  //   //   });
-  //   // }catch(error){
-  //   //   console.log(error);
-  //   // }
-  //   getAllRequest();
-  // });
-
+  
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getAllRequest();
     });
     retrieveData();
-
-    // Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation])
   

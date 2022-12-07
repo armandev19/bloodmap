@@ -1,25 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity, Button, Modal, ToastAndroid, Alert, TextInput} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
 import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import DetailScreen from '../DetailScreen';
 
 
 const AcceptedScreen = ({navigation}) => {
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});
-  const [toastMsg, setToastMsg] = useState("");
   const [loading, setLoading] = useState(false);
-  const [bloodtype, setBloodType] = useState();
   const [qty, setQty] = useState();
   const [purpose, setPurpose] = useState();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [userID, setUserId] = useState('');
+  const [userdata, setUserData] = useState('');
 
-  const [customDescription, setCustomDescription] = useState("");
 
   const [items, setItems] = useState([
     {label: "A", value: 'A'},
@@ -37,16 +33,6 @@ const AcceptedScreen = ({navigation}) => {
   ]);
 
   const [requests, setRequests] = useState([]);
-
-  const toastMessage = (toastMsg) => {
-    ToastAndroid.showWithGravityAndOffset(
-      toastMsg,
-      ToastAndroid.SHORT,
-      ToastAndroid.TOP,
-      25,
-      50
-    )
-  }
 
   const saveBloodRequest = () => {
     let dataToSend = {qty: qty, bloodtype: value, purpose: purpose};
@@ -82,8 +68,17 @@ const AcceptedScreen = ({navigation}) => {
 
   const getAllApprovedRequest = () => {
     setLoading(true)
+    let postDataApproved = {userAccess: userdata.access, userID: userdata.id};
+    let formBody = [];
+    for (let key in postDataApproved) {
+      let encodedKey = encodeURIComponent(key);
+      let encodedValue = encodeURIComponent(postDataApproved[key]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+    formBody = formBody.join('&');
     fetch('http://192.168.7.196/bloodmap/fetchApprovedRequest.php', {
       method: 'POST',
+      body: formBody,
       headers: {
         //Header Defination
         'Content-Type':
@@ -92,6 +87,7 @@ const AcceptedScreen = ({navigation}) => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
+        console.log(responseJson.data.user_id);
         setLoading(false);
         setRequests(responseJson.data);
       })
@@ -102,16 +98,25 @@ const AcceptedScreen = ({navigation}) => {
       });
   }
 
-  useState( async() => {
-    getAllApprovedRequest();
+  const retrieveData = async () => {
     try {
       await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
-        setUserId(value.id);
+        setUserData(value);
       });
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-  });
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getAllApprovedRequest();
+    });
+    retrieveData();
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation])
   
   
 
