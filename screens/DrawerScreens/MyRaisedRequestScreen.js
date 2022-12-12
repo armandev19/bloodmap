@@ -37,13 +37,14 @@ const MyRaisedRequestScreen = ({navigation, routes}) => {
   const [requests, setRequests] = useState([]);
 
   const saveBloodRequest = () => {
-    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose, userdata: userdata };
+    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose, userID: userdata.id };
     let formBody = [];
     for (let key in dataToSend) {
       let encodedKey = encodeURIComponent(key);
       let encodedValue = encodeURIComponent(dataToSend[key]);
       formBody.push(encodedKey + '=' + encodedValue);
     }
+    alert(userID);
     formBody = formBody.join('&');
     setLoading(true);
     fetch('http://192.168.7.196/bloodmap/insertBloodRequest.php', {
@@ -55,8 +56,9 @@ const MyRaisedRequestScreen = ({navigation, routes}) => {
         'application/x-www-form-urlencoded;charset=UTF-8',
       },
     })
-      .then((response) => response.json())
+      .then((response) => response.text())
       .then((responseJson) => {
+        alert(responseJson)
         setLoading(false);
         getAllRequest();
         setModalVisible(!modalVisible);
