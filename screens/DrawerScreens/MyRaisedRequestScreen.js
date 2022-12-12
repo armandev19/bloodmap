@@ -4,7 +4,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
 import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useFocusEffect } from '@react-navigation/native';
 
 const MyRaisedRequestScreen = ({navigation, routes}) => {
   const [selectedId, setSelectedId] = useState(null);
@@ -44,7 +44,6 @@ const MyRaisedRequestScreen = ({navigation, routes}) => {
       let encodedValue = encodeURIComponent(dataToSend[key]);
       formBody.push(encodedKey + '=' + encodedValue);
     }
-    alert(userID);
     formBody = formBody.join('&');
     setLoading(true);
     fetch('http://192.168.7.196/bloodmap/insertBloodRequest.php', {
@@ -112,13 +111,11 @@ const MyRaisedRequestScreen = ({navigation, routes}) => {
     }
   };
   
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+  useFocusEffect(
+    React.useCallback(() => {
       getAllRequest();
-    });
-    retrieveData();
-    return unsubscribe;
-  }, [navigation])
+    }, [])
+)
   
   
 

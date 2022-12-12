@@ -87,7 +87,6 @@ const AcceptedScreen = ({navigation}) => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson.data.user_id);
         setLoading(false);
         setRequests(responseJson.data);
       })
