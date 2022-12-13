@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, Text, SafeAreaView} from 'react-native';
  
-const PastRequestScreen = () => {
+const PastRequestScreen = (route) => {
+  console.log(route)
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{flex: 1, padding: 16}}>

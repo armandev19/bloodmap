@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {View, Text, Alert, StyleSheet} from 'react-native';
  
 import {
@@ -10,7 +10,8 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CustomSidebarMenu = (props) => {
-
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
   
 
   return (
@@ -52,6 +53,8 @@ const CustomSidebarMenu = (props) => {
                   onPress: () => {
                     AsyncStorage.clear();
                     props.navigation.replace('Auth');
+                    setUserPassword({})
+                    setUserEmail({})
                   },
                 },
               ],

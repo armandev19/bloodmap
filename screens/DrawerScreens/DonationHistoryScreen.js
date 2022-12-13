@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, Text, SafeAreaView} from 'react-native';
  
-const DonationHistoryScreen = () => {
+const DonationHistoryScreen = (route) => {
+  console.log(route.params)
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{flex: 1, padding: 16}}>

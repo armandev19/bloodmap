@@ -6,7 +6,8 @@ import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
-const MyRaisedRequestScreen = ({navigation, routes}) => {
+const MyRaisedRequestScreen = (navigation, route) => {
+  console.log(route.params);
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});
   const [toastMsg, setToastMsg] = useState("");
@@ -69,8 +70,15 @@ const MyRaisedRequestScreen = ({navigation, routes}) => {
       });
   }
 
-  const getAllRequest = () => {
+  const getAllRequest = async () => {
     setLoading(true)
+    try {
+      await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
+        setUserData(value);
+      });
+    } catch (error) {
+      console.log(error);
+    }
     let postData = {userAccess: userdata.access, userID: userdata.id};
     let formBody = [];
     for (let key in postData) {
@@ -90,7 +98,6 @@ const MyRaisedRequestScreen = ({navigation, routes}) => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson)
         setLoading(false);
         setRequests(responseJson.data);
       })
@@ -101,23 +108,36 @@ const MyRaisedRequestScreen = ({navigation, routes}) => {
       });
   }
 
-  const retrieveData = async () => {
-    try {
-      await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
-        setUserData(value);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const retrieveData = async () => {
+  //   try {
+  //     await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
+  //       setUserData(value);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   
-  useFocusEffect(
-    React.useCallback(() => {
-      getAllRequest();
-    }, [])
-)
-  
-  
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     let isActive = true
+
+  //     const fetchList = async () => {
+  //       try {
+  //         retrieveData();
+  //         getAllRequest();
+  //       } catch (error) {
+  //         console.log(error)
+  //       }
+  //     }
+
+  //     fetchList()
+
+  //     return () => {
+  //       isActive = false
+  //     }
+  //   }, []),
+  // );
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#f2f2f2" : "white";
