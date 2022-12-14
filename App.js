@@ -12,7 +12,9 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import DrawerNavigationRoutes from './screens/DrawerNavigationRoutes';
 import DetailScreen from './screens/DetailScreen'
- 
+import EditProfileScreen from './screens/EditProfileScreen'
+import UserDetailsScreen from './screens/UserDetailsScreen'
+
 const Stack = createStackNavigator();
  
 const Auth = () => {
@@ -74,6 +76,18 @@ const App = () => {
           title="Request Details"
           component={DetailScreen}
           options={{title: "Request Details"}}
+        />
+        <Stack.Screen
+          name="EditProfileScreen"
+          title="Edit Profile"
+          component={EditProfileScreen}
+          options={{title: "Edit Profile"}}
+        />
+        <Stack.Screen
+          name="UserDetailsScreen"
+          title="User Details"
+          component={UserDetailsScreen}
+          options={{title: "User Details"}}
         />
       </Stack.Navigator>
     </NavigationContainer>

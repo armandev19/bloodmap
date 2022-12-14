@@ -6,15 +6,15 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import { useFocusEffect } from '@react-navigation/native';
 // Import Screens
 import HomeScreen from './DrawerScreens/HomeScreen';
-import SettingsScreen from './DrawerScreens/ProfileScreen';
 import AcceptedScreen from './DrawerScreens/AcceptedScreen';
 import MyRaisedRequestScreen from './DrawerScreens/MyRaisedRequestScreen';
-import MyProfileScreen from './DrawerScreens/ProfileScreen';
 import DonationHistoryScreen from './DrawerScreens/DonationHistoryScreen';
 import PastRequestScreen from './DrawerScreens/PastRequestScreen';
 import MapViewScreen from './DrawerScreens/MapViewScreen';
-import DetailScreen from './DetailScreen';
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
+import ProfileScreen from './DrawerScreens/ProfileScreen';
+import UsersScreen from './DrawerScreens/UsersScreen';
+
 import NavigationDrawerHeader from './Components/NavigationDrawerHead';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -69,27 +69,24 @@ const PastRequestStack = ({navigation}) => {
   );
 };
 
-const SettingScreenStack = ({navigation}) => {
+const MyProfileStack = ({navigation}) => {
   return (
-    <Stack.Navigator
-      initialRouteName="SettingsScreen"
-      screenOptions={{
-        headerLeft: () => (
-          <NavigationDrawerHeader navigationProps={navigation} />
-        ),
-        headerStyle: {
-          backgroundColor: '#ff3333', //Set Header color
-        },
-        headerTintColor: '#fff', //Set Header text color
-        headerTitleStyle: {
-          fontWeight: 'bold', //Set Header text style
-        },
-      }}>
+    <Stack.Navigator initialRouteName="ProfileScreen">
       <Stack.Screen
-        name="SettingsScreen"
-        component={SettingsScreen}
+        name="ProfileScreen"
+        component={ProfileScreen}
         options={{
-          title: 'Settings', //Set Header Title
+          title: 'My Profile', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerHeader navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#ff3333', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
         }}
       />
     </Stack.Navigator>
@@ -168,31 +165,6 @@ const DonationHistoryStack = ({navigation}) => {
   );
 };
 
-const MyProfileStack = ({navigation}) => {
-  return (
-    <Stack.Navigator initialRouteName="MyProfile">
-      <Stack.Screen
-        name="MyProfile"
-        component={MyProfileScreen}
-        options={{
-          title: 'Profile', //Set Header Title
-          headerLeft: () => (
-            <NavigationDrawerHeader navigationProps={navigation} />
-          ),
-          headerStyle: {
-            backgroundColor: '#ff3333', //Set Header color
-          },
-          headerTintColor: '#fff', //Set Header text color
-          headerTitleStyle: {
-            fontWeight: 'bold', //Set Header text style
-          },
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
- 
-
 const MapViewStack = ({navigation}) => {
   return (
     <Stack.Navigator initialRouteName="MapView">
@@ -217,8 +189,32 @@ const MapViewStack = ({navigation}) => {
   );
 };
 
+const UsersScreenStack = ({navigation}) => {
+  return (
+    <Stack.Navigator initialRouteName="UsersScreen">
+      <Stack.Screen
+        name="Users List"
+        component={UsersScreen}
+        options={{
+          title: 'Users List', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerHeader navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#ff3333', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const DrawerNavigatorRoutes = ({navgiation, route}) => {
-  const[user_data, setUserData] = useState('');
+  const[user_data, setUserData] = useState({});
   
   useFocusEffect(
     React.useCallback(() => {
@@ -228,6 +224,7 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
                 const userData = await AsyncStorage.getItem('user_id');
                 if (userData !== null) {
                     let userDataArray = JSON.parse(userData);
+                    console.log(userDataArray);
                     setUserData(userDataArray);
                 }
             } catch (e) {
@@ -272,7 +269,7 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
       />
       <Drawer.Screen
         name="MyRaisedRequestScreen"
-        options={{drawerLabel: 'My Raised Request', drawerIcon: (({focused}) => <Icon name="list" size={30} color="#900" />)}}
+        options={{drawerLabel: 'My Raised Request', drawerIcon: (({focused}) => <Icon name="playlist-add" size={30} color="#900" />)}}
         component={MyRaisedRequestStack}
         initialParams={{ params: user_data }}
       />
@@ -284,10 +281,28 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
       />
       <Drawer.Screen
         name="PastRequestScreen"
-        options={{drawerLabel: 'Past Requests', drawerIcon: (({focused}) => <Icon name="history" size={30} color="#900" />)}}
+        options={{drawerLabel: 'Past Requests', drawerIcon: (({focused}) => <Icon name="playlist-add-check" size={30} color="#900" />)}}
         component={PastRequestStack}
         initialParams={{ params: user_data }}
       />
+      <Drawer.Screen
+        name="MyProfileStack"
+        options={{drawerLabel: 'My Profile', drawerIcon: (({focused}) => <Icon name="account-box" size={30} color="#900" />)}}
+        component={MyProfileStack}
+        initialParams={{ params: user_data }}
+      />
+     {(() => {
+        if (user_data.access == 'Admin') {
+            return (
+            <Drawer.Screen
+              name="UsersScreenStack"
+              options={{drawerLabel: 'Users', drawerIcon: (({focused}) => <Icon name="people" size={30} color="#900" />)}}
+              component={UsersScreenStack}
+              initialParams={{ params: user_data }}
+            />
+        );
+      }
+    })()}
        
     </Drawer.Navigator>
   );

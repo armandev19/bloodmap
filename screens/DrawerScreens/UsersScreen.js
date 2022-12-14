@@ -6,41 +6,17 @@ import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
-const PastRequestScreen = (navigation, route) => {
+const UsersScreen = ({navigation, route}) => {
   const [pastRequest, setPastRequest] = useState('');
   const [selectedId, setSelectedId] = useState(null);
-  const [modalVisible, setModalVisible] = useState({modalVisible: false});
-  const [toastMsg, setToastMsg] = useState("");
+  const [users, setUsers] = useState('');
   const [loading, setLoading] = useState(false);
-  const [bloodtype, setBloodType] = useState();
-  const [qty, setQty] = useState();
-  const [purpose, setPurpose] = useState();
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [userdata, setUserData] = useState('');
-  const [userAccess, setUserAccess] = useState(null);
   const [noDonation, setNoDonation] = useState('No Data');
 
-  const getAllPastRequest = async () => {
+  const getAllUsers = async () => {
     setLoading(true)
-    try {
-      await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
-        setUserData(value);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-    let postData = {userAccess: userdata.access, userID: userdata.id};
-    let formBody = [];
-    for (let key in postData) {
-      let encodedKey = encodeURIComponent(key);
-      let encodedValue = encodeURIComponent(postData[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
-    fetch('http://192.168.7.196/bloodmap/fetchPastRequest.php', {
+    fetch('http://192.168.7.196/bloodmap/fetchUsers.php', {
       method: 'POST',
-      body: formBody,
       headers: {
         //Header Defination
         'Content-Type':
@@ -50,8 +26,7 @@ const PastRequestScreen = (navigation, route) => {
       .then((response) => response.json())
       .then((responseJson) => {
         setLoading(false);
-        setPastRequest(responseJson.data);
-        setNoDonation('')
+        setUsers(responseJson.data);
       })
       .catch((error) => {
         alert(error);
@@ -82,32 +57,39 @@ const PastRequestScreen = (navigation, route) => {
     return(
     <List.Item
       style={[styles.item, backgroundColor]}
-      title={item.request_number}
-      description={tempDescription(item.purpose, item.bloodtype, item.qty)}
+      title={item.firstname}
+      description={tempDescription(item.firstname, item.firstname, item.firstname)}
       left={props => <List.Icon {...props} icon="clock-alert-outline" color="orange" />}
       right={props => 
         <View style={{flexDirection: 'row'}}>
           <Text style={{color: 'orange', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Pending</Text>
         </View>
       }
-      onPress={() => navigation.navigate('DetailScreen', item)}
+      onPress={() => navigation.navigate('UserDetailsScreen', item)}
     />
     )
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+        getAllUsers();
+        console.log(users)
+    }, []),
+);
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <Loader loading={loading} />
       
-      { noDonation == 'No Data' ? <Text style={{color: 'black', fontSize: 25, textAlign: 'center'}}>{noDonation}</Text> : 
+      {/* { noDonation == 'No Data' ? <Text style={{color: 'black', fontSize: 25, textAlign: 'center'}}>{noDonation}</Text> :  */}
         <FlatList
-          data={pastRequest}
+          data={users}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           extraData={selectedId}
           style={{marginBottom: 15}}
         />
-      }
+      
     </SafeAreaView>
   );
 };
@@ -189,4 +171,4 @@ const styles = StyleSheet.create({
   }
 });
  
-export default PastRequestScreen;
+export default UsersScreen;
