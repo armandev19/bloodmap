@@ -8,11 +8,13 @@ import {
 } from '@react-navigation/drawer';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { selectUserData, setUserData } from '../redux/navSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 const CustomSidebarMenu = (props) => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
-  
+  const dispatch = useDispatch();
 
   return (
     <View style={stylesSidebar.sideMenuContainer}>
@@ -51,7 +53,8 @@ const CustomSidebarMenu = (props) => {
                 {
                   text: 'Confirm',
                   onPress: () => {
-                    AsyncStorage.clear();
+                    AsyncStorage.removeItem('user_id');
+                    dispatch(setUserData(null));
                     props.navigation.replace('Auth');
                     setUserPassword({})
                     setUserEmail({})

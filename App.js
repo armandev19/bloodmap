@@ -14,6 +14,8 @@ import DrawerNavigationRoutes from './screens/DrawerNavigationRoutes';
 import DetailScreen from './screens/DetailScreen'
 import EditProfileScreen from './screens/EditProfileScreen'
 import UserDetailsScreen from './screens/UserDetailsScreen'
+import { Provider } from 'react-redux';
+import { store } from './screens/redux/store';
 
 const Stack = createStackNavigator();
  
@@ -48,6 +50,7 @@ const Auth = () => {
 const App = () => {
   
   return (
+    <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen">
         {/* SplashScreen which will come once for 5 Seconds */}
@@ -91,6 +94,7 @@ const App = () => {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 };
  

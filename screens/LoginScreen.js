@@ -12,7 +12,8 @@ import {
 } from 'react-native';
  
 import AsyncStorage from '@react-native-async-storage/async-storage';
- 
+import { setUserData } from './redux/navSlice';
+import { useDispatch } from 'react-redux';
 import Loader from './Components/loader';
  
 const LoginScreen = ({navigation}) => {
@@ -22,7 +23,9 @@ const LoginScreen = ({navigation}) => {
   const [errortext, setErrortext] = useState('');
  
   const passwordInputRef = createRef();
- 
+  
+  const dispatch = useDispatch();
+
   const handleSubmitPress = () => {
     setErrortext('');
     if (!userEmail) {
@@ -61,6 +64,7 @@ const LoginScreen = ({navigation}) => {
         if (responseJson.status === 'success') {
           AsyncStorage.setItem('user_id', JSON.stringify(responseJson.user_data));
           console.log(responseJson.user_data);
+          dispatch(setUserData(responseJson.user_data));
           navigation.replace('DrawerNavigationRoutes');
         } else {
           setErrortext(responseJson.message);
