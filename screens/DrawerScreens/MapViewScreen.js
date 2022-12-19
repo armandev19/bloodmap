@@ -6,9 +6,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from './../Components/loader';
 import { selectUserData, setUserData } from '../redux/navSlice';
 import { useSelector } from 'react-redux';
+import CustomMarker from './CustomMarker';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-
-const MapViewScreen = () => {
+const MapViewScreen = ({navigation}) => {
   const [input, setInput] = useState();
   // const [latitude, setUserLatitude] = useState();
   // const [longitude, setUserLongitude] = useState();
@@ -40,8 +41,17 @@ const MapViewScreen = () => {
 
 const getAllUsers = () => {
   setLoading(true)
+    let postData = {id: currentUserData.id};
+    let formBody = [];
+    for (let key in postData) {
+      let encodedKey = encodeURIComponent(key);
+      let encodedValue = encodeURIComponent(postData[key]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+    formBody = formBody.join('&');
   fetch('http://192.168.7.196/bloodmap/fetchUsers.php', {
     method: 'POST',
+    body: formBody,
     headers: {
       'Content-Type':
       'application/x-www-form-urlencoded;charset=UTF-8',
@@ -63,6 +73,14 @@ useEffect(()=>{
   getAllUsers();
   console.log("userdata", userData);
 }, [])
+
+const CustomMarker= (title) => {
+  return (
+    <View style={styles.markerText}>
+      <Text style={styles.color}>{title}</Text>
+    </View>
+  );
+}
 
 // useFocusEffect(
 //   React.useCallback(() => {
@@ -87,9 +105,12 @@ useEffect(()=>{
         if (currentUserData) { 
           return (
             <Marker
-              title="This is you."
               coordinate={{ latitude : parseFloat(currentUserData.latitude), longitude : parseFloat(currentUserData.longitude) }}
-            />
+            >
+             <View style={styles.marker}>
+                <Text style={styles.markerText}>{location.firstname}</Text>
+              </View>
+            </Marker>
           )
         }
       })()}
@@ -107,11 +128,15 @@ useEffect(()=>{
            {userData.map((location, i) => {
             return (
               <Marker
-              key={i}
-              title={location.title}
-              coordinate={{ latitude : parseFloat(location.latitude), longitude : parseFloat(location.longitude) }}
-              description="This is a marker in React Natve"
-            />
+                key={i}
+                coordinate={{ latitude : parseFloat(location.latitude), longitude : parseFloat(location.longitude) }}
+                onPress={() => navigation.navigate('UserDetailsScreen', location)}
+              >
+                <View style={styles.marker}>
+                  <Text style={styles.markerText}>{location.firstname}</Text>
+                </View>
+                
+              </Marker>
             )
           })}
         
@@ -134,6 +159,18 @@ const styles = StyleSheet.create({
     height: '100%',
     width: "100%"
   },
+  marker: {
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    backgroundColor: "#007bff",
+    borderColor: "#eee",
+    borderRadius: 100,
+    elevation: 10,
+  },
+  markerText: {
+    color: "#fff",   
+  },
+  
 });
  
 export default MapViewScreen;
