@@ -15,7 +15,7 @@ const UsersScreen = ({navigation, route}) => {
 
   const getAllUsers = async () => {
     setLoading(true)
-    fetch('http://192.168.7.196/bloodmap/fetchUsers.php', {
+    fetch(global.url+'fetchUsers.php', {
       method: 'POST',
       headers: {
         //Header Defination

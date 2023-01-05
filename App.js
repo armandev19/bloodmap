@@ -48,7 +48,8 @@ const Auth = () => {
 
 
 const App = () => {
-  
+  global.url = "http://192.168.1.5/bloodmap/";
+  // global.url = "http://192.168.7.196/bloodmap/"
   return (
     <Provider store={store}>
     <NavigationContainer>

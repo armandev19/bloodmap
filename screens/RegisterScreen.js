@@ -191,7 +191,7 @@ const RegisterScreen = (props) => {
       formBody.push(encodedKey + '=' + encodedValue);
     }
     formBody = formBody.join('&');
-    fetch('http://192.168.7.196/bloodmap/insertUser.php', {
+    fetch(global.url+'insertUser.php', {
       method: 'POST',
       body: formBody,
       headers: {

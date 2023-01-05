@@ -25,7 +25,7 @@ const LoginScreen = ({navigation}) => {
   const passwordInputRef = createRef();
   
   const dispatch = useDispatch();
-
+  
   const handleSubmitPress = () => {
     setErrortext('');
     if (!userEmail) {
@@ -46,7 +46,7 @@ const LoginScreen = ({navigation}) => {
     }
     formBody = formBody.join('&');
  
-    fetch('http://192.168.1.6/bloodmap/loginValidation.php', {
+    fetch(global.url+'loginValidation.php', {
       method: 'POST',
       body: formBody,
       headers: {

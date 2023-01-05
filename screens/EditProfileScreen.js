@@ -42,7 +42,7 @@ const EditProfileScreen = ({navigation, route}) => {
         }
         formBody = formBody.join('&');
         setLoading(true);
-        fetch('http://192.168.7.196/bloodmap/updateProfile.php', {
+        fetch(global.url+'updateProfile.php', {
           method: 'POST',
           body: formBody,
           headers: {

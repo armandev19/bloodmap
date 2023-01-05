@@ -18,7 +18,7 @@ const DonationHistoryScreen = (route) => {
       formBody.push(encodedKey + '=' + encodedValue);
     }
     formBody = formBody.join('&');
-    fetch('http://192.168.7.196/bloodmap/fetchDonation.php', {
+    fetch(global.url+'fetchDonation.php', {
       method: 'POST',
       body: formBody,
       headers: {

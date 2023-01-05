@@ -49,7 +49,7 @@ const getAllUsers = () => {
       formBody.push(encodedKey + '=' + encodedValue);
     }
     formBody = formBody.join('&');
-  fetch('http://192.168.7.196/bloodmap/fetchUsers.php', {
+  fetch(global.url+'fetchUsers.php', {
     method: 'POST',
     body: formBody,
     headers: {
@@ -108,7 +108,7 @@ const CustomMarker= (title) => {
               coordinate={{ latitude : parseFloat(currentUserData.latitude), longitude : parseFloat(currentUserData.longitude) }}
             >
              <View style={styles.marker}>
-                <Text style={styles.markerText}>{location.firstname}</Text>
+                <Text style={styles.markerText}>{currentUserData.firstname}</Text>
               </View>
             </Marker>
           )

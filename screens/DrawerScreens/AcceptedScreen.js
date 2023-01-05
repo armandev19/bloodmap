@@ -45,7 +45,7 @@ const AcceptedScreen = (navigation, route) => {
     }
     formBody = formBody.join('&');
     setLoading(true);
-    fetch('http://192.168.1.6/bloodmap/insertBloodRequest.php', {
+    fetch(global.url+'insertBloodRequest.php', {
       method: 'POST',
       body: formBody,
       headers: {
@@ -77,7 +77,7 @@ const AcceptedScreen = (navigation, route) => {
       formBody.push(encodedKey + '=' + encodedValue);
     }
     formBody = formBody.join('&');
-    fetch('http://192.168.1.6/bloodmap/fetchApprovedRequest.php', {
+    fetch(global.url+'fetchApprovedRequest.php', {
       method: 'POST',
       body: formBody,
       headers: {
