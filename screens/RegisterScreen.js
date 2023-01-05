@@ -203,6 +203,7 @@ const RegisterScreen = (props) => {
       .then((response) => response.json())
       .then((responseJson) => {
         //Hide Loader
+        alert(responseJson);
         setLoading(false);
         // console.log(responseJson);
         // If server response message same as Data Matched

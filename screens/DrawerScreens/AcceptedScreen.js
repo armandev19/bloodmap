@@ -6,7 +6,8 @@ import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const AcceptedScreen = ({navigation}) => {
+const AcceptedScreen = (navigation, route) => {
+  console.log(route.params)
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});
   const [loading, setLoading] = useState(false);
@@ -87,7 +88,6 @@ const AcceptedScreen = ({navigation}) => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson.data.user_id);
         setLoading(false);
         setRequests(responseJson.data);
       })
@@ -97,26 +97,6 @@ const AcceptedScreen = ({navigation}) => {
         console.error(error);
       });
   }
-
-  const retrieveData = async () => {
-    try {
-      await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
-        setUserData(value);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      getAllApprovedRequest();
-    });
-    retrieveData();
-
-    // Return the function to unsubscribe from the event so it gets removed on unmount
-    return unsubscribe;
-  }, [navigation])
   
   
 

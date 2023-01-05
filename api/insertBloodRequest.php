@@ -7,13 +7,15 @@ $qty = $_POST['qty'];
 $bloodtype = $_POST['bloodtype'];
 $purpose = $_POST['purpose'];
 $request_number = "R".date("Ymdhis");
-$insertQuery = "INSERT INTO blood_request(qty, bloodtype, purpose, request_number, `status`)VALUES('$qty','$bloodtype','$purpose','$request_number', 'Pending')";
+$user_id = $_POST['userID'];
+$insertQuery = "INSERT INTO blood_request(qty, bloodtype, purpose, request_number, `status`, `user_id`)VALUES('$qty','$bloodtype','$purpose','$request_number', 'Pending', '$user_id')";
 $return = mysqli_query($conn, $insertQuery);
-if ($return){
-      $response['status'] = 'success';
-}else{
-      $response['status'] = 'failed';
-}
+// if ($return){
+//       $response['status'] = 'success';
+// }else{
+//       $response['status'] = 'failed';
+// }
+$response['status'] = $conn;
 echo json_encode($response);
 
 ?>

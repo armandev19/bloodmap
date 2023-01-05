@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect('localhost', 'root', ''); 
+$conn = mysqli_connect('localhost', 'root', 'YgtDGdmoEn'); 
 $database = mysqli_select_db($conn, 'bloodmap');
 
 $obj = file_get_contents('php://input');
@@ -16,8 +16,9 @@ $address = $_POST['address'];
 $email = $_POST['email'];
 $bloodtype = $_POST['bloodtype'];
 $gender = $_POST['gender'];
+$access = $_POST['User'];
 
-$insertQuery = "INSERT INTO users (`username`, `password`, `firstname`, `middlename`, `lastname`, `phone_number`, `address`, `email`, `gender`, `bloodtype`) VALUES ('$username', '$password', '$firstname', '$bloodtype', '$lastname', '$phone_number', '$address', '$email', '$gender', '$bloodtype')";
+$insertQuery = "INSERT INTO users (`username`, `password`, `firstname`, `middlename`, `lastname`, `phone_number`, `address`, `email`, `gender`, `bloodtype`, `access`) VALUES ('$username', '$password', '$firstname', '$bloodtype', '$lastname', '$phone_number', '$address', '$email', '$gender', '$bloodtype', '$status')";
 
 $return = mysqli_query($conn, $insertQuery);
 if($return){

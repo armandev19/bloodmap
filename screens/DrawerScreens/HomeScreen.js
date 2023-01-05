@@ -1,27 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
-
-import MapView, {Marker} from 'react-native-maps'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const HomeScreen = (navigation) => {
-const [userdata, setUserData] = useState('');
-
-const retrieveData = async () => {
-  try {
-    await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
-      setUserData(value);
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-useEffect(() => {
-  retrieveData()
-}, [])
-
+const HomeScreen = ({navigation, prop}) => {
+console.log(prop)
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{flex: 1, padding: 16}}>
@@ -48,7 +31,6 @@ useEffect(() => {
               fontStyle: 'italic',
               textTransform: 'uppercase'
             }}>
-            {userdata.firstname}
           </Text>
         </View>
       </View>

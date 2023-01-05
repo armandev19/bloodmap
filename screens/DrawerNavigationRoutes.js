@@ -3,22 +3,20 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 // Import Navigators from React Navigation
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-
+import { useFocusEffect } from '@react-navigation/native';
 // Import Screens
 import HomeScreen from './DrawerScreens/HomeScreen';
-import SettingsScreen from './DrawerScreens/ProfileScreen';
 import AcceptedScreen from './DrawerScreens/AcceptedScreen';
 import MyRaisedRequestScreen from './DrawerScreens/MyRaisedRequestScreen';
-import MyProfileScreen from './DrawerScreens/ProfileScreen';
 import DonationHistoryScreen from './DrawerScreens/DonationHistoryScreen';
 import PastRequestScreen from './DrawerScreens/PastRequestScreen';
 import MapViewScreen from './DrawerScreens/MapViewScreen';
-import DetailScreen from './DetailScreen';
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
+import ProfileScreen from './DrawerScreens/ProfileScreen';
+import UsersScreen from './DrawerScreens/UsersScreen';
+
 import NavigationDrawerHeader from './Components/NavigationDrawerHead';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -54,7 +52,7 @@ const PastRequestStack = ({navigation}) => {
         name="PastRequestScreen"
         component={PastRequestScreen}
         options={{
-          title: 'Past Request', //Set Header Title
+          title: 'Past Requests', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
@@ -71,27 +69,24 @@ const PastRequestStack = ({navigation}) => {
   );
 };
 
-const SettingScreenStack = ({navigation}) => {
+const MyProfileStack = ({navigation}) => {
   return (
-    <Stack.Navigator
-      initialRouteName="SettingsScreen"
-      screenOptions={{
-        headerLeft: () => (
-          <NavigationDrawerHeader navigationProps={navigation} />
-        ),
-        headerStyle: {
-          backgroundColor: '#ff3333', //Set Header color
-        },
-        headerTintColor: '#fff', //Set Header text color
-        headerTitleStyle: {
-          fontWeight: 'bold', //Set Header text style
-        },
-      }}>
+    <Stack.Navigator initialRouteName="ProfileScreen">
       <Stack.Screen
-        name="SettingsScreen"
-        component={SettingsScreen}
+        name="ProfileScreen"
+        component={ProfileScreen}
         options={{
-          title: 'Settings', //Set Header Title
+          title: 'My Profile', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerHeader navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#ff3333', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
         }}
       />
     </Stack.Navigator>
@@ -122,14 +117,14 @@ const AcceptedRequestStack = ({navigation}) => {
   );
 };
 
-const MyRaisedRequestStack = ({navigation}) => {
+const MyRaisedRequestStack = ({navigation, route}) => {
   return (
     <Stack.Navigator initialRouteName="MyRaisedRequestScreen">
       <Stack.Screen
         name="MyRaisedRequest"
         component={MyRaisedRequestScreen}
         options={{
-          title: 'My Raised Requests', //Set Header Title
+          title: 'My Raised Request', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
@@ -170,31 +165,6 @@ const DonationHistoryStack = ({navigation}) => {
   );
 };
 
-const MyProfileStack = ({navigation}) => {
-  return (
-    <Stack.Navigator initialRouteName="MyProfile">
-      <Stack.Screen
-        name="MyProfile"
-        component={MyProfileScreen}
-        options={{
-          title: 'Profile', //Set Header Title
-          headerLeft: () => (
-            <NavigationDrawerHeader navigationProps={navigation} />
-          ),
-          headerStyle: {
-            backgroundColor: '#ff3333', //Set Header color
-          },
-          headerTintColor: '#fff', //Set Header text color
-          headerTitleStyle: {
-            fontWeight: 'bold', //Set Header text style
-          },
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
- 
-
 const MapViewStack = ({navigation}) => {
   return (
     <Stack.Navigator initialRouteName="MapView">
@@ -219,23 +189,54 @@ const MapViewStack = ({navigation}) => {
   );
 };
 
-const DrawerNavigatorRoutes = (props) => {
+const UsersScreenStack = ({navigation}) => {
+  return (
+    <Stack.Navigator initialRouteName="UsersScreen">
+      <Stack.Screen
+        name="Users List"
+        component={UsersScreen}
+        options={{
+          title: 'Users List', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerHeader navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#ff3333', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
 
-  const [userData, setUserData] = useState();
+const DrawerNavigatorRoutes = ({navgiation, route}) => {
+  const[user_data, setUserData] = useState({});
   
+  useFocusEffect(
+    React.useCallback(() => {
+        setTimeout(async () => {
 
+            try {
+                const userData = await AsyncStorage.getItem('user_id');
+                if (userData !== null) {
+                    let userDataArray = JSON.parse(userData);
+                    console.log(userDataArray);
+                    setUserData(userDataArray);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        });
+    }, [])
+  );
   
+  // console.log(user_data)
   return (
     <Drawer.Navigator
-      // drawerContentOptions={{
-      //   textColor: 'yellow',
-      //   activeTintColor: 'red',
-      //   activeBackgroundColor: 'white',
-      //   inactiveTintColor: 'blue',
-      //   inactiveBackgroundColor: 'white',
-      //   itemStyle: {marginVertical: 5, color: 'red'},
-      //   backgroundColor: '#cc0000'
-      // }}
       screenOptions={{headerShown: false, color: 'red', textColor: 'yellow',
         activeTintColor: 'red',
         activeBackgroundColor: 'white',
@@ -243,12 +244,12 @@ const DrawerNavigatorRoutes = (props) => {
         inactiveBackgroundColor: 'white',
         itemStyle: {marginVertical: 5, color: 'red'},
         backgroundColor: '#cc0000'}}
-      drawerContent={CustomSidebarMenu}>
+      drawerContent={(props) => <CustomSidebarMenu {...props} />}>
       <Drawer.Screen
         name="HomeScreenStack"
         options={{drawerLabel: 'Home', drawerIcon: (({focused}) => <Icon name="home" size={30} color="#900" />)}}
         component={HomeScreenStack}
-        initialParams={{ id: "test" }}
+        initialParams={{ params : user_data}}
       />
       <Drawer.Screen
         name="MapViewScreen"
@@ -264,22 +265,44 @@ const DrawerNavigatorRoutes = (props) => {
         name="AcceptedScreen"
         options={{drawerLabel: 'Accepted Request', drawerIcon: (({focused}) => <Icon name="check-circle-outline" size={30} color="#900" />)}}
         component={AcceptedRequestStack}
+        initialParams={{ params: user_data }}
       />
       <Drawer.Screen
         name="MyRaisedRequestScreen"
-        options={{drawerLabel: 'My Raised Request', drawerIcon: (({focused}) => <Icon name="list" size={30} color="#900" />)}}
+        options={{drawerLabel: 'My Raised Request', drawerIcon: (({focused}) => <Icon name="playlist-add" size={30} color="#900" />)}}
         component={MyRaisedRequestStack}
+        initialParams={{ params: user_data }}
       />
       <Drawer.Screen
         name="DonationHistoryScreen"
         options={{drawerLabel: 'Donation History', drawerIcon: (({focused}) => <Icon name="history" size={30} color="#900" />)}}
         component={DonationHistoryStack}
+        initialParams={{ params: user_data }}
       />
       <Drawer.Screen
         name="PastRequestScreen"
-        options={{drawerLabel: 'Past Requests', drawerIcon: (({focused}) => <Icon name="history" size={30} color="#900" />)}}
+        options={{drawerLabel: 'Past Requests', drawerIcon: (({focused}) => <Icon name="playlist-add-check" size={30} color="#900" />)}}
         component={PastRequestStack}
+        initialParams={{ params: user_data }}
       />
+      <Drawer.Screen
+        name="MyProfileStack"
+        options={{drawerLabel: 'My Profile', drawerIcon: (({focused}) => <Icon name="account-box" size={30} color="#900" />)}}
+        component={MyProfileStack}
+        initialParams={{ params: user_data }}
+      />
+     {(() => {
+        if (user_data.access == 'Admin') {
+            return (
+            <Drawer.Screen
+              name="UsersScreenStack"
+              options={{drawerLabel: 'Users', drawerIcon: (({focused}) => <Icon name="people" size={30} color="#900" />)}}
+              component={UsersScreenStack}
+              initialParams={{ params: user_data }}
+            />
+        );
+      }
+    })()}
        
     </Drawer.Navigator>
   );
