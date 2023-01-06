@@ -5,7 +5,6 @@ import {Card, Title, Paragraph, Divider} from 'react-native-paper';
 
 const DetailScreen = ({route, navigation}) => {
   const params = route.params
-  // const {qty, getQty} = params.qty
   if(params.status === 'Approved'){
     return (
       <SafeAreaView style={{ padding: 10}}>

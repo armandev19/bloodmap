@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const UserDetailsScreen = ({route, navigation}) => {
   const params = route.params
-  console.log(params)
     return (
       <SafeAreaView style={{padding: 10}}>
         <View style={{backgroundColor: '#edebeb', borderColor: "#cfcccc", borderWidth: 1, borderRadius: 5, padding: 10}}>

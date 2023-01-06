@@ -3,8 +3,8 @@ import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const HomeScreen = ({navigation, prop}) => {
-console.log(prop)
+const HomeScreen = ({navigation, props}) => {
+console.log(props)
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{flex: 1, padding: 16}}>

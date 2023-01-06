@@ -6,7 +6,7 @@ import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
-const PastRequestScreen = (navigation, route) => {
+const PastRequestScreen = ({navigation, route}) => {
   const [pastRequest, setPastRequest] = useState('');
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});

@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity, Button, Modal, ToastAndroid, Alert, TextInput} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
 import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
-const MyRaisedRequestScreen = (navigation, route) => {
+const MyRaisedRequestScreen = ({navigation, route}) => {
   console.log(route.params);
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});
@@ -105,6 +106,10 @@ const MyRaisedRequestScreen = (navigation, route) => {
         console.error(error);
       });
   }
+
+  useEffect(()=>{
+    getAllRequest();
+  }, [])
 
   // const retrieveData = async () => {
   //   try {

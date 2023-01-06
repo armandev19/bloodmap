@@ -6,7 +6,7 @@ import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const AcceptedScreen = (navigation, route) => {
+const AcceptedScreen = ({navigation, route}) => {
   console.log(route.params)
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});
@@ -98,7 +98,9 @@ const AcceptedScreen = (navigation, route) => {
       });
   }
   
-  
+  useEffect(()=>{
+    getAllApprovedRequest();
+  }, [])
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#f2f2f2" : "white";

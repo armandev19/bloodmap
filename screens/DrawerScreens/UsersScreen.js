@@ -49,17 +49,17 @@ const UsersScreen = ({navigation, route}) => {
     );
   };
 
-  const tempDescription = (description, bloodtype, qty) => {
-    var temp = "QTY: "+qty+"\nBLOODTYPE: "+bloodtype
+  const tempDescription = (bloodtype, age, address) => {
+    var temp = "Age: "+age+"\nAddress: "+address
     return temp
   }
   const Item = ({ item, onPress, backgroundColor, textColor }) => {
     return(
     <List.Item
       style={[styles.item, backgroundColor]}
-      title={item.firstname}
-      description={tempDescription(item.firstname, item.firstname, item.firstname)}
-      left={props => <List.Icon {...props} icon="clock-alert-outline" color="orange" />}
+      title={item.firstname.toUpperCase()+' '+item.middlename.toUpperCase()+' '+item.lastname.toUpperCase()}
+      description={tempDescription(item.bloodtype, item.age, item.address)}
+      left={props => <List.Icon {...props} icon="user" color="orange" />}
       right={props => 
         <View style={{flexDirection: 'row'}}>
           <Text style={{color: 'orange', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Pending</Text>

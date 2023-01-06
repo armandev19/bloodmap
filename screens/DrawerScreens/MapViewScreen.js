@@ -49,14 +49,14 @@ const getAllUsers = () => {
       formBody.push(encodedKey + '=' + encodedValue);
     }
     formBody = formBody.join('&');
-  fetch(global.url+'fetchUsers.php', {
-    method: 'POST',
-    body: formBody,
-    headers: {
-      'Content-Type':
-      'application/x-www-form-urlencoded;charset=UTF-8',
-    },
-  })
+    fetch(global.url+'fetchUsers.php', {
+      method: 'POST',
+      body: formBody,
+      headers: {
+        'Content-Type':
+        'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    })
     .then((response) => response.json())
     .then((responseJson) => {
       setLoading(false);
