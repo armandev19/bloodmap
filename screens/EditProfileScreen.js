@@ -41,18 +41,20 @@ const EditProfileScreen = ({navigation, route}) => {
           formBody.push(encodedKey + '=' + encodedValue);
         }
         formBody = formBody.join('&');
+        
         setLoading(true);
         fetch(global.url+'updateProfile.php', {
           method: 'POST',
           body: formBody,
           headers: {
-            //Header Defination
             'Content-Type':
             'application/x-www-form-urlencoded;charset=UTF-8',
           },
         })
           .then((response) => response.json())
           .then((responseJson) => {
+            console.log(user_id);
+            AsyncStorage.removeItem('user_id');
             setLoading(false);
             AsyncStorage.setItem('user_id', JSON.stringify(responseJson.user_data));
             

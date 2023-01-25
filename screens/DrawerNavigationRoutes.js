@@ -224,7 +224,6 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
                 const userData = await AsyncStorage.getItem('user_id');
                 if (userData !== null) {
                     let userDataArray = JSON.parse(userData);
-                    console.log(userDataArray);
                     setUserData(userDataArray);
                 }
             } catch (e) {
@@ -233,8 +232,6 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
         });
     }, [])
   );
-  
-  // console.log(user_data)
   return (
     <Drawer.Navigator
       screenOptions={{headerShown: false, color: 'red', textColor: 'yellow',
