@@ -48,8 +48,8 @@ const Auth = () => {
 
 
 const App = () => {
-  global.url = "http://192.168.1.6/bloodmap/";
-  // global.url = "http://192.168.7.196/bloodmap/"
+  // global.url = "http://192.168.1.6/bloodmap/";
+  global.url = "https://homeworldconstruction.com/mobile/blood_saver/"
   return (
     <Provider store={store}>
     <NavigationContainer>

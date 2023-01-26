@@ -1,6 +1,6 @@
 <?php
-$conn = mysqli_connect('localhost', 'root', 'YgtDGdmoEn'); 
-$database = mysqli_select_db($conn, 'bloodmap');
+$conn = mysqli_connect('localhost', 'geodsyxv_bs', 'CYw0PODZ5zne'); 
+$database = mysqli_select_db($conn, 'geodsyxv_bloodmap');
 
 $response = array();
 $username = $_POST['email'];
