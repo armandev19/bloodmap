@@ -4,10 +4,9 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
 import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useFocusEffect } from '@react-navigation/native';
 
 const AcceptedScreen = ({navigation, route}) => {
-  console.log(route.params)
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});
   const [loading, setLoading] = useState(false);
@@ -32,7 +31,6 @@ const AcceptedScreen = ({navigation, route}) => {
     {label: "O+", value: 'O+'},
     {label: "O-", value: 'O-'},
   ]);
-
   const [requests, setRequests] = useState([]);
 
   const saveBloodRequest = () => {
@@ -97,10 +95,22 @@ const AcceptedScreen = ({navigation, route}) => {
         console.error(error);
       });
   }
-  
-  useEffect(()=>{
-    getAllApprovedRequest();
-  }, [])
+  useFocusEffect(
+    React.useCallback(() => {
+        setTimeout(async () => {
+            try {
+                const userData = await AsyncStorage.getItem('user_id');
+                if (userData !== null) {
+                    let userDataArray = JSON.parse(userData);
+                    setUserData(userDataArray);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        });
+      getAllApprovedRequest();
+    }, [])
+  );
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#f2f2f2" : "white";

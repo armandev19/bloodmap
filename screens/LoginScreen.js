@@ -72,8 +72,6 @@ const LoginScreen = ({navigation}) => {
         }
       })
       .catch((error) => {
-        //Hide Loader
-        alert(error);
         setLoading(false);
         console.error(error);
       });
