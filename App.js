@@ -1,7 +1,8 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 // Import React and Component
-import React from 'react';
- 
+import React, {useRef, useState, useEffect} from 'react';
+import {AppState, StyleSheet, Text, View} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // Import Navigators from React Navigation
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -50,6 +51,31 @@ const Auth = () => {
 const App = () => {
   // global.url = "http://192.168.1.6/bloodmap/";
   global.url = "https://homeworldconstruction.com/mobile/blood_saver/"
+
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground!');
+      }else{
+        AsyncStorage.removeItem('user_id');
+      }
+
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      console.log('AppState', appState.current);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
   return (
     <Provider store={store}>
     <NavigationContainer>

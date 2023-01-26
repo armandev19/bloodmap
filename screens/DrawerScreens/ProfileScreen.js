@@ -27,7 +27,8 @@ const ProfileScreen = ({navigation}) => {
       }
     }, []),
   );
-
+    
+  console.log(userData);
   return (
     <SafeAreaView style={{flex: 1, padding: 10}}>
       <View style={{flex: 1, padding: 8, backgroundColor: '#fff', borderRadius: 5}}>
