@@ -5,7 +5,7 @@ import { selectUserData, setUserData } from '../redux/navSlice';
 import { useFocusEffect } from '@react-navigation/native';
 
 const HomeScreen = ({navigation, props}) => {
-  const [userData, setUserData] = useState('');
+  const [userData, setUserData] = useState({});
  
   useFocusEffect(
     React.useCallback(() => {

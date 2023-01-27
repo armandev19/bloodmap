@@ -18,7 +18,7 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
   const [purpose, setPurpose] = useState();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [userdata, setUserData] = useState('');
+  const [userdata, setUserData] = useState({});
   const [userAccess, setUserAccess] = useState(null);
 
   const [items, setItems] = useState([
@@ -107,9 +107,11 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
       });
   }
 
-  useEffect(()=>{
-    getAllRequest();
-  }, [])
+  useFocusEffect(
+    React.useCallback(() => {
+      getAllRequest();
+    }, [])
+  );
 
   // const retrieveData = async () => {
   //   try {
@@ -192,6 +194,7 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
       />
       <View style={styles.centeredView}>
         <Modal
+        keyboardShouldPersistTaps="handled"
           animationType="fade"
           transparent={true}
           visible={modalVisible}
@@ -230,14 +233,14 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
                     setPurpose(purpose)
                   }>
                 </TextInput>
-                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1}}>
-                  <View style={{flex: 1, padding: 10, margin: 0}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                  <View style={{padding: 10, margin: 0}}>
                     <Button
                       onPress={() => saveBloodRequest()}
                       title="Save"
                     />  
                   </View>
-                  <View style={{flex: 1, padding: 10, margin: 0}}>
+                  <View style={{padding: 10, margin: 0}}>
                     <Button
                       onPress={() => setModalVisible(!modalVisible)}
                       title="Cancel"
@@ -287,7 +290,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 20
+    elevation: 20,
   },
   button: {
     borderRadius: 20,
@@ -318,10 +321,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: 'black',
     marginTop: 10,
-    flex: 1
   },
   SectionStyle: {
-    flex: 1,
     margin: 20,
   },
   viewButtons: {

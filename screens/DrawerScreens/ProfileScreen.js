@@ -5,7 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Avatar, Card, Title, Paragraph, Button } from 'react-native-paper';
 
 const ProfileScreen = ({navigation}) => {
-  const [userData, setUserData] = useState('');
+  const [userData, setUserData] = useState({});
   useFocusEffect(
     React.useCallback(() => {
       let isActive = true

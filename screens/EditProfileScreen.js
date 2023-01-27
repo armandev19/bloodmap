@@ -53,7 +53,6 @@ const EditProfileScreen = ({navigation, route}) => {
         })
           .then((response) => response.json())
           .then((responseJson) => {
-            console.log(user_id);
             AsyncStorage.removeItem('user_id');
             setLoading(false);
             AsyncStorage.setItem('user_id', JSON.stringify(responseJson.user_data));
@@ -70,7 +69,6 @@ const EditProfileScreen = ({navigation, route}) => {
             setVisible(true);
           })
           .catch((error) => {
-            alert(error);
             setLoading(false);
             console.error(error);
           });
