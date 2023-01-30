@@ -1,5 +1,6 @@
 import React, {useState, useEffect, createRef} from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   StyleSheet,
   TextInput,
@@ -33,6 +34,9 @@ const RegisterScreen = (props) => {
   const [userAddress, setUserAddress] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userBloodType, setUserBloodType] = useState('');
+  const [userLatitude, setUserLatitude] = useState('');
+  const [userLongitude, setUserLongitude] = useState('');
+
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
   const [
@@ -52,7 +56,6 @@ const RegisterScreen = (props) => {
   useEffect(() => {
     const requestLocationPermission = async () => {
       if (Platform.OS === 'ios') {
-        getOneTimeLocation();
         subscribeLocationLocation();
       } else {
         try {
@@ -65,7 +68,6 @@ const RegisterScreen = (props) => {
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             //To Check, If Permission is granted
-            getOneTimeLocation();
             subscribeLocationLocation();
           } else {
             setLocationStatus('Permission Denied');
@@ -87,28 +89,33 @@ const RegisterScreen = (props) => {
       //Will give you the current location
       (position) => {
         setLocationStatus('You are Here');
- 
+        
         //getting the Longitude from the location json
         const currentLongitude = 
           JSON.stringify(position.coords.longitude);
- 
+        setUserLongitude(currentLongitude);
         //getting the Latitude from the location json
         const currentLatitude = 
           JSON.stringify(position.coords.latitude);
- 
+          setUserLatitude(currentLatitude);
         //Setting Longitude state
         setCurrentLongitude(currentLongitude);
         
         //Setting Longitude state
         setCurrentLatitude(currentLatitude);
+
+        
+        alert('Success getting location coordinates! \n\nLatitude: '+currentLatitude+' \nLongitude:' + currentLongitude);
       },
       (error) => {
+        
+        alert('Failed'+ error.message);
         setLocationStatus(error.message);
       },
       {
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
         timeout: 30000,
-        maximumAge: 1000
+        maximumAge: 10000
       },
     );
   };
@@ -139,8 +146,8 @@ const RegisterScreen = (props) => {
         setLocationStatus(error.message);
       },
       {
-        enableHighAccuracy: false,
-        maximumAge: 1000
+        enableHighAccuracy: true,
+        maximumAge: 10000
       },
     );
   };
@@ -182,7 +189,9 @@ const RegisterScreen = (props) => {
       address: userAddress,
       password: userPassword,
       bloodtype: userBloodType,
-      gender: userGender
+      gender: userGender,
+      latitude: userLatitude,
+      longitude: userLongitude
     };
     var formBody = [];
     for (var key in dataToSend) {
@@ -200,13 +209,10 @@ const RegisterScreen = (props) => {
         'application/x-www-form-urlencoded;charset=UTF-8',
       },
     })
-      .then((response) => response.json())
+      .then((response) => response.text())
       .then((responseJson) => {
-        //Hide Loader
         alert(responseJson);
         setLoading(false);
-        // console.log(responseJson);
-        // If server response message same as Data Matched
         console.log(responseJson.status);
         if (responseJson.status === 'success') {
           setIsRegistraionSuccess(true);
@@ -355,14 +361,36 @@ const RegisterScreen = (props) => {
                 }}
               />
           </View>
+          
           <View style={styles.SectionStyle}>
+            <SelectDropdown
+                data={bloodtype}
+                defaultButtonText="Select Blood Type"
+                buttonStyle={styles.selectDropdown}
+                buttonTextStyle={styles.selectButtonTextStyle}
+                onSelect={(selectedItem, index) => {
+                  setUserBloodType(selectedItem);
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  // text represented after item is selected
+                  // if data array is an array of objects then return selectedItem.property to render after item is selected
+                  return selectedItem
+                }}
+                rowTextForSelection={(item, index) => {
+                  // text represented for each item in dropdown
+                  // if data array is an array of objects then return item.property to represent item in dropdown
+                  return item
+                }}
+              />
+          </View>
+          <View style={[styles.SectionStyle, {flexDirection: 'row', width: "80%"}]}>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(UserAddress) =>
                 setUserAddress(UserAddress)
               }
               underlineColorAndroid="#f000"
-              placeholder="Enter Address"
+              placeholder="Address"
               placeholderTextColor="#8b9cb5"
               autoCapitalize="sentences"
               ref={addressInputRef}
@@ -370,6 +398,9 @@ const RegisterScreen = (props) => {
               onSubmitEditing={Keyboard.dismiss}
               blurOnSubmit={false}
             />
+            <TouchableOpacity onPress={()=>getOneTimeLocation()}>
+              <Icon name="search" style={{backgroundColor: 'green', borderRadius: 5, fontSize: 30, padding: 1, margin: 5}} />
+            </TouchableOpacity>
           </View>
           <View style={styles.SectionStyle}>
             <TextInput
@@ -393,7 +424,7 @@ const RegisterScreen = (props) => {
               style={styles.inputStyle}
               onChangeText={(UserUsername) => setUsername(UserUsername)}
               underlineColorAndroid="#f000"
-              placeholder="Email"
+              placeholder="Username"
               placeholderTextColor="#8b9cb5"
               keyboardType="email-address"
               ref={emailInputRef}
@@ -423,27 +454,6 @@ const RegisterScreen = (props) => {
               }
               blurOnSubmit={false}
             />
-          </View>
-          <View style={styles.SectionStyle}>
-            <SelectDropdown
-                data={bloodtype}
-                defaultButtonText="Select Blood Type"
-                buttonStyle={styles.selectDropdown}
-                buttonTextStyle={styles.selectButtonTextStyle}
-                onSelect={(selectedItem, index) => {
-                  setUserBloodType(selectedItem);
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  // text represented after item is selected
-                  // if data array is an array of objects then return selectedItem.property to render after item is selected
-                  return selectedItem
-                }}
-                rowTextForSelection={(item, index) => {
-                  // text represented for each item in dropdown
-                  // if data array is an array of objects then return item.property to represent item in dropdown
-                  return item
-                }}
-              />
           </View>
           {errortext != '' ? (
             <Text style={styles.errorTextStyle}>
@@ -482,13 +492,7 @@ const RegisterScreen = (props) => {
               color: 'black'
             }}>
             Latitude: {currentLatitude}
-          </Text>
-          <View style={{marginTop: 20}}>
-            <Button
-              title="Button"
-              onPress={getOneTimeLocation}
-            />
-          </View> */}
+          </Text> */}
 
         </KeyboardAvoidingView>
       </ScrollView>
