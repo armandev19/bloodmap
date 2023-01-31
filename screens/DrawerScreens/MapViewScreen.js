@@ -71,7 +71,7 @@ const getAllUsers = () => {
 
 useEffect(()=>{
   getAllUsers();
-  console.log("userdata", userData);
+  console.log("userdata", currentUserData);
 }, [])
 
 const CustomMarker= (title) => {
@@ -95,8 +95,10 @@ const CustomMarker= (title) => {
       <MapView
       style={styles.map}    
       initialRegion={{
-        latitude: currentUserData ? parseFloat(currentUserData.latitude) : 10.653987805083476,
-        longitude: currentUserData ? parseFloat(currentUserData.longitude) : 122.97906514190291,
+        // latitude: currentUserData.latitude ? parseFloat(currentUserData.latitude) : 10.653987805083476,
+        // longitude: currentUserData.longitude ? parseFloat(currentUserData.longitude) : 122.97906514190291,
+        latitude: 10.653987805083476,
+        longitude: 122.97906514190291,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       }}
@@ -105,7 +107,8 @@ const CustomMarker= (title) => {
         if (currentUserData) { 
           return (
             <Marker
-              coordinate={{ latitude : parseFloat(currentUserData.latitude), longitude : parseFloat(currentUserData.longitude) }}
+              // coordinate={{ latitude : parseFloat(currentUserData.latitude), longitude : parseFloat(currentUserData.longitude) }}
+              coordinate={{ latitude :10.6296582, longitude : 122.9371353 }}
             >
              <View style={styles.marker}>
                 <Text style={styles.markerText}>{currentUserData.firstname}</Text>
@@ -125,7 +128,7 @@ const CustomMarker= (title) => {
             )
           })} */}
       
-           {userData.map((location, i) => {
+           {/* {userData.map((location, i) => {
             return (
               <Marker
                 key={i}
@@ -138,7 +141,7 @@ const CustomMarker= (title) => {
                 
               </Marker>
             )
-          })}
+          })} */}
         
         
       
