@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity, Button, Modal, ToastAndroid, Alert, TextInput} from 'react-native';
+import {View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity, Button, ToastAndroid, Alert, TextInput} from 'react-native';
+import Modal from "react-native-modal";
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
@@ -8,7 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 const MyRaisedRequestScreen = ({navigation, route}) => {
-  console.log(route.params);
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});
   const [toastMsg, setToastMsg] = useState("");
@@ -38,6 +38,10 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
 
   const [requests, setRequests] = useState([]);
 
+  useEffect(()=>{
+    getAllRequest();
+  }, [])
+
   const saveBloodRequest = () => {
     let dataToSend = {qty: qty, bloodtype: value, purpose: purpose, userID: userdata.id };
     let formBody = [];
@@ -57,27 +61,20 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
         'application/x-www-form-urlencoded;charset=UTF-8',
       },
     })
-      .then((response) => response.text())
-      .then((responseJson) => {
-        setLoading(false);
-        getAllRequest();
-        setModalVisible(!modalVisible);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error(error);
-      });
+    .then((response) => response.text())
+    .then((responseJson) => {
+      setLoading(false);
+      getAllRequest();
+      setModalVisible(!modalVisible);
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.error(error);
+    });
   }
 
   const getAllRequest = async () => {
     setLoading(true)
-    try {
-      await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
-        setUserData(value);
-      });
-    } catch (error) {
-      console.log(error);
-    }
     let postData = {userAccess: userdata.access, userID: userdata.id};
     let formBody = [];
     for (let key in postData) {
@@ -91,57 +88,38 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
       body: formBody,
       headers: {
         //Header Defination
+        Accept: 'application/json',
         'Content-Type':
         'application/x-www-form-urlencoded;charset=UTF-8',
       },
     })
       .then((response) => response.json())
-      .then((responseJson) => {
-        setLoading(false);
-        setRequests(responseJson.data);
-      })
+      .then(responseJson =>  
+        setRequests(responseJson.data)
+      )
       .catch((error) => {
-        alert(error);
         setLoading(false);
         console.error(error);
       });
+      setLoading(false);
   }
 
-  useFocusEffect(
-    React.useCallback(() => {
-      getAllRequest();
-    }, [])
-  );
 
-  // const retrieveData = async () => {
-  //   try {
-  //     await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
-  //       setUserData(value);
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  
   // useFocusEffect(
-  //   React.useCallback(() => {
-  //     let isActive = true
-
-  //     const fetchList = async () => {
-  //       try {
-  //         retrieveData();
-  //         getAllRequest();
-  //       } catch (error) {
-  //         console.log(error)
-  //       }
-  //     }
-
-  //     fetchList()
-
-  //     return () => {
-  //       isActive = false
-  //     }
-  //   }, []),
+  //   React.useCallback(()  => {
+  //     // setTimeout(async () => {
+        
+  //     //   try {
+  //     //       const userData = await AsyncStorage.getItem('user_id');
+  //     //       if (userData !== null) {
+  //     //           let userDataArray = JSON.parse(userData);
+  //     //           setUserData(userDataArray);
+  //     //       }
+  //     //   } catch (e) {
+  //     //       console.log(e);
+  //     //   }
+  //     // });
+  //   }, [])
   // );
 
   const renderItem = ({ item }) => {
@@ -194,16 +172,7 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
       />
       <View style={styles.centeredView}>
         <Modal
-        keyboardShouldPersistTaps="handled"
-          animationType="fade"
-          transparent={true}
           visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-          backdropOpacity={0.9}
-          style={{height: 100}}
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
@@ -229,7 +198,7 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
                   style={styles.inputStyle}
                   
                 />
-                <TextInput multiline numberOfLines={4} placeholder="Purpose" placeholderTextColor={'black'} style={styles.inputStyle} onChangeText={(purpose) =>
+                <TextInput placeholder="Purpose" placeholderTextColor={'black'} style={styles.inputStyle} onChangeText={(purpose) =>
                     setPurpose(purpose)
                   }>
                 </TextInput>
@@ -244,6 +213,7 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
                     <Button
                       onPress={() => setModalVisible(!modalVisible)}
                       title="Cancel"
+                      style={{borderRadius: 10}}
                     />  
                   </View>
                 </View>
@@ -271,13 +241,9 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
-    marginTop: 1,
   },
   modalView: {
-    height: "50%",
-    width: "90%",
     marginTop: 20,
     backgroundColor: "white",
     borderRadius: 10,
@@ -291,11 +257,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 20,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
   },
   modalText: {
     marginTop: 15,
