@@ -6,6 +6,9 @@ import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
+import { selectUserData, setUserData } from '../redux/navSlice';
+import { useSelector } from 'react-redux';
+
 const AcceptedScreen = ({navigation, route}) => {
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});
@@ -16,6 +19,7 @@ const AcceptedScreen = ({navigation, route}) => {
   const [value, setValue] = useState(null);
   const [userdata, setUserData] = useState('');
 
+  const currentUserData = useSelector(selectUserData);
 
   const [items, setItems] = useState([
     {label: "A", value: 'A'},
@@ -67,7 +71,7 @@ const AcceptedScreen = ({navigation, route}) => {
 
   const getAllApprovedRequest = () => {
     setLoading(true)
-    let postDataApproved = {userAccess: userdata.access, userID: userdata.id};
+    let postDataApproved = {userAccess: userdata.access, userID: currentUserData.id};
     let formBody = [];
     for (let key in postDataApproved) {
       let encodedKey = encodeURIComponent(key);

@@ -209,18 +209,17 @@ const RegisterScreen = (props) => {
         'application/x-www-form-urlencoded;charset=UTF-8',
       },
     })
-      .then((response) => response.text())
+      .then((response) => response.json())
       .then((responseJson) => {
-        alert(responseJson);
         setLoading(false);
-        console.log(responseJson.status);
+        console.log(responseJson);
         if (responseJson.status === 'success') {
           setIsRegistraionSuccess(true);
           console.log(
             'Registration Successful. Please Login to proceed'
           );
         } else {
-          setErrortext(responseJson.msg);
+          setErrortext(responseJson.message);
         }
       })
       .catch((error) => {

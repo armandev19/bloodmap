@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import MapView, {Marker} from 'react-native-maps'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from './../Components/loader';
@@ -8,12 +7,14 @@ import { selectUserData, setUserData } from '../redux/navSlice';
 import { useSelector } from 'react-redux';
 import CustomMarker from './CustomMarker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useFocusEffect } from '@react-navigation/native';
 
 const MapViewScreen = ({navigation}) => {
   const [input, setInput] = useState();
-  // const [latitude, setUserLatitude] = useState();
-  // const [longitude, setUserLongitude] = useState();
+  const [userLatitude, setUserLatitude] = useState('10.629551823160902');
+  const [userLongitude, setUserLongitude] = useState('122.9372239864562');
   
+  const [currUserData, setCurrUserData] = useState({});
   const [userData, setUserCollection] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -69,10 +70,30 @@ const getAllUsers = () => {
     });
 }
 
-useEffect(()=>{
-  getAllUsers();
-  console.log("userdata", currentUserData);
-}, [])
+useFocusEffect(
+  React.useCallback(() => {
+      setTimeout(async () => {
+          try {
+              const userData = await AsyncStorage.getItem('user_id');
+              if (userData !== null) {
+                  let userDataArray = JSON.parse(userData);
+                  setCurrUserData(userDataArray);
+              }
+          } catch (e) {
+              console.log(e);
+          }
+      });
+      console.log(currentUserData);
+      setUserLatitude(currUserData.latitude);
+      setUserLongitude(currUserData.longitude);
+      getAllUsers();
+  }, [])
+);
+
+// useEffect(()=>{
+//   getAllUsers();
+//   console.log("userdata", currentUserData);
+// }, [])
 
 const CustomMarker= (title) => {
   return (
@@ -82,23 +103,18 @@ const CustomMarker= (title) => {
   );
 }
 
-// useFocusEffect(
-//   React.useCallback(() => {
-    
-//     getAllUsers();
-//     console.log("userdata", userData);
-//   }, []),
-// );
+if(currentUserData){
   return (
     <View style={styles.container}>
       <Loader loading={loading} />
+      <Text style={{color: 'black'}}>{currentUserData.latitude}</Text>
       <MapView
       style={styles.map}    
       initialRegion={{
-        // latitude: currentUserData.latitude ? parseFloat(currentUserData.latitude) : 10.653987805083476,
-        // longitude: currentUserData.longitude ? parseFloat(currentUserData.longitude) : 122.97906514190291,
-        latitude: 10.653987805083476,
-        longitude: 122.97906514190291,
+        latitude: Number(currentUserData.latitude),
+        longitude: Number(currentUserData.longitude),
+        // latitude: 10.6296582,
+        // longitude: 122.9371353,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       }}
@@ -107,11 +123,11 @@ const CustomMarker= (title) => {
         if (currentUserData) { 
           return (
             <Marker
-              // coordinate={{ latitude : parseFloat(currentUserData.latitude), longitude : parseFloat(currentUserData.longitude) }}
-              coordinate={{ latitude :10.6296582, longitude : 122.9371353 }}
+              coordinate={{ latitude : Number(currentUserData.latitude), longitude : Number(currentUserData.longitude) }}
+              // coordinate={{ latitude :10.6296582, longitude : 122.9371353 }}
             >
              <View style={styles.marker}>
-                <Text style={styles.markerText}>{currentUserData.firstname}</Text>
+                <Text style={styles.markerText}>{currUserData.firstname}</Text>
               </View>
             </Marker>
           )
@@ -142,12 +158,10 @@ const CustomMarker= (title) => {
               </Marker>
             )
           })} */}
-        
-        
-      
       </MapView>
     </View>
   );
+}
 };
 
 const styles = StyleSheet.create({
@@ -166,7 +180,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 5,
     backgroundColor: "#007bff",
-    borderColor: "#eee",
     borderRadius: 100,
     elevation: 10,
   },

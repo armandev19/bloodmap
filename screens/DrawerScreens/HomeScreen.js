@@ -3,27 +3,13 @@ import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { selectUserData, setUserData } from '../redux/navSlice';
 import { useFocusEffect } from '@react-navigation/native';
-
+import { useSelector } from 'react-redux';
 const HomeScreen = ({navigation, props}) => {
   const [userData, setUserData] = useState({});
+  
+  const currentUserData = useSelector(selectUserData);
  
-  useFocusEffect(
-    React.useCallback(() => {
-        setTimeout(async () => {
-            try {
-                const userData = await AsyncStorage.getItem('user_id');
-                if (userData !== null) {
-                    let userDataArray = JSON.parse(userData);
-                    setUserData(userDataArray);
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        });
-        
-    console.log(userData);
-    }, [])
-  );
+  if(currentUserData){
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{flex: 1, padding: 16}}>
@@ -39,7 +25,7 @@ const HomeScreen = ({navigation, props}) => {
               fontWeight: 'bold',
               textTransform: 'uppercase'
             }}>
-              Welcome {userData.firstname}
+              Welcome {currentUserData.firstname}
           </Text>
           <Text
             style={{
@@ -55,6 +41,7 @@ const HomeScreen = ({navigation, props}) => {
       </View>
     </SafeAreaView>
   );
+}
 };
 
 const styles = StyleSheet.create({

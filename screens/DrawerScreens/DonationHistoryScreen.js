@@ -3,11 +3,14 @@ import {View, Text, SafeAreaView, FlatList} from 'react-native';
 import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
 import Loader from './../Components/loader';
 
+import { selectUserData, setUserData } from '../redux/navSlice';
+import { useSelector } from 'react-redux';
 const DonationHistoryScreen = (route) => {
   const [loading, setLoading] = useState(false);
   const [donationTransaction, setDonationTransaction] = useState('');
   const [noDonation, setNoDonation] = useState('No Donation');
 
+  const currentUserData = useSelector(selectUserData);
   const getAllDonationTransaction = () => {
     setLoading(true)
     let postDataApproved = {userAccess: userdata.access, userID: userdata.id};

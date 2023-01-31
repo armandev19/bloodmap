@@ -8,6 +8,9 @@ import Loader from './../Components/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
+import { selectUserData, setUserData } from '../redux/navSlice';
+import { useSelector } from 'react-redux';
+
 const MyRaisedRequestScreen = ({navigation, route}) => {
   const [selectedId, setSelectedId] = useState(null);
   const [modalVisible, setModalVisible] = useState({modalVisible: false});
@@ -21,6 +24,7 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
   const [userdata, setUserData] = useState({});
   const [userAccess, setUserAccess] = useState(null);
 
+  const currentUserData = useSelector(selectUserData);
   const [items, setItems] = useState([
     {label: "A", value: 'A'},
     {label: "B", value: 'B'},
@@ -38,12 +42,8 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
 
   const [requests, setRequests] = useState([]);
 
-  useEffect(()=>{
-    getAllRequest();
-  }, [])
-
   const saveBloodRequest = () => {
-    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose, userID: userdata.id };
+    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose, userID: currentUserData.id };
     let formBody = [];
     for (let key in dataToSend) {
       let encodedKey = encodeURIComponent(key);
@@ -61,7 +61,7 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
         'application/x-www-form-urlencoded;charset=UTF-8',
       },
     })
-    .then((response) => response.text())
+    .then((response) => response.json())
     .then((responseJson) => {
       setLoading(false);
       getAllRequest();
@@ -73,9 +73,9 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
     });
   }
 
-  const getAllRequest = async () => {
+  const getAllRequest = () => {
     setLoading(true)
-    let postData = {userAccess: userdata.access, userID: userdata.id};
+    let postData = {userAccess: userdata.access, userID: currentUserData.id};
     let formBody = [];
     for (let key in postData) {
       let encodedKey = encodeURIComponent(key);
@@ -94,16 +94,19 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
       },
     })
       .then((response) => response.json())
-      .then(responseJson =>  
+      .then(responseJson => {
+        console.log(responseJson.data)
         setRequests(responseJson.data)
-      )
+      })
       .catch((error) => {
         setLoading(false);
         console.error(error);
       });
       setLoading(false);
   }
-
+  useEffect(() => {
+    getAllRequest();
+  });
 
   // useFocusEffect(
   //   React.useCallback(()  => {
