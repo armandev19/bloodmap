@@ -37,38 +37,6 @@ const AcceptedScreen = ({navigation, route}) => {
   ]);
   const [requests, setRequests] = useState([]);
 
-  const saveBloodRequest = () => {
-    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose};
-    let formBody = [];
-    for (let key in dataToSend) {
-      let encodedKey = encodeURIComponent(key);
-      let encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
-    setLoading(true);
-    fetch(global.url+'insertBloodRequest.php', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        //Header Defination
-        'Content-Type':
-        'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
-      .then((response) => response.text())
-      .then((responseJson) => {
-        setLoading(false);
-        getAllRequest();
-        setModalVisible(!modalVisible);
-      })
-      .catch((error) => {
-        alert(error);
-        setLoading(false);
-        console.error(error);
-      });
-  }
-
   const getAllApprovedRequest = () => {
     setLoading(true)
     let postDataApproved = {userAccess: userdata.access, userID: currentUserData.id};
@@ -99,22 +67,10 @@ const AcceptedScreen = ({navigation, route}) => {
         console.error(error);
       });
   }
-  useFocusEffect(
-    React.useCallback(() => {
-        setTimeout(async () => {
-            try {
-                const userData = await AsyncStorage.getItem('user_id');
-                if (userData !== null) {
-                    let userDataArray = JSON.parse(userData);
-                    setUserData(userDataArray);
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        });
-      getAllApprovedRequest();
-    }, [])
-  );
+
+  useEffect(()=>{
+    getAllApprovedRequest();
+  }, [])
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#f2f2f2" : "white";

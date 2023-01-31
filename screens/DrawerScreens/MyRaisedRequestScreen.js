@@ -106,7 +106,7 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
   }
   useEffect(() => {
     getAllRequest();
-  });
+  }, []);
 
   // useFocusEffect(
   //   React.useCallback(()  => {

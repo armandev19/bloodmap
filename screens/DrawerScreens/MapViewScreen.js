@@ -25,21 +25,6 @@ const MapViewScreen = ({navigation}) => {
   {latitude: 10.70387152938821, longitude: 122.96299811217332, title: 'balay'}]
 
   const currentUserData = useSelector(selectUserData);
-//   const userData = async () => {
-//     try {
-//       const value = await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
-//         setUserLongitude(value.longitude);
-//         setUserLatitude(value.latitude);
-
-//       });
-//       if (value !== null) {
-//         setInput(value);
-//       }
-//     } catch (e) {
-//       alert('Failed to fetch the input from storage');
-//     }
-//   };
-
 const getAllUsers = () => {
   setLoading(true)
     let postData = {id: currentUserData.id};
@@ -69,26 +54,31 @@ const getAllUsers = () => {
       console.error(error);
     });
 }
-
-useFocusEffect(
-  React.useCallback(() => {
-      setTimeout(async () => {
-          try {
-              const userData = await AsyncStorage.getItem('user_id');
-              if (userData !== null) {
-                  let userDataArray = JSON.parse(userData);
-                  setCurrUserData(userDataArray);
-              }
-          } catch (e) {
-              console.log(e);
-          }
-      });
-      console.log(currentUserData);
-      setUserLatitude(currUserData.latitude);
-      setUserLongitude(currUserData.longitude);
-      getAllUsers();
-  }, [])
-);
+useEffect(()=>{
+  setUserLatitude(currUserData.latitude);
+  setUserLongitude(currUserData.longitude);
+  getAllUsers();
+  console.log(userData)
+}, [])
+// useFocusEffect(
+//   React.useCallback(() => {
+//       setTimeout(async () => {
+//           try {
+//               const userData = await AsyncStorage.getItem('user_id');
+//               if (userData !== null) {
+//                   let userDataArray = JSON.parse(userData);
+//                   setCurrUserData(userDataArray);
+//               }
+//           } catch (e) {
+//               console.log(e);
+//           }
+//       });
+//       console.log(currentUserData);
+//       setUserLatitude(currUserData.latitude);
+//       setUserLongitude(currUserData.longitude);
+//       getAllUsers();
+//   }, [])
+// );
 
 // useEffect(()=>{
 //   getAllUsers();
@@ -138,17 +128,17 @@ if(currentUserData){
               <Marker
               key={i}
               title={location.title}
-              coordinate={{ latitude : location.latitude, longitude : location.longitude }}
+              coordinate={{ latitude : Number(location.latitude), longitude : location.longitude }}
               description="This is a marker in React Natve"
             />
             )
           })} */}
       
-           {/* {userData.map((location, i) => {
+           {userData.map((location, i) => {
             return (
               <Marker
                 key={i}
-                coordinate={{ latitude : parseFloat(location.latitude), longitude : parseFloat(location.longitude) }}
+                coordinate={{ latitude : Number(location.latitude), longitude : Number(location.longitude) }}
                 onPress={() => navigation.navigate('UserDetailsScreen', location)}
               >
                 <View style={styles.marker}>
@@ -157,7 +147,7 @@ if(currentUserData){
                 
               </Marker>
             )
-          })} */}
+          })}
       </MapView>
     </View>
   );

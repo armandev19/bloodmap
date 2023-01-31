@@ -4,6 +4,7 @@ import {Card, Title, Paragraph, Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const UserDetailsScreen = ({route, navigation}) => {
+  console.log("params"+route.params.age)
   const params = route.params
     return (
       <SafeAreaView style={{padding: 10}}>

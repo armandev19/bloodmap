@@ -1,19 +1,22 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, FlatList} from 'react-native';
+import {View, Text, SafeAreaView, FlatList, StyleSheet} from 'react-native';
 import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
 import Loader from './../Components/loader';
 
 import { selectUserData, setUserData } from '../redux/navSlice';
 import { useSelector } from 'react-redux';
-const DonationHistoryScreen = (route) => {
+
+const DonationHistoryScreen = ({navigation, route}) => {
   const [loading, setLoading] = useState(false);
   const [donationTransaction, setDonationTransaction] = useState('');
   const [noDonation, setNoDonation] = useState('No Donation');
-
+  
+  const [selectedId, setSelectedId] = useState(null);
   const currentUserData = useSelector(selectUserData);
+
   const getAllDonationTransaction = () => {
     setLoading(true)
-    let postDataApproved = {userAccess: userdata.access, userID: userdata.id};
+    let postDataApproved = {userAccess: currentUserData.access, userID: currentUserData.id};
     let formBody = [];
     for (let key in postDataApproved) {
       let encodedKey = encodeURIComponent(key);
@@ -43,6 +46,10 @@ const DonationHistoryScreen = (route) => {
       });
   }
 
+  useEffect(() => {
+    getAllDonationTransaction()
+  }, [])
+
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#f2f2f2" : "white";
     const color = item.id === selectedId ? 'black' : 'black';
@@ -57,22 +64,16 @@ const DonationHistoryScreen = (route) => {
     );
   };
 
-  const tempDescription = (description, bloodtype, qty) => {
-    var temp = "QTY: "+qty+"\nBLOODTYPE: "+bloodtype
+  const tempDescription = (qty, donator) => {
+    var temp = "Donated Qty: "+qty+"\nDonated By: "+donator
     return temp
   }
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <List.Item
       style={[styles.item, backgroundColor]}
-      title={item.qty}
-      description={tempDescription(item.qty, item.qty, item.qty)}
+      title={item.bld_request_number}
+      description={tempDescription(item.donated_qty, item.donator_name)}
       left={props => <List.Icon icon='checkbox-marked-outline' color="green"/>}
-      right={props => 
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{color: 'green', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Approved</Text>
-        </View>
-      }
-      onPress={() => navigation.navigate('DetailScreen', item)}
     />
   );
 
@@ -80,7 +81,6 @@ const DonationHistoryScreen = (route) => {
   return (
     <SafeAreaView style={{flex: 1}}>
     <Loader loading={loading} />
-    <Text style={{color: 'black', fontSize: 25, textAlign: 'center'}}>{noDonation}</Text>
     <FlatList
       data={donationTransaction}
       renderItem={renderItem}
@@ -91,5 +91,80 @@ const DonationHistoryScreen = (route) => {
     </SafeAreaView>
   );
 };
- 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  item: {
+    flex: 1,
+    marginVertical: 10,
+    marginHorizontal: 8,
+    borderRadius: 5,
+  },
+  title: {
+    fontSize: 25,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 1,
+  },
+  modalView: {
+    height: "50%",
+    width: "90%",
+    marginTop: 20,
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 0,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 20
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  modalText: {
+    marginTop: 15,
+    marginBottom: 15,
+    textAlign: "center",
+    color: 'black',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  selectDropdown: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderWidth: 1,
+    borderRadius: 30,
+    height: 40,
+    borderColor: '#dadae8',
+    backgroundColor: 'white',
+    width: '80%'
+  },
+  inputStyle: {
+    color: 'black',
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: 'black',
+    marginTop: 10,
+    flex: 1
+  },
+  SectionStyle: {
+    flex: 1,
+    margin: 20,
+  },
+  viewButtons: {
+    flexDirection: 'row',
+    marginVertical: 5
+  }
+});
 export default DonationHistoryScreen;
