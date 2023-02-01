@@ -12,7 +12,8 @@ const DetailScreen = ({route, navigation}) => {
   
   const [loading, setLoading] = useState(false);
   const [donated_qty, setDonatedQty] = useState('');
-  const [updatedData, setUpdatedData] = useState([]);
+  const [updatedData, setUpdatedData] = useState({});
+  const [remainingQty, setRemainingQty] = useState('');
 
   const saveDonation = () => {
     let dataToSend = {donated_qty: donated_qty, bld_request_number: params.request_number, donator: currentUserData.id};
@@ -67,22 +68,22 @@ const DetailScreen = ({route, navigation}) => {
         'Content-Type':
         'application/x-www-form-urlencoded;charset=UTF-8',
       },
-    }).then((response) => response.json())
+    }).then((response) => response.text())
       .then((responseJson) => {
-        alert(responseJson);
-        setUpdatedData(responseJson.data);
-        console.log(responseJson.data);
+        alert(responseJson)
+        setUpdatedData(responseJson);
+        setRemainingQty(responseJson.remaining_qty)
       })
       .catch((error) => {
-        
         alert(error);
         console.error(error);
       });
   }
-
+  
   useEffect(() => {
-    console.log(updatedData);
     getUpdatedBloodRequest();
+    
+    console.log("updated"+updatedData.remaining_qty);
   }, [])
 
   if(params.status === 'Approved'){
@@ -94,12 +95,12 @@ const DetailScreen = ({route, navigation}) => {
             <Text style={{color: 'black', fontWeight: 'bold'}}> {params.request_number} </Text>
           </Text>
           <Text style={{fontSize: 20}}>
-            <Text style={{color: '#030000'}}>Qty:</Text>
-            <Text style={{color: 'black', fontWeight: 'bold'}}> {updatedData.remaining_qty} </Text>
+            <Text style={{color: '#030000'}}>Needed Qty:</Text>
+            <Text style={{color: 'black', fontWeight: 'bold'}}> {params.qty}  </Text>
           </Text>
           <Text style={{fontSize: 20}}>
             <Text style={{color: '#030000'}}>Remaining Qty:</Text>
-            <Text style={{color: 'black', fontWeight: 'bold'}}> {params.donated_qty} </Text>
+            <Text style={{color: 'black', fontWeight: 'bold'}}> {remainingQty} </Text>
           </Text>
           <Text style={{fontSize: 20}}>
             <Text style={{color: '#030000'}}>Date Needed:</Text>
