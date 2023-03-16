@@ -69,7 +69,6 @@ const DetailScreen = ({route, navigation}) => {
       },
     }).then((response) => response.json())
       .then((responseJson) => {
-        alert(responseJson);
         setUpdatedData(responseJson.data);
         console.log(responseJson.data);
       })
