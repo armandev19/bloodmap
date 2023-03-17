@@ -71,8 +71,9 @@ const DetailScreen = ({route, navigation}) => {
     }).then((response) => response.text())
       .then((responseJson) => {
         alert(responseJson)
-        setUpdatedData(responseJson);
         setRemainingQty(responseJson.remaining_qty)
+        setUpdatedData(responseJson.data);
+        console.log(responseJson.data);
       })
       .catch((error) => {
         alert(error);
