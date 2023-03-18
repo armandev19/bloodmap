@@ -3,7 +3,8 @@ $conn = mysqli_connect('localhost', 'geodsyxv_bs', 'CYw0PODZ5zne');
 $database = mysqli_select_db($conn, 'geodsyxv_bloodmap');
 
 $response = array();
-$selectQuery = "SELECT * FROM users";
+$id = $_POST['id'];
+$selectQuery = "SELECT * FROM users WHERE id != ";
 $return = mysqli_query($conn, $selectQuery);
 if ($return){
       $rowcount = mysqli_num_rows($return);

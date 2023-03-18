@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity, Button, ToastAndroid, Alert, TextInput} from 'react-native';
+import {View, Text, SafeAreaView, FlatList, StyleSheet, Button, TextInput} from 'react-native';
 import Modal from "react-native-modal";
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -22,6 +22,10 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [userdata, setUserData] = useState({});
+
+  const [isPickerShow, setIsPickerShow] = useState(false);
+  const [date, setDate] = useState(new Date(Date.now()));
+
   const [userAccess, setUserAccess] = useState(null);
 
   const currentUserData = useSelector(selectUserData);
@@ -42,8 +46,18 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
 
   const [requests, setRequests] = useState([]);
 
+  const showPicker = () => {
+    setIsPickerShow(true);
+  };
+
+  const onChange = (event, value) => {
+    setDate(value);
+    setIsPickerShow(false);
+  };
+
+
   const saveBloodRequest = () => {
-    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose, userID: currentUserData.id };
+    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose, userID: currentUserData.id, date: date };
     let formBody = [];
     for (let key in dataToSend) {
       let encodedKey = encodeURIComponent(key);
@@ -107,23 +121,6 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
   useEffect(() => {
     getAllRequest();
   }, []);
-
-  // useFocusEffect(
-  //   React.useCallback(()  => {
-  //     // setTimeout(async () => {
-        
-  //     //   try {
-  //     //       const userData = await AsyncStorage.getItem('user_id');
-  //     //       if (userData !== null) {
-  //     //           let userDataArray = JSON.parse(userData);
-  //     //           setUserData(userDataArray);
-  //     //       }
-  //     //   } catch (e) {
-  //     //       console.log(e);
-  //     //   }
-  //     // });
-  //   }, [])
-  // );
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#f2f2f2" : "white";
@@ -195,12 +192,26 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
                     setQty(qty)
                   }>
                 </TextInput>
-                <TextInput 
-                  placeholder="Needed Date" 
-                  placeholderTextColor={'black'} 
-                  style={styles.inputStyle}
-                  
-                />
+               
+
+                {/* The date picker */}
+                {isPickerShow && (
+                  <DateTimePicker
+                    value={date}
+                    mode={'date'}
+                    onChange={onChange}
+                    style={styles.datePicker}
+                  />
+                )}
+                <View style={{flexDirection: 'row',}}>
+                  <TextInput placeholder="Needed date" placeholderTextColor={'black'} style={styles.inputStyle} value={date.toDateString()} editable = {false}>
+                  </TextInput>
+                  <View>
+                    {!isPickerShow && (
+                        <Button title="Date" color="purple" onPress={showPicker} />
+                    )}
+                  </View>
+                </View>
                 <TextInput placeholder="Purpose" placeholderTextColor={'black'} style={styles.inputStyle} onChangeText={(purpose) =>
                     setPurpose(purpose)
                   }>
@@ -292,7 +303,27 @@ const styles = StyleSheet.create({
   viewButtons: {
     flexDirection: 'row',
     marginVertical: 5
-  }
+  },
+  pickedDateContainer: {
+    padding: 20,
+    backgroundColor: '#eee',
+    borderRadius: 10,
+  },
+  pickedDate: {
+    fontSize: 18,
+    color: 'black',
+  },
+  btnContainer: {
+    padding: 30,
+  },
+  // This only works on iOS
+  datePicker: {
+    width: 320,
+    height: 260,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
 });
  
 export default MyRaisedRequestScreen;

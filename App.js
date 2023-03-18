@@ -52,7 +52,7 @@ const Auth = () => {
 const App = () => {
   global.url = "http://192.168.7.96/bloodmap/";
   // global.url = "https://homeworldconstruction.com/mobile/blood_saver/"
-  // global.url = "http://192.168.1.6/bloodmap/";
+  global.url = "http://192.168.1.8/bloodmap/";
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
