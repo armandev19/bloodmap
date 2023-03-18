@@ -203,14 +203,19 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
                     style={styles.datePicker}
                   />
                 )}
-                <View style={{flexDirection: 'row',}}>
-                  <TextInput placeholder="Needed date" placeholderTextColor={'black'} style={styles.inputStyle} value={date.toDateString()} editable = {false}>
+                <View style={{
+                  flexDirection: 'row',
+                  justifyContent: "flex-start",
+                  alignItems: "center", 
+                  heigt: 100
+                }}>
+                  <TextInput placeholder="Needed date" placeholderTextColor={'black'} style={styles.inputStyleDate} value={date.toDateString()} editable = {false}>
                   </TextInput>
-                  <View>
-                    {!isPickerShow && (
-                        <Button title="Date" color="purple" onPress={showPicker} />
-                    )}
+                  {!isPickerShow && (
+                  <View style={{marginTop: 5, marginLeft: 5}}>
+                        <Button title="Date" color="green" onPress={showPicker} />
                   </View>
+                  )}
                 </View>
                 <TextInput placeholder="Purpose" placeholderTextColor={'black'} style={styles.inputStyle} onChangeText={(purpose) =>
                     setPurpose(purpose)
@@ -241,6 +246,11 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  // verifyButton: {
+  //   position: 'absolute',
+  //   alignSelf: 'center',
+  //   right: 0,
+  // },
   container: {
     flex: 1,
   },
@@ -296,6 +306,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: 'black',
     marginTop: 10,
+  },
+  inputStyleDate: {
+    color: 'black',
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: 'black',
+    marginTop: 10,
+    flex: 1
   },
   SectionStyle: {
     margin: 20,

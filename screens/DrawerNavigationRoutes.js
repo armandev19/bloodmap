@@ -49,7 +49,7 @@ const PastRequestStack = ({navigation}) => {
   return (
     <Stack.Navigator initialRouteName="PastRequestScreen">
       <Stack.Screen
-        name="PastRequestScreen"
+        name="PastRequest"
         component={PastRequestScreen}
         options={{
           title: 'Past Requests', //Set Header Title

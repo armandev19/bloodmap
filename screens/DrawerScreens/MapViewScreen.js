@@ -117,7 +117,6 @@ if(currentUserData){
         if (currentUserData) { 
           return (
             <Marker
-              key={currentUserData.id}
               coordinate={{ latitude : Number(currentUserData.latitude), longitude : Number(currentUserData.longitude) }}
               // coordinate={{ latitude :10.6296582, longitude : 122.9371353 }}
               title="You're here."

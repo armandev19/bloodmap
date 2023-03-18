@@ -4,6 +4,7 @@ import {Card, Title, Paragraph, Divider} from 'react-native-paper';
 import Loader from './Components/loader';
 import { selectUserData, setUserData } from './redux/navSlice';
 import { useSelector } from 'react-redux';
+import Moment from 'moment';
 
 const DetailScreen = ({route, navigation}) => {
   
@@ -68,11 +69,10 @@ const DetailScreen = ({route, navigation}) => {
         'Content-Type':
         'application/x-www-form-urlencoded;charset=UTF-8',
       },
-    }).then((response) => response.text())
+    }).then((response) => response.json())
       .then((responseJson) => {
-        alert(responseJson)
-        setUpdatedData(responseJson);
         setRemainingQty(responseJson.remaining_qty)
+        setUpdatedData(responseJson.data);
         console.log(responseJson.data);
       })
       .catch((error) => {
