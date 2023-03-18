@@ -12,6 +12,7 @@ const EditProfileScreen = ({navigation, route}) => {
     const [firstname, setFirstname] = useState(params.firstname);
     const [middlename, setMiddlename] = useState(params.middlename);
     const [lastname, setLastname] = useState(params.lastname);
+    const [bloodtype, setBloodType] = useState(params.bloodtype);
     const [age, setAge] = useState(params.age);
     const [phone_number, setPhoneNumber] = useState(params.phone_number);
     const [email, setEmail] = useState(params.email);
@@ -32,7 +33,8 @@ const EditProfileScreen = ({navigation, route}) => {
             phone_number: phone_number, 
             email: email, 
             address: address,
-            user_id: user_id
+            user_id: user_id,
+            bloodtype: bloodtype
         };
         let formBody = [];
         for (let key in dataToSend) {
@@ -116,12 +118,13 @@ const EditProfileScreen = ({navigation, route}) => {
         </View>
         <View style={styles.item}>
           <Text adjustsFontSizeToFit style={styles.textTitle}>Age: </Text>
-          <TextInput keyboardType='numeric'  value={age} style={styles.textInputChild} onChangeText={(text) =>
+          <TextInput keyboardType='numeric' value={age} style={styles.textInputChild} onChangeText={(text) =>
                     setAge(text)}></TextInput>
         </View>
         <View style={styles.item}>
           <Text adjustsFontSizeToFit style={styles.textTitle}>Bloodtype: </Text>
-          <Text adjustsFontSizeToFit style={styles.textChild}>{params.bloodtype}</Text>
+          <TextInput value={bloodtype} style={styles.textInputChild} onChangeText={(text) =>
+                    setBloodType(text)}></TextInput>
         </View>
         <View style={styles.item}>
           <Text adjustsFontSizeToFit style={styles.textTitle}>Phone No.: </Text>

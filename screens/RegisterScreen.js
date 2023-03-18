@@ -28,6 +28,7 @@ const RegisterScreen = (props) => {
   const [userMiddlename, setUserMiddlename] = useState('');
   const [userLastname, setUserLastname] = useState('');
   const [userAge, setUserAge] = useState('');
+  const [userPhoneNumber, setUserPhoneNumber] = useState('');
   const [userGender, setUserGender] = useState('');
   const [userUserName, setUsername] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -184,6 +185,7 @@ const RegisterScreen = (props) => {
       middlename: userMiddlename,
       lastname: userLastname,
       username: userUserName,
+      phone_number: userPhoneNumber,
       email: userEmail,
       age: userAge,
       address: userAddress,
@@ -318,6 +320,23 @@ const RegisterScreen = (props) => {
               returnKeyType="next"
               onSubmitEditing={() =>
                 emailInputRef.current && emailInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(UserPhoneNumber) => setUserPhoneNumber(UserPhoneNumber)}
+              underlineColorAndroid="#f000"
+              placeholder="Contact No"
+              placeholderTextColor="#8b9cb5"
+              keyboardType="numeric"
+              ref={ageInputRef}
+              returnKeyType="next"
+              onSubmitEditing={() =>
+                addressInputRef.current &&
+                addressInputRef.current.focus()
               }
               blurOnSubmit={false}
             />
