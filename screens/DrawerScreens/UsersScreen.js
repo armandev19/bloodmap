@@ -31,7 +31,6 @@ const UsersScreen = ({navigation, route}) => {
       .catch((error) => {
         alert(error);
         setLoading(false);
-        console.error(error);
       });
   }
 
@@ -59,10 +58,25 @@ const UsersScreen = ({navigation, route}) => {
       style={[styles.item, backgroundColor]}
       title={item.firstname.toUpperCase()+' '+item.middlename.toUpperCase()+' '+item.lastname.toUpperCase()}
       description={tempDescription(item.bloodtype, item.age, item.address)}
-      left={props => <List.Icon {...props} icon="user" color="orange" />}
+      left={props => <List.Icon {...props} icon="pencil-box-multiple" color="orange" />}
       right={props => 
         <View style={{flexDirection: 'row'}}>
-          <Text style={{color: 'orange', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Pending</Text>
+          {item.status == 'Approved' ? (
+            <Text style={{color: 'green', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Approved</Text>
+          ) : (
+            <Text style={{color: 'orange', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Pending</Text>
+          )}
+        {/* {(() => {
+          if (item.access = 'Approved') { 
+            return (
+              <Text style={{color: 'orange', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Pending</Text>
+            )
+          }else{
+            return (
+              <Text style={{color: 'orange', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>adasdasd</Text>
+            )
+          }
+        })()} */}
         </View>
       }
       onPress={() => navigation.navigate('UserDetailsScreen', item)}
@@ -73,7 +87,8 @@ const UsersScreen = ({navigation, route}) => {
   useFocusEffect(
     React.useCallback(() => {
         getAllUsers();
-        console.log(users)
+        
+  console.log(setUsers);
     }, []),
 );
 

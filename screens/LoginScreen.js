@@ -59,13 +59,17 @@ const LoginScreen = ({navigation}) => {
       .then((responseJson) => {
         //Hide Loader
         setLoading(false);
-        console.log(responseJson);
         // If server response message same as Data Matched
         if (responseJson.status === 'success') {
-          AsyncStorage.setItem('user_id', JSON.stringify(responseJson.user_data));
-          console.log(responseJson.user_data);
-          dispatch(setUserData(responseJson.user_data));
-          navigation.replace('DrawerNavigationRoutes');
+          if(responseJson.user_data.status == 'Approved'){
+            AsyncStorage.setItem('user_id', JSON.stringify(responseJson.user_data));
+            console.log(responseJson.user_data);
+            dispatch(setUserData(responseJson.user_data));
+            navigation.replace('DrawerNavigationRoutes');
+          }else{
+            setErrortext("Pending Approval");
+          }
+          
         } else {
           setErrortext(responseJson.message);
           console.log('Please check your email id or password');
@@ -90,7 +94,16 @@ const LoginScreen = ({navigation}) => {
         <View>
           <KeyboardAvoidingView enabled>
             <View style={{alignItems: 'center'}}>
-              <Text style={styles.appNameStyle}>BLOOD SAVER APP</Text>
+            <Image
+              style={{
+                height: 150,
+                width: 150,
+                marginTop: -50,
+                marginBottom: 60
+              }}
+              source={require('./Assets/bloodmap_log.jpg')}
+            />
+            <Text style={styles.appNameStyle}>BLOOD SAVER APP</Text>
             </View>
             <View style={styles.SectionStyle}>
               <TextInput

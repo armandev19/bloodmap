@@ -1,10 +1,54 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, TextInput, Button, TouchableOpacity} from 'react-native';
 import {Card, Title, Paragraph, Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Loader from './Components/loader';
 
+import { useFocusEffect } from '@react-navigation/native';
 const UserDetailsScreen = ({route, navigation}) => {
-  console.log("params"+route.params.age)
+  
+  const [loading, setLoading] = useState(false);
+
+
+  const approveUser = () => {
+    let user_id = params.id
+    let dataToSend = {
+        user_id: user_id,
+    };
+    let formBody = [];
+    setLoading(true);
+    for (let key in dataToSend) {
+      let encodedKey = encodeURIComponent(key);
+      let encodedValue = encodeURIComponent(dataToSend[key]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+    formBody = formBody.join('&');
+    setLoading(true);
+    fetch(global.url+'approveUser.php', {
+      method: 'POST',
+      body: formBody,
+      headers: {
+        'Content-Type':
+        'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      if(responseJson.status = 'success'){
+        alert("User Approved!");
+      }else{
+        alert("Error approving user!");
+      }
+      setLoading(false);
+      setTimeout(()=>{
+       navigation.navigate('UsersScreenStack');
+      }, 2000);
+    })
+    .catch((error) => {
+      setLoading(false);
+    });
+  }
+
   const params = route.params
     return (
       <SafeAreaView style={{padding: 10}}>
@@ -26,11 +70,11 @@ const UserDetailsScreen = ({route, navigation}) => {
             <Text style={{color: '#030000'}}>Phone No:</Text>
             <Text style={{color: 'black', fontWeight: 'bold'}} > {params.phone_number ? params.phone_number : 'N/A'} </Text>
           </Text>
-          <Text style={{fontSize: 20}}>
+          <Text style={{fontSize: 20, marginBottom: 20}}>
             <Text style={{color: '#030000'}}>Gender:</Text>
             <Text style={{color: 'black', fontWeight: 'bold'}}> {params.gender ? params.gender : 'N/A'} </Text>
           </Text>
-          {/* <Button title="Save" style={{ alignContents: "center"}}></Button> */}
+          <Button title="Approve" onPress={approveUser} style={{ alignContents: "center", marginTop: 10}}></Button>
         </View>
       </SafeAreaView>
     )  
