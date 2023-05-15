@@ -85,6 +85,7 @@ const RegisterScreen = (props) => {
   }, []);
 
   const getOneTimeLocation = () => {
+    setLoading(true);
     setLocationStatus('Getting Location ...');
     Geolocation.getCurrentPosition(
       //Will give you the current location
@@ -105,16 +106,17 @@ const RegisterScreen = (props) => {
         //Setting Longitude state
         setCurrentLatitude(currentLatitude);
 
-        
+        setLoading(false);
         alert('Success getting location coordinates! \n\nLatitude: '+currentLatitude+' \nLongitude:' + currentLongitude);
       },
       (error) => {
         
-        alert('Failed'+ error.message);
+        alert('Failed: '+ error.message);
         setLocationStatus(error.message);
+        setLoading(false);
       },
       {
-        enableHighAccuracy: true,
+        enableHighAccuracy: false,
         timeout: 30000,
         maximumAge: 10000
       },
