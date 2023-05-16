@@ -89,7 +89,7 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
 
   const getAllRequest = () => {
     setLoading(true)
-    let postData = {userAccess: userdata.access, userID: currentUserData.id};
+    let postData = {userAccess: currentUserData.access, userID: currentUserData.id};
     let formBody = [];
     for (let key in postData) {
       let encodedKey = encodeURIComponent(key);
@@ -109,12 +109,10 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
     })
       .then((response) => response.json())
       .then(responseJson => {
-        console.log(responseJson.data)
         setRequests(responseJson.data)
       })
       .catch((error) => {
         setLoading(false);
-        console.error(error);
       });
       setLoading(false);
   }
@@ -149,7 +147,11 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
       left={props => <List.Icon {...props} icon="clock-alert-outline" color="orange" />}
       right={props => 
         <View style={{flexDirection: 'row'}}>
-          <Text style={{color: 'orange', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Pending</Text>
+          {item.status == 'Approved' ? (
+            <Text style={{color: 'green', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Approved</Text>
+          ) : (
+            <Text style={{color: 'orange', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Pending</Text>
+          )}
         </View>
       }
       onPress={() => navigation.navigate('DetailScreen', item)}

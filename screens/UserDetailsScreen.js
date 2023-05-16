@@ -3,11 +3,12 @@ import {View, Text, SafeAreaView, TextInput, Button, TouchableOpacity} from 'rea
 import {Card, Title, Paragraph, Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Loader from './Components/loader';
-
-import { useFocusEffect } from '@react-navigation/native';
+import { selectUserData, setUserData } from './redux/navSlice';
+import { useSelector } from 'react-redux';
 const UserDetailsScreen = ({route, navigation}) => {
   
   const [loading, setLoading] = useState(false);
+  const currentUserData = useSelector(selectUserData);
 
 
   const approveUser = () => {
@@ -50,6 +51,7 @@ const UserDetailsScreen = ({route, navigation}) => {
   }
 
   const params = route.params
+  console.log(currentUserData);
     return (
       <SafeAreaView style={{padding: 10}}>
         <View style={{backgroundColor: '#edebeb', borderColor: "#cfcccc", borderWidth: 1, borderRadius: 5, padding: 10}}>
@@ -74,7 +76,11 @@ const UserDetailsScreen = ({route, navigation}) => {
             <Text style={{color: '#030000'}}>Gender:</Text>
             <Text style={{color: 'black', fontWeight: 'bold'}}> {params.gender ? params.gender : 'N/A'} </Text>
           </Text>
-          <Button title="Approve" onPress={approveUser} style={{ alignContents: "center", marginTop: 10}}></Button>
+          {currentUserData.access == 'Admin' ? (
+            <Button title="Approve" onPress={approveUser} style={{ alignContents: "center", marginTop: 10}}></Button>
+          ) : (
+            <Text></Text>
+          )}
         </View>
       </SafeAreaView>
     )  

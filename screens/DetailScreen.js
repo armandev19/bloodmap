@@ -80,11 +80,48 @@ const DetailScreen = ({route, navigation}) => {
         console.error(error);
       });
   }
+
+  const approveRequest = () => {
+    let params_id = params.id
+    let dataToSend = {
+        request_id: params_id,
+    };
+    let formBody = [];
+    setLoading(true);
+    for (let key in dataToSend) {
+      let encodedKey = encodeURIComponent(key);
+      let encodedValue = encodeURIComponent(dataToSend[key]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+    formBody = formBody.join('&');
+    setLoading(true);
+    fetch(global.url+'approveRequest.php', {
+      method: 'POST',
+      body: formBody,
+      headers: {
+        'Content-Type':
+        'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      if(responseJson.status = 'success'){
+        alert("Request Approved!");
+      }else{
+        alert("Error approving request!");
+      }
+      setLoading(false);
+      setTimeout(()=>{
+       navigation.navigate('MyRaisedRequestScreen');
+      }, 2000);
+    })
+    .catch((error) => {
+      setLoading(false);
+    });
+  }
   
   useEffect(() => {
     getUpdatedBloodRequest();
-    
-    console.log("updated"+updatedData.remaining_qty);
   }, [])
 
   if(params.status === 'Approved'){
@@ -146,11 +183,11 @@ const DetailScreen = ({route, navigation}) => {
             <Text style={{color: '#030000'}}>Purpose:</Text>
             <Text style={{color: 'black', fontWeight: 'bold'}}> {params.purpose} </Text>
           </Text>
-          <Text style={{fontSize: 20}}>
+          <Text style={{fontSize: 20, marginBottom: 20}}>
             <Text style={{color: '#030000'}}>Status:</Text>
             <Text style={{color: 'orange', fontWeight: 'bold'}}> {params.status} </Text>
           </Text>
-          {/* <Button title="Save" style={{ alignContents: "center"}}></Button> */}
+          <Button title="Approve" onPress={approveRequest} style={{ alignContents: "center"}}></Button>
         </View>
       </SafeAreaView>
     )  

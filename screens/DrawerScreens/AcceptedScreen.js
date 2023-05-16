@@ -39,7 +39,7 @@ const AcceptedScreen = ({navigation, route}) => {
 
   const getAllApprovedRequest = () => {
     setLoading(true)
-    let postDataApproved = {userAccess: userdata.access, userID: currentUserData.id};
+    let postDataApproved = {userAccess: currentUserData.access, userID: currentUserData.id};
     let formBody = [];
     for (let key in postDataApproved) {
       let encodedKey = encodeURIComponent(key);
@@ -114,7 +114,7 @@ const AcceptedScreen = ({navigation, route}) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         extraData={selectedId}
-        style={{marginBottom: 15}}
+        style={{marginBottom: 10}}
       />
       <View style={styles.centeredView}>
         <Modal
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   item: {
     flex: 1,
-    marginVertical: 10,
+    marginVertical: 2,
     marginHorizontal: 8,
     borderRadius: 5,
   },
