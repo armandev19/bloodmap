@@ -10,7 +10,10 @@ import AcceptedScreen from './DrawerScreens/AcceptedScreen';
 import MyRaisedRequestScreen from './DrawerScreens/MyRaisedRequestScreen';
 import DonationHistoryScreen from './DrawerScreens/DonationHistoryScreen';
 import PastRequestScreen from './DrawerScreens/PastRequestScreen';
-import MapViewScreen from './DrawerScreens/MapViewScreen';
+// import MapViewScreen from './DrawerScreens/MapViewScreen';
+
+import BloodInventoryScreen from './DrawerScreens/BloodInventoryScreen';
+import DonorsScreen from './DrawerScreens/DonorsScreen';
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
 import ProfileScreen from './DrawerScreens/ProfileScreen';
 import UsersScreen from './DrawerScreens/UsersScreen';
@@ -29,6 +32,54 @@ const HomeScreenStack = ({navigation}) => {
         component={HomeScreen}
         options={{
           title: 'HOME', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerHeader navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#ff3333', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const BloodInventoryScreenStack = ({navigation}) => {
+  return (
+    <Stack.Navigator initialRouteName="BloodInventoryScreen">
+      <Stack.Screen
+        name="BloodInventoryScreen"
+        component={BloodInventoryScreen}
+        options={{
+          title: 'BLOOD BANK', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerHeader navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#ff3333', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const DonorsScreenStack = ({navigation}) => {
+  return (
+    <Stack.Navigator initialRouteName="DonorsScreen">
+      <Stack.Screen
+        name="DonorsScreen"
+        component={DonorsScreen}
+        options={{
+          title: 'BLOOD DONORS', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
@@ -165,29 +216,29 @@ const DonationHistoryStack = ({navigation}) => {
   );
 };
 
-const MapViewStack = ({navigation}) => {
-  return (
-    <Stack.Navigator initialRouteName="MapView">
-      <Stack.Screen
-        name="MapView"
-        component={MapViewScreen}
-        options={{
-          title: 'Map View', //Set Header Title
-          headerLeft: () => (
-            <NavigationDrawerHeader navigationProps={navigation} />
-          ),
-          headerStyle: {
-            backgroundColor: '#ff3333', //Set Header color
-          },
-          headerTintColor: '#fff', //Set Header text color
-          headerTitleStyle: {
-            fontWeight: 'bold', //Set Header text style
-          },
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
+// const MapViewStack = ({navigation}) => {
+//   return (
+//     <Stack.Navigator initialRouteName="MapView">
+//       <Stack.Screen
+//         name="MapView"
+//         component={MapViewScreen}
+//         options={{
+//           title: 'Map View', //Set Header Title
+//           headerLeft: () => (
+//             <NavigationDrawerHeader navigationProps={navigation} />
+//           ),
+//           headerStyle: {
+//             backgroundColor: '#ff3333', //Set Header color
+//           },
+//           headerTintColor: '#fff', //Set Header text color
+//           headerTitleStyle: {
+//             fontWeight: 'bold', //Set Header text style
+//           },
+//         }}
+//       />
+//     </Stack.Navigator>
+//   );
+// };
 
 const UsersScreenStack = ({navigation}) => {
   return (
@@ -249,10 +300,22 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
         initialParams={{ params : user_data}}
       />
       <Drawer.Screen
+        name="BloodInventoryScreenStack"
+        options={{drawerLabel: 'Blood Inventory', drawerIcon: (({focused}) => <Icon name="invert-colors" size={30} color="#900" />)}}
+        component={BloodInventoryScreenStack}
+        initialParams={{ params : user_data}}
+      />
+    <Drawer.Screen
+        name="DonorsScreenStack"
+        options={{drawerLabel: 'Donors', drawerIcon: (({focused}) => <Icon name="invert-colors" size={30} color="#900" />)}}
+        component={DonorsScreenStack}
+        initialParams={{ params : user_data}}
+      />
+      {/* <Drawer.Screen
         name="MapViewScreen"
         options={{drawerLabel: 'Map View', drawerIcon: (({focused}) => <Icon name="map" size={30} color="#900" />)}}
         component={MapViewStack}
-      />
+      /> */}
       {/* <Drawer.Screen
         name="MyProfileStack"
         options={{drawerLabel: 'My Profile', drawerIcon: (({focused}) => <Icon name="user" size={30} color="#900" />)}}
