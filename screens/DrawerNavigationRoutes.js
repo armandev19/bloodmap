@@ -270,7 +270,7 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
         component={MyRaisedRequestStack}
         initialParams={{ params: user_data }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="DonationHistoryScreen"
         options={{drawerLabel: 'Donation History', drawerIcon: (({focused}) => <Icon name="history" size={30} color="#900" />)}}
         component={DonationHistoryStack}
@@ -281,7 +281,7 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
         options={{drawerLabel: 'Past Requests', drawerIcon: (({focused}) => <Icon name="playlist-add-check" size={30} color="#900" />)}}
         component={PastRequestStack}
         initialParams={{ params: user_data }}
-      />
+      /> */}
       <Drawer.Screen
         name="MyProfileStack"
         options={{drawerLabel: 'My Profile', drawerIcon: (({focused}) => <Icon name="account-box" size={30} color="#900" />)}}

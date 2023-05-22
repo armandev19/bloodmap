@@ -187,7 +187,11 @@ const DetailScreen = ({route, navigation}) => {
             <Text style={{color: '#030000'}}>Status:</Text>
             <Text style={{color: 'orange', fontWeight: 'bold'}}> {params.status} </Text>
           </Text>
-          <Button title="Approve" onPress={approveRequest} style={{ alignContents: "center"}}></Button>
+          {currentUserData.access == 'Admin' ? (
+            <Button title="Approve" onPress={approveRequest} style={{ alignContents: "center"}}></Button>
+          ) : (
+            <Text></Text>
+          )}
         </View>
       </SafeAreaView>
     )  
