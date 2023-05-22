@@ -111,7 +111,9 @@ const BloodInventoryScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Loader loading={loading} />
-
+      <View style={{ padding: 8 }}>
+        <Button style={{ marginHorizontal: 10 }} title='Add Donation' onPress={() => navigation.navigate('AddDonationScreen')}></Button>
+      </View>
       {bags.length > 0 ? (
         <Text style={{ marginTop: -10 }}></Text>
       ) : (

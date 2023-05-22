@@ -283,7 +283,7 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
       />
     <Drawer.Screen
         name="DonorsScreenStack"
-        options={{drawerLabel: 'Donors', drawerIcon: (({focused}) => <Icon name="invert-colors" size={30} color="#900" />)}}
+        options={{drawerLabel: 'Donors', drawerIcon: (({focused}) => <Icon name="person-add" size={30} color="#900" />)}}
         component={DonorsScreenStack}
         initialParams={{ params : user_data}}
       />

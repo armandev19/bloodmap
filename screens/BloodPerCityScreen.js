@@ -117,7 +117,7 @@ const BloodPerCityScreen = ({route, navigation}) => {
           }}>
             <View style={{flex: 1}}>
               <Text style={{color: 'black', fontSize: 20}}>
-                CITY: <Text style={{fontWeight: 'bold'}}>{value.city.toUpperCase()}</Text>
+                CITY: <Text style={{fontWeight: 'bold'}}>{value.city ? value.city.toUpperCase() : "N/A"}</Text>
               </Text>
             </View>
             <View style={{flex: 1}}>
