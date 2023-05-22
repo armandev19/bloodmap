@@ -115,9 +115,11 @@ const styles = StyleSheet.create({
   },
   item: {
     flex: 1,
-    marginVertical: 1,
+    marginVertical: 2,
     marginHorizontal: 8,
     borderRadius: 5,
+    borderColor: '#717275cf',
+    shadowOffset: 20
   },
   title: {
     fontSize: 25,

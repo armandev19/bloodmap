@@ -33,7 +33,6 @@ const DonorsDetailsScreen = ({route, navigation}) => {
       .then((responseJson) => {
         setLoading(false);
         setDonationData(responseJson.data);
-        console.log(responseJson.data)
       })
       .catch((error) => {
         setLoading(false);
@@ -44,7 +43,7 @@ const DonorsDetailsScreen = ({route, navigation}) => {
       const renderItem = ({ item }) => {
             const backgroundColor = item.id === selectedId ? "#edebeb" : "#edebeb";
             const color = item.id === selectedId ? '#edebeb' : '#edebeb';
-      
+            console.log(item);
             return (
             <Item
                   item={item}
@@ -58,9 +57,8 @@ const DonorsDetailsScreen = ({route, navigation}) => {
       return(
       <List.Item
             style={[styles.item, backgroundColor]}
-            title={"aadasd"}
+            title={"Date: "+item.date}
             description={"asdasd"}
-            left={props => <List.Icon {...props} icon="pencil-box-multiple" color="orange" />}
       />
       )
       };
@@ -76,40 +74,90 @@ const DonorsDetailsScreen = ({route, navigation}) => {
       <SafeAreaView style={{padding: 10}}>
         <View style={{backgroundColor: '#edebeb', borderColor: "#cfcccc", borderWidth: 1, borderRadius: 5, padding: 8, marginBottom: 5}}>
           <Icon style={{color: '#8c8e91', fontSize: 100, textAlign: 'center', marginBottom: 20}} name="account"></Icon>
+          <Text style={{color: '#030000', fontSize: 18, fontWeight: 'bold'}}>Personal Details</Text>
           <Text style={{fontSize: 17}}>
             <Text style={{color: '#030000'}}>Name:</Text>
             <Text style={{color: 'black', fontWeight: 'bold', textTransform: 'uppercase'}}> {params.firstname} {params.middlename.charAt(0)}. {params.lastname} </Text>
           </Text>
-          <Text style={{flexDirection: 'column'}}>
-            <Text style={{fontSize: 17, flex: 1, flexDirection: 'row'}}>
-                  <Text style={{color: '#030000'}}>Age:</Text>
-                  <Text style={{color: 'black', fontWeight: 'bold'}}> {params.age} </Text>
-            </Text>
-            <Text style={{fontSize: 17, flex: 1, flexDirection: 'row'}}>
-                  <Text style={{color: '#030000'}}>Bloodtype:</Text>
-                  <Text style={{color: 'black', fontWeight: 'bold'}}> {params.bloodtype ? params.bloodtype : 'N/A'} </Text>
-            </Text>
-          </Text>
-          <Text style={{fontSize: 17}} selectable>
-            <Text style={{color: '#030000'}}>Phone No:</Text>
-            <Text style={{color: 'black', fontWeight: 'bold'}} > {params.phone_number ? params.phone_number : 'N/A'} </Text>
-          </Text>
-          <Text style={{fontSize: 17}}>
-            <Text style={{color: '#030000'}}>Gender:</Text>
-            <Text style={{color: 'black', fontWeight: 'bold'}}> {params.gender ? params.gender : 'N/A'} </Text>
-          </Text>
-          <Text style={{fontSize: 17}}>
-            <Text style={{color: '#030000'}}>City:</Text>
-            <Text style={{color: 'black', fontWeight: 'bold'}}> {params.city ? params.city : 'N/A'} </Text>
-          </Text>
+          <View style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+          }}>
+            <View style={{flex: 1}}>
+              <Text style={{color: '#030000'}}>Age:<Text style={{color: 'black', fontWeight: 'bold'}}> {params.age} </Text></Text>
+            </View>
+            <View style={{flex: 1}}>
+              <Text style={{color: '#030000'}}>Bloodtype:<Text style={{color: 'black', fontWeight: 'bold'}}> {params.bloodtype ? params.bloodtype : 'N/A'} </Text></Text>
+            </View>
+          </View>
+          <View style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+          }}>
+            <View style={{flex: 1}} selectable>
+              <Text style={{color: '#030000'}}>Phone No:
+              <Text style={{color: 'black', fontWeight: 'bold'}} > {params.phone_number ? params.phone_number : 'N/A'} </Text></Text>
+            </View>
+            <View style={{flex: 1}}>
+              <Text style={{color: '#030000'}}>Gender:
+              <Text style={{color: 'black', fontWeight: 'bold'}}> {params.gender ? params.gender : 'N/A'} </Text></Text>
+            </View>
+          </View>
+
+          <View style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+          }}>
+            <View style={{flex: 1}}>
+                <Text style={{
+                  color: '#030000', 
+                  fontSize: 16
+                }}>
+                  Address: <Text style={{color: 'black', fontWeight: 'bold'}}> {params.address ? params.address : 'N/A'} </Text>
+                </Text>
+            </View>
+            <View style={{flex: 1}}>
+                <Text style={{
+                  color: '#030000',
+                  fontSize: 16
+                }}>
+                  City: <Text style={{color: 'black', fontWeight: 'bold'}}> {params.city ? params.city : 'N/A'} </Text>
+                </Text>
+            </View>
+          </View>
         </View>
         <View style={{backgroundColor: '#edebeb', borderColor: "#cfcccc", borderWidth: 1, borderRadius: 5, padding: 8, marginBottom: 5}}>
             <Text style={{color: '#030000', fontSize: 18, fontWeight: 'bold'}}>Donation Details</Text>
-            <View>
-                  <Text style={{color: '#030000'}}>Donor Type: <Text style={{fontWeight: 'bold'}}>{params.type_of_donor}</Text></Text>
-                  <Text style={{color: '#030000'}}>No. of Donations: <Text style={{fontWeight: 'bold'}}>{params.no_of_donation}</Text></Text>
-                  <Text style={{color: '#030000'}}>Last Donation: <Text style={{fontWeight: 'bold'}}>{params.date_last_donation}</Text></Text>
-                  <Text style={{color: '#030000'}}>Method: <Text style={{fontWeight: 'bold'}}>{params.collection_method}</Text></Text>
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+              <View style={{flex: 1}}>
+                <Text style={{
+                  color: '#030000'
+                }}>
+                  Donor Type: <Text style={{fontWeight: 'bold'}}>{params.type_of_donor}</Text>
+                </Text>
+              </View>
+              <View style={{flex: 1}}>
+                <Text style={{color: '#030000'}}>No. of Donations: <Text style={{fontWeight: 'bold'}}>{params.no_of_donation}</Text></Text>
+              </View>
+            </View>
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+              <View style={{flex: 1}}>
+                <Text style={{color: '#030000'}}>Last Donation: <Text style={{fontWeight: 'bold'}}>{params.date_last_donation}</Text></Text>
+              </View>
+              <View style={{flex: 1}}>
+                <Text style={{color: '#030000'}}>Method: <Text style={{fontWeight: 'bold'}}>{params.collection_method}</Text></Text>
+              </View>
             </View>
         </View>
         <FlatList
@@ -127,11 +175,10 @@ const DonorsDetailsScreen = ({route, navigation}) => {
 const styles = StyleSheet.create({
       item: {
             flex: 1,
-            marginVertical: 1,
             borderRadius: 5,
             padding: 0,
             borderWidth: 1,
-            borderColor: '#cfcccc'
+            borderColor: '#cfcccc',
             },
 })
  

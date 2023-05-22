@@ -216,30 +216,6 @@ const DonationHistoryStack = ({navigation}) => {
   );
 };
 
-// const MapViewStack = ({navigation}) => {
-//   return (
-//     <Stack.Navigator initialRouteName="MapView">
-//       <Stack.Screen
-//         name="MapView"
-//         component={MapViewScreen}
-//         options={{
-//           title: 'Map View', //Set Header Title
-//           headerLeft: () => (
-//             <NavigationDrawerHeader navigationProps={navigation} />
-//           ),
-//           headerStyle: {
-//             backgroundColor: '#ff3333', //Set Header color
-//           },
-//           headerTintColor: '#fff', //Set Header text color
-//           headerTitleStyle: {
-//             fontWeight: 'bold', //Set Header text style
-//           },
-//         }}
-//       />
-//     </Stack.Navigator>
-//   );
-// };
-
 const UsersScreenStack = ({navigation}) => {
   return (
     <Stack.Navigator initialRouteName="UsersScreen">

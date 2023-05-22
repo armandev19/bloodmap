@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, FlatList, StyleSheet, Button, TextInput} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, SafeAreaView, FlatList, StyleSheet, Button, TextInput } from 'react-native';
 import Modal from "react-native-modal";
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -11,9 +11,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import { selectUserData, setUserData } from '../redux/navSlice';
 import { useSelector } from 'react-redux';
 
-const MyRaisedRequestScreen = ({navigation, route}) => {
+const MyRaisedRequestScreen = ({ navigation, route }) => {
   const [selectedId, setSelectedId] = useState(null);
-  const [modalVisible, setModalVisible] = useState({modalVisible: false});
+  const [modalVisible, setModalVisible] = useState({ modalVisible: false });
   const [toastMsg, setToastMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [bloodtype, setBloodType] = useState();
@@ -30,18 +30,18 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
 
   const currentUserData = useSelector(selectUserData);
   const [items, setItems] = useState([
-    {label: "A", value: 'A'},
-    {label: "B", value: 'B'},
-    {label: "AB", value: 'AB'},
-    {label: "O", value: 'O'},
-    {label: "A+", value: 'A+'},
-    {label: "A-", value: 'A-'},
-    {label: "B+", value: 'B+'},
-    {label: "B-", value: 'B-'},
-    {label: "AB+", value: 'AB+'},
-    {label: "AB-", value: 'AB-'},
-    {label: "O+", value: 'O+'},
-    {label: "O-", value: 'O-'},
+    { label: "A", value: 'A' },
+    { label: "B", value: 'B' },
+    { label: "AB", value: 'AB' },
+    { label: "O", value: 'O' },
+    { label: "A+", value: 'A+' },
+    { label: "A-", value: 'A-' },
+    { label: "B+", value: 'B+' },
+    { label: "B-", value: 'B-' },
+    { label: "AB+", value: 'AB+' },
+    { label: "AB-", value: 'AB-' },
+    { label: "O+", value: 'O+' },
+    { label: "O-", value: 'O-' },
   ]);
 
   const [requests, setRequests] = useState([]);
@@ -57,7 +57,7 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
 
 
   const saveBloodRequest = () => {
-    let dataToSend = {qty: qty, bloodtype: value, purpose: purpose, userID: currentUserData.id, date: date };
+    let dataToSend = { qty: qty, bloodtype: value, purpose: purpose, userID: currentUserData.id, date: date };
     let formBody = [];
     for (let key in dataToSend) {
       let encodedKey = encodeURIComponent(key);
@@ -66,30 +66,30 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
     }
     formBody = formBody.join('&');
     setLoading(true);
-    fetch(global.url+'insertBloodRequest.php', {
+    fetch(global.url + 'insertBloodRequest.php', {
       method: 'POST',
       body: formBody,
       headers: {
         //Header Defination
         'Content-Type':
-        'application/x-www-form-urlencoded;charset=UTF-8',
+          'application/x-www-form-urlencoded;charset=UTF-8',
       },
     })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      setLoading(false);
-      getAllRequest();
-      setModalVisible(!modalVisible);
-    })
-    .catch((error) => {
-      setLoading(false);
-      console.error(error);
-    });
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setLoading(false);
+        getAllRequest();
+        setModalVisible(!modalVisible);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(error);
+      });
   }
 
   const getAllRequest = () => {
     setLoading(true)
-    let postData = {userAccess: currentUserData.access, userID: currentUserData.id};
+    let postData = { userAccess: currentUserData.access, userID: currentUserData.id };
     let formBody = [];
     for (let key in postData) {
       let encodedKey = encodeURIComponent(key);
@@ -97,14 +97,14 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
       formBody.push(encodedKey + '=' + encodedValue);
     }
     formBody = formBody.join('&');
-    fetch(global.url+'fetchBloodRequest.php', {
+    fetch(global.url + 'fetchBloodRequest.php', {
       method: 'POST',
       body: formBody,
       headers: {
         //Header Defination
         Accept: 'application/json',
         'Content-Type':
-        'application/x-www-form-urlencoded;charset=UTF-8',
+          'application/x-www-form-urlencoded;charset=UTF-8',
       },
     })
       .then((response) => response.json())
@@ -114,7 +114,7 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
       .catch((error) => {
         setLoading(false);
       });
-      setLoading(false);
+    setLoading(false);
   }
   useEffect(() => {
     getAllRequest();
@@ -128,49 +128,49 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
       <Item
         item={item}
         backgroundColor={{ backgroundColor }}
-        textColor={{ color }} 
-        
+        textColor={{ color }}
+
       />
     );
   };
 
   const tempDescription = (description, bloodtype, qty) => {
-    var temp = "QTY: "+qty+"\nBLOODTYPE: "+bloodtype
+    var temp = "QTY: " + qty + "\nBLOODTYPE: " + bloodtype
     return temp
   }
   const Item = ({ item, onPress, backgroundColor, textColor }) => {
-    return(
-    <List.Item
-      style={[styles.item, backgroundColor]}
-      title={item.request_number}
-      description={tempDescription(item.purpose, item.bloodtype, item.qty)}
-      left={props => <List.Icon {...props} icon="clock-alert-outline" color="orange" />}
-      right={props => 
-        <View style={{flexDirection: 'row'}}>
-          {item.status == 'Approved' ? (
-            <Text style={{color: 'green', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Approved</Text>
-          ) : (
-            <Text style={{color: 'orange', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Pending</Text>
-          )}
-        </View>
-      }
-      onPress={() => navigation.navigate('DetailScreen', item)}
-    />
+    return (
+      <List.Item
+        style={[styles.item, backgroundColor]}
+        title={item.request_number}
+        description={tempDescription(item.purpose, item.bloodtype, item.qty)}
+        left={props => <List.Icon {...props} icon="clock-alert-outline" color="orange" />}
+        right={props =>
+          <View style={{ flexDirection: 'row' }}>
+            {item.status == 'Approved' ? (
+              <Text style={{ color: 'green', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold' }}>Approved</Text>
+            ) : (
+              <Text style={{ color: 'orange', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold' }}>Pending</Text>
+            )}
+          </View>
+        }
+        onPress={() => navigation.navigate('DetailScreen', item)}
+      />
     )
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Loader loading={loading} />
-      <View style={{padding: 10}}>
-        <Button style={{marginHorizontal: 10}} title='Add Request' onPress={() => setModalVisible(true)}></Button>
+      <View style={{ padding: 10 }}>
+        <Button style={{ marginHorizontal: 10 }} title='Add Request' onPress={() => setModalVisible(true)}></Button>
       </View>
       <FlatList
         data={requests}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         extraData={selectedId}
-        style={{marginBottom: 15}}
+        style={{ marginBottom: 15 }}
       />
       <View style={styles.centeredView}>
         <Modal
@@ -191,10 +191,10 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
                   placeholder="Select Blood Type"
                 />
                 <TextInput placeholder="Qty" placeholderTextColor={'black'} keyboardType="numeric" style={styles.inputStyle} onChangeText={(qty) =>
-                    setQty(qty)
-                  }>
+                  setQty(qty)
+                }>
                 </TextInput>
-               
+
 
                 {/* The date picker */}
                 {isPickerShow && (
@@ -208,34 +208,34 @@ const MyRaisedRequestScreen = ({navigation, route}) => {
                 <View style={{
                   flexDirection: 'row',
                   justifyContent: "flex-start",
-                  alignItems: "center", 
+                  alignItems: "center",
                   heigt: 100
                 }}>
-                  <TextInput placeholder="Needed date" placeholderTextColor={'black'} style={styles.inputStyleDate} value={date.toDateString()} editable = {false}>
+                  <TextInput placeholder="Needed date" placeholderTextColor={'black'} style={styles.inputStyleDate} value={date.toDateString()} editable={false}>
                   </TextInput>
                   {!isPickerShow && (
-                  <View style={{marginTop: 5, marginLeft: 5}}>
-                        <Button title="Date" color="green" onPress={showPicker} />
-                  </View>
+                    <View style={{ marginTop: 5, marginLeft: 5 }}>
+                      <Button title="Date" color="green" onPress={showPicker} />
+                    </View>
                   )}
                 </View>
                 <TextInput placeholder="Purpose" placeholderTextColor={'black'} style={styles.inputStyle} onChangeText={(purpose) =>
-                    setPurpose(purpose)
-                  }>
+                  setPurpose(purpose)
+                }>
                 </TextInput>
-                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                  <View style={{padding: 10, margin: 0}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                  <View style={{ padding: 10, margin: 0 }}>
                     <Button
                       onPress={() => saveBloodRequest()}
                       title="Save"
-                    />  
+                    />
                   </View>
-                  <View style={{padding: 10, margin: 0}}>
+                  <View style={{ padding: 10, margin: 0 }}>
                     <Button
                       onPress={() => setModalVisible(!modalVisible)}
                       title="Cancel"
-                      style={{borderRadius: 10}}
-                    />  
+                      style={{ borderRadius: 10 }}
+                    />
                   </View>
                 </View>
               </View>
@@ -345,5 +345,5 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
 });
- 
+
 export default MyRaisedRequestScreen;

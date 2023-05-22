@@ -1,26 +1,27 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity, Button, Modal, ToastAndroid, Alert, TextInput} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity, Button, Modal, ToastAndroid, Alert, TextInput } from 'react-native';
 import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
 import Loader from './../Components/loader';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const BloodInventoryScreen = ({navigation, route}) => {
+const BloodInventoryScreen = ({ navigation, route }) => {
   const [pastRequest, setPastRequest] = useState('');
   const [selectedId, setSelectedId] = useState(null);
   const [bags, setBags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noDonation, setNoDonation] = useState('No Data');
+  const [search, setSearch] = useState('');
 
   const getAllBags = () => {
-      setLoading(true)
-      fetch(global.url+'inventoryList.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type':
+    setLoading(true)
+    fetch(global.url + 'inventoryList.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type':
           'application/x-www-form-urlencoded;charset=UTF-8',
-        },
-      })
+      },
+    })
       .then((response) => response.json())
       .then((responseJson) => {
         setLoading(false);
@@ -30,7 +31,36 @@ const BloodInventoryScreen = ({navigation, route}) => {
         setLoading(false);
         console.error(error);
       });
-}
+  }
+
+  const getSearchedBlood = () => {
+    setLoading(true)
+    let postData = { search: search };
+    let formBody = [];
+    for (let key in postData) {
+      let encodedKey = encodeURIComponent(key);
+      let encodedValue = encodeURIComponent(postData[key]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+    formBody = formBody.join('&');
+    fetch(global.url + 'inventoryList.php', {
+      method: 'POST',
+      body: formBody,
+      headers: {
+        'Content-Type':
+          'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setLoading(false);
+        setBags(responseJson.data);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(error);
+      });
+  }
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#f2f2f2" : "white";
@@ -40,26 +70,21 @@ const BloodInventoryScreen = ({navigation, route}) => {
       <Item
         item={item}
         backgroundColor={{ backgroundColor }}
-        textColor={{ color }} 
-        
+        textColor={{ color }}
       />
     );
   };
 
-  const tempDescription = (bloodtype, age, address) => {
-    var temp = "Age: "+age+"\nAddress: "+address
-    return temp
-  }
   const Item = ({ item, onPress, backgroundColor, textColor }) => {
-    return(
-    <List.Item
-      style={[styles.item, backgroundColor]}
-      title={"Type: "+item.blood_type}
-      description={"Quantity: "+ item.quantity}
-      left={props => <List.Icon {...props} icon="pencil-box-multiple" color="orange" />}
-      right={props => 
-        <View style={{flexDirection: 'row'}}>
-        {/* {(() => {
+    return (
+      <List.Item
+        style={[styles.item, backgroundColor]}
+        title={"Type: " + item.blood_type}
+        description={"Quantity: " + item.quantity}
+        left={props => <List.Icon {...props} icon="pencil-box-multiple" color="orange" />}
+        right={props =>
+          <View style={{ flexDirection: 'row' }}>
+            {/* {(() => {
           if (item.access = 'Approved') { 
             return (
               <Text style={{color: 'orange', marginTop: 20, marginRight: 10, textTransform: 'uppercase', fontWeight: 'bold'}}>Pending</Text>
@@ -70,45 +95,48 @@ const BloodInventoryScreen = ({navigation, route}) => {
             )
           }
         })()} */}
-        </View>
-      }
-      // onPress={() => navigation.navigate('UserDetailsScreen', item)}
-    />
+          </View>
+        }
+        onPress={() => navigation.navigate('BloodPerCityScreen', item)}
+      />
     )
   };
 
   useFocusEffect(
     React.useCallback(() => {
-            getAllBags();
-        
-  console.log(setBags);
+      getAllBags();
     }, []),
-);
+  );
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Loader loading={loading} />
-      
-      {/* { noDonation == 'No Data' ? <Text style={{color: 'black', fontSize: 25, textAlign: 'center'}}>{noDonation}</Text> :  */}
-        <FlatList
-          data={bags}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={selectedId}
-          style={{marginBottom: 5, marginTop: 5, flex: 1}}
-        />
+
+      {bags.length > 0 ? (
+        <Text style={{ marginTop: -10 }}></Text>
+      ) : (
+        <Text style={{ color: 'black', fontSize: 25, textAlign: 'center', marginTop: 10 }}>No results found.</Text>
+      )}
+
+      <FlatList
+        data={bags}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        extraData={selectedId}
+        style={{ marginBottom: 5, marginTop: 5, flex: 1 }}
+      />
       <View style={styles.searchBox}>
-            <TextInput
-            placeholder='Search Blood Type'
-            placeholderTextColor={'black'}
-            color='black'
-            autoCapitalize='none'
-            style={{flex: 1, padding: 0}}
-            onChangeText={(bloodtype) => setBloodType(bloodtype)}>
-            </TextInput>
-            <Icon name="magnify" size={30} color="black" onPress={()=>searchBloodType()}/>
+        <TextInput
+          placeholder='Search Blood Type'
+          placeholderTextColor={'black'}
+          color='black'
+          autoCapitalize='none'
+          style={{ flex: 1, padding: 1 }}
+          onChangeText={(search) => setSearch(search)}>
+        </TextInput>
+        <Icon name="magnify" size={30} color="black" onPress={() => getSearchedBlood()} />
       </View>
-      
+
     </SafeAreaView>
   );
 };
@@ -189,21 +217,20 @@ const styles = StyleSheet.create({
     marginVertical: 5
   },
   searchBox: {
-      // position: 'absolute',
-      marginTop: 1,
-      marginBottom: 15,
-      flexDirection: 'row',
-      backgroundColor: '#fff',
-      padding: 10,
-      width: '96%',
-      alignSelf: 'center',
-      borderRadius: 5,
-      shadowColor: '#ccc',
-      shadowOffset: {width: 0, height: 3},
-      shadowOpacity: 0.5,
-      shadowRadius: 5,
-      elevation: 10
-    }
+    marginTop: 1,
+    marginBottom: 25,
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    padding: 10,
+    width: '96%',
+    alignSelf: 'center',
+    borderRadius: 20,
+    shadowColor: '#ccc',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 10
+  }
 });
- 
+
 export default BloodInventoryScreen;
