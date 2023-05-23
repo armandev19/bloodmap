@@ -2,18 +2,39 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import { selectUserData, setUserData } from '../redux/navSlice';
 import { useSelector } from 'react-redux';
-import { Table, Row, Rows } from 'react-native-table-component';
 
 
 const HomeScreen = ({navigation, props}) => {
   const [userData, setUserData] = useState({});
-  const [tableHead, setTableHead] = useState(['A', 'B', 'AB', 'AB']);
-  const [tableData, settableData] = useState([['1', '2', '3', '4'],
-                                            ['a', 'b', 'c', 'd'],
-                                            ['1', '2', '3', '456\n789'],
-                                            ['a', 'b', 'c', 'd']])
+  const [loading, setLoading] = useState(false);
   const currentUserData = useSelector(selectUserData);
- 
+  const [bags, setBags] = useState([]);
+
+  const getAllBlood = () => {
+    setLoading(true)
+    fetch(global.url + 'dashboard.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type':
+          'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setLoading(false);
+        setBags(responseJson);
+        console.log(bags);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(error);
+      });
+  }
+
+  useEffect(()=>{
+    getAllBlood();
+  }, []);
+
   if(currentUserData){
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -22,33 +43,30 @@ const HomeScreen = ({navigation, props}) => {
           style={{
             justifyContent: 'center',
           }}>
-          <Text
-            style={{
-              fontSize: 20,
-              marginBottom: 16,
-              color: 'black',
-              fontWeight: 'bold',
-              textTransform: 'uppercase'
-            }}>
-              Welcome {currentUserData.firstname}
-          </Text>
-          <Text
-            style={{
-              fontSize: 20,
-              marginBottom: 16,
-              color: 'black',
-              fontWeight: 'bold',
-              fontStyle: 'italic',
-              textTransform: 'uppercase'
-            }}>
-          </Text>
+            {bags.map(value => (
+              <View style={{
+                width: '100%',
+                backgroundColor: 'white',
+                borderRadius: 5,
+                borderColor: '#717275cf',
+                borderWidth: 1,
+                padding: 5,
+                marginTop: 5
+              }}>
+                <View>
+                  <Text style={{color: 'black', fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>
+                    TYPE {value.blood_type ? value.blood_type : "N/A"}
+                  </Text>
+                  <View style={{color: 'black'}}>
+                    <Text>City: 10</Text>
+                    <Text>City: 10</Text>
+                    <Text>City: 10</Text>
+                    <Text>City: 10</Text>
+                  </View>
+                </View>
+              </View>
+            ))}
         </View>
-      </View>
-      <View style={styles.container}>
-        <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-          <Row data={tableHead} style={styles.head} textStyle={styles.text}/>
-          <Rows data={tableData} textStyle={styles.text}/>
-        </Table>
       </View>
     </SafeAreaView>
   );
