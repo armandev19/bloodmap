@@ -19,10 +19,11 @@ const HomeScreen = ({navigation, props}) => {
           'application/x-www-form-urlencoded;charset=UTF-8',
       },
     })
-      .then((response) => response.json())
+      .then((response) => response.text())
       .then((responseJson) => {
+        alert(responseJson);
         setLoading(false);
-        setBags(responseJson);
+        // setBags(responseJson);
         console.log(bags);
       })
       .catch((error) => {
@@ -53,7 +54,7 @@ const HomeScreen = ({navigation, props}) => {
                 padding: 5,
                 marginTop: 5
               }}>
-                <View>
+                <View key={value.id}>
                   <Text style={{color: 'black', fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>
                     TYPE {value.blood_type ? value.blood_type : "N/A"}
                   </Text>
