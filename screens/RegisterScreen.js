@@ -35,6 +35,7 @@ const RegisterScreen = (props) => {
   const [userAddress, setUserAddress] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userBloodType, setUserBloodType] = useState('');
+  const [userCity, setUserCity] = useState('');
   const [userLatitude, setUserLatitude] = useState('');
   const [userLongitude, setUserLongitude] = useState('');
 
@@ -195,7 +196,8 @@ const RegisterScreen = (props) => {
       bloodtype: userBloodType,
       gender: userGender,
       latitude: userLatitude,
-      longitude: userLongitude
+      longitude: userLongitude,
+      city: userCity
     };
     var formBody = [];
     for (var key in dataToSend) {
@@ -421,6 +423,22 @@ const RegisterScreen = (props) => {
             <TouchableOpacity onPress={()=>getOneTimeLocation()}>
               <Icon name="search" style={{backgroundColor: 'green', borderRadius: 5, fontSize: 30, padding: 1, margin: 5}} />
             </TouchableOpacity>
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(UserCity) => setUserCity(UserCity)}
+              underlineColorAndroid="#f000"
+              placeholder="City"
+              placeholderTextColor="#8b9cb5"
+              ref={emailInputRef}
+              returnKeyType="next"
+              onSubmitEditing={() =>
+                passwordInputRef.current &&
+                passwordInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+            />
           </View>
           <View style={styles.SectionStyle}>
             <TextInput

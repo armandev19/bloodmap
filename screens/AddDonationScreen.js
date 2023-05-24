@@ -13,9 +13,7 @@ const AddDonationScreen = ({navigation, route}) => {
     const [visible, setVisible] = useState(false);
     
     const [test, setTest] = useState([]);
-    const [items, setItems] = useState([
-      {'label': '1', 'value': '1'}
-    ]);
+    const [items, setItems] = useState([]);
     const [qty, setQty] = useState('');
 
 
@@ -28,9 +26,10 @@ const AddDonationScreen = ({navigation, route}) => {
           'application/x-www-form-urlencoded;charset=UTF-8',
         },
       })
-        .then((response) => response.text())
+        .then((response) => response.json())
         .then((responseJson) => {
-          // setItems(responseJson);
+          // alert(responseJson)
+          setItems(responseJson);
           setLoading(false);
         })
         .catch((error) => {
@@ -59,7 +58,7 @@ const AddDonationScreen = ({navigation, route}) => {
           containerStyle={{ width: "100%", borderRadius: 1, alignItems: 'center' }}
           style={{ borderRadius: 5 }}
           labelStyle={{ fontWeight: "bold" }}
-          textStyle={{ fontSize: 20 }}
+          textStyle={{ fontSize: 15 }}
           placeholderStyle={{ color: "grey", fontWeight: "bold", textAlign: 'center' }}
           disableBorderRadius={true}
           placeholder="Select Donor"
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: 'black',
     paddingHorizontal: 10,
-    fontSize: 20
+    fontSize: 18
   },
   buttonStyle: {
     backgroundColor: '#00b300',

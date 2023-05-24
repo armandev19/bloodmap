@@ -11,16 +11,45 @@ const DonorsScreen = ({navigation, route}) => {
   const [bags, setBags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noDonation, setNoDonation] = useState('No Data');
-
+  const [search, setSearch] = useState('');
   const getAllBags = () => {
-      setLoading(true)
-      fetch(global.url+'donors.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type':
+    setLoading(true)
+    fetch(global.url+'donors.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type':
+        'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      setLoading(false);
+      setBags(responseJson.data);
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.error(error);
+    });
+  }
+
+  const getSearchedDonor = () => {
+    setLoading(true)
+    let postData = { search: search };
+    let formBody = [];
+    for (let key in postData) {
+      let encodedKey = encodeURIComponent(key);
+      let encodedValue = encodeURIComponent(postData[key]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+    formBody = formBody.join('&');
+    fetch(global.url + 'donors.php', {
+      method: 'POST',
+      body: formBody,
+      headers: {
+        'Content-Type':
           'application/x-www-form-urlencoded;charset=UTF-8',
-        },
-      })
+      },
+    })
       .then((response) => response.json())
       .then((responseJson) => {
         setLoading(false);
@@ -30,7 +59,7 @@ const DonorsScreen = ({navigation, route}) => {
         setLoading(false);
         console.error(error);
       });
-}
+  }
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#f2f2f2" : "white";
@@ -46,17 +75,17 @@ const DonorsScreen = ({navigation, route}) => {
     );
   };
 
-  const tempDescription = (bloodtype, age, address) => {
-    var temp = "Age: "+age+"\nAddress: "+address
-    return temp
+  const tempDescription = (bloodtype, city) => {
+    var temp = "TYPE "+bloodtype+"\nCITY: "+city;
+    return temp;
   }
   const Item = ({ item, onPress, backgroundColor, textColor }) => {
     return(
     <List.Item
       style={[styles.item, backgroundColor]}
       title={item.firstname.toUpperCase()+' '+item.middlename.toUpperCase()+' '+item.lastname.toUpperCase()}
-      description={tempDescription(item.bloodtype, item.age, item.address)}
-      left={props => <List.Icon {...props} icon="pencil-box-multiple" color="orange" />}
+      description={tempDescription(item.bloodtype, item.city)}
+      left={props => <List.Icon {...props} icon="pencil" color="black" />}
       right={props => 
         <View style={{flexDirection: 'row'}}>
         {/* {(() => {
@@ -79,9 +108,7 @@ const DonorsScreen = ({navigation, route}) => {
 
   useFocusEffect(
     React.useCallback(() => {
-            getAllBags();
-        
-  console.log(setBags);
+      getAllBags();
     }, []),
 );
 
@@ -99,14 +126,14 @@ const DonorsScreen = ({navigation, route}) => {
         />
       <View style={styles.searchBox}>
             <TextInput
-            placeholder='Search Blood Type'
+            placeholder='Search Donors'
             placeholderTextColor={'black'}
             color='black'
             autoCapitalize='none'
             style={{flex: 1, padding: 0}}
-            onChangeText={(bloodtype) => setBloodType(bloodtype)}>
+            onChangeText={(search) => setSearch(search)}>
             </TextInput>
-            <Icon name="magnify" size={30} color="black" onPress={()=>searchBloodType()}/>
+            <Icon name="magnify" size={30} color="black" onPress={()=>getSearchedDonor()}/>
       </View>
       
     </SafeAreaView>

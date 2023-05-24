@@ -99,7 +99,7 @@ const BloodPerCityScreen = ({route, navigation}) => {
   );
     return (
       <SafeAreaView style={{padding: 10}}>
-        <Text style={{ color: 'black', fontSize: 25 }}>Type: <Text style={{ color: 'black', fontWeight: 'bold' }}>{params.blood_type}</Text></Text>
+        <Text style={{ color: 'black', fontSize: 25 }}>TYPE <Text style={{ color: 'black', fontWeight: 'bold' }}>{params.blood_type}</Text></Text>
         <Text style={{ color: 'black', fontSize: 20, marginTop: 10 }}>Available supply:</Text>
 
         {inventBag.map(value => (

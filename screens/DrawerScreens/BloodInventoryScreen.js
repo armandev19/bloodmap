@@ -79,9 +79,11 @@ const BloodInventoryScreen = ({ navigation, route }) => {
     return (
       <List.Item
         style={[styles.item, backgroundColor]}
-        title={"Type: " + item.blood_type}
-        description={"Quantity: " + item.quantity}
-        left={props => <List.Icon {...props} icon="pencil-box-multiple" color="orange" />}
+        title={"TYPE " + item.blood_type}
+        titleStyle={{fontSize: 20}}
+        description={"AVAILABLE QUANTITY: " + item.quantity}
+        descriptionStyle={{fontSize: 17}}
+        left={props => <List.Icon {...props} icon="invert-colors" color="red" />}
         right={props =>
           <View style={{ flexDirection: 'row' }}>
             {/* {(() => {

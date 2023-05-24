@@ -99,7 +99,8 @@ const LoginScreen = ({navigation}) => {
                 height: 150,
                 width: 150,
                 marginTop: -50,
-                marginBottom: 60
+                marginBottom: 60,
+                borderRadius: 80
               }}
               source={require('./Assets/bloodmap_log.jpg')}
             />

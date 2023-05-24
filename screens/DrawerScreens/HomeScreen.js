@@ -17,7 +17,7 @@ const HomeScreen = ({navigation, props}) => {
       headers: {
         'Content-Type':
           'application/x-www-form-urlencoded;charset=UTF-8',
-      },
+      }, 
     })
       .then((response) => response.text())
       .then((responseJson) => {
@@ -33,7 +33,7 @@ const HomeScreen = ({navigation, props}) => {
   }
 
   useEffect(()=>{
-    getAllBlood();
+    // getAllBlood();
   }, []);
 
   if(currentUserData){
@@ -44,7 +44,7 @@ const HomeScreen = ({navigation, props}) => {
           style={{
             justifyContent: 'center',
           }}>
-            {bags.map(value => (
+            {/* {bags.map(value => (
               <View style={{
                 width: '100%',
                 backgroundColor: 'white',
@@ -54,7 +54,7 @@ const HomeScreen = ({navigation, props}) => {
                 padding: 5,
                 marginTop: 5
               }}>
-                <View key={value.id}>
+                <View>
                   <Text style={{color: 'black', fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>
                     TYPE {value.blood_type ? value.blood_type : "N/A"}
                   </Text>
@@ -66,7 +66,91 @@ const HomeScreen = ({navigation, props}) => {
                   </View>
                 </View>
               </View>
-            ))}
+            ))} */}
+            <View style={{
+                width: '100%',
+                backgroundColor: 'white',
+                borderRadius: 5,
+                borderColor: '#717275cf',
+                borderWidth: 1,
+                padding: 5,
+                marginTop: 5
+              }}>
+                <View>
+                  <Text style={{color: 'black', fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>
+                    TYPE A
+                  </Text>
+                  <View>
+                    <Text style={{color: 'black', fontSize: 20}}>Bacolod: 10</Text>
+                    <Text style={{color: 'black', fontSize: 20}}>Talisay: 10</Text>
+                    <Text style={{color: 'black', fontSize: 20}}>Bago: 10</Text>
+                    <Text style={{color: 'black', fontSize: 20}}>Silay: 10</Text>
+                  </View>
+                </View>
+            </View>
+            <View style={{
+                width: '100%',
+                backgroundColor: 'white',
+                borderRadius: 5,
+                borderColor: '#717275cf',
+                borderWidth: 1,
+                padding: 5,
+                marginTop: 5
+              }}>
+                <View>
+                  <Text style={{color: 'black', fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>
+                    TYPE B
+                  </Text>
+                  <View>
+                    <Text style={{color: 'black', fontSize: 20}}>Bacolod: 5</Text>
+                    <Text style={{color: 'black', fontSize: 20}}>Talisay: 6</Text>
+                    <Text style={{color: 'black', fontSize: 20}}>Bago: 8</Text>
+                    <Text style={{color: 'black', fontSize: 20}}>Silay: 9</Text>
+                  </View>
+                </View>
+            </View>
+            <View style={{
+                width: '100%',
+                backgroundColor: 'white',
+                borderRadius: 5,
+                borderColor: '#717275cf',
+                borderWidth: 1,
+                padding: 5,
+                marginTop: 5
+              }}>
+                <View>
+                  <Text style={{color: 'black', fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>
+                    TYPE AB
+                  </Text>
+                  <View>
+                    <Text style={{color: 'black', fontSize: 20}}>Bacolod: 12</Text>
+                    <Text style={{color: 'black', fontSize: 20}}>Talisay: 7</Text>
+                    <Text style={{color: 'black', fontSize: 20}}>Bago: 4</Text>
+                    <Text style={{color: 'black', fontSize: 20}}>Silay: 3</Text>
+                  </View>
+                </View>
+            </View>
+            <View style={{
+                width: '100%',
+                backgroundColor: 'white',
+                borderRadius: 5,
+                borderColor: '#717275cf',
+                borderWidth: 1,
+                padding: 5,
+                marginTop: 5
+              }}>
+                <View>
+                  <Text style={{color: 'black', fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>
+                    TYPE A
+                  </Text>
+                  <View>
+                    <Text style={{color: 'black', fontSize: 20}}>Bacolod: 2</Text>
+                    <Text style={{color: 'black', fontSize: 20}}>Talisay: 15</Text>
+                    <Text style={{color: 'black', fontSize: 20}}>Bago: 13</Text>
+                    <Text style={{color: 'black', fontSize: 20}}>Silay: 22</Text>
+                  </View>
+                </View>
+            </View>
         </View>
       </View>
     </SafeAreaView>
