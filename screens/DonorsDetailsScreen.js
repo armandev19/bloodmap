@@ -33,6 +33,7 @@ const getDonationData = () => {
   .then((response) => response.json())
   .then((responseJson) => {
     // alert(responseJson.data[0].donor_id)
+    // alert(responseJson.data[0])
     setLoading(false);
     setDonationData(responseJson.data[0]);
     setDonationLists(responseJson.donations);

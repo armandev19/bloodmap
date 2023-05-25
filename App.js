@@ -57,8 +57,8 @@ const App = () => {
   // global.url = "http://192.168.7.152/bloodmap/";
   // global.url = "http://192.168.242.46/bloodmap/";
   
-  // global.url = "https://homeworldconstruction.com/mobile/blood_saver/"
-  global.url = "http://192.168.1.10/bloodmap/";
+  global.url = "https://homeworldconstruction.com/mobile/blood_saver/";
+  // global.url = "http://192.168.1.10/bloodmap/";
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
 

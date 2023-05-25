@@ -13,6 +13,7 @@ const DonorsListScreen = ({navigation, route}) => {
   const [noDonation, setNoDonation] = useState('No Data');
   const [search, setSearch] = useState('');
 
+  console.log(route.params)
   const getAllBags = () => {
     setLoading(true)
     let dataToSend = { city: route.params.city, blood_type: route.params.blood_type};

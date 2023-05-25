@@ -199,7 +199,7 @@ const UserDetailsScreen = ({route, navigation}) => {
             <Text style={{color: '#030000'}}>User Type:</Text>
             <Text style={{color: 'black', fontWeight: 'bold'}}> {params.access ? params.access : 'N/A'} </Text>
           </Text>
-          {params.access == 'Donor' ? (
+          {params.access == 'Donor' || params.access == 'Admin' ? (
             <View></View>
           ) : (
           <View>
