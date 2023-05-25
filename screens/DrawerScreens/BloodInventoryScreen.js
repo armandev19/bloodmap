@@ -4,6 +4,9 @@ import { Avatar, Card, Title, Paragraph, List } from 'react-native-paper';
 import Loader from './../Components/loader';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { selectUserData, setUserData } from '../redux/navSlice';
+import { useSelector } from 'react-redux';
+
 
 const BloodInventoryScreen = ({ navigation, route }) => {
   const [pastRequest, setPastRequest] = useState('');
@@ -12,6 +15,7 @@ const BloodInventoryScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
   const [noDonation, setNoDonation] = useState('No Data');
   const [search, setSearch] = useState('');
+  const currentUserData = useSelector(selectUserData);
 
   const getAllBags = () => {
     setLoading(true)
@@ -113,9 +117,13 @@ const BloodInventoryScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Loader loading={loading} />
-      <View style={{ padding: 8 }}>
-        <Button style={{ marginHorizontal: 10 }} title='Add Donation' onPress={() => navigation.navigate('AddDonationScreen')}></Button>
-      </View>
+      { currentUserData && currentUserData.access == 'Admin' ? (
+        <View style={{ padding: 8 }}>
+          <Button style={{ marginHorizontal: 10 }} title='Add Donation' onPress={() => navigation.navigate('AddDonationScreen')}></Button>
+        </View>
+      ) : (
+        <View></View>
+      )}
       {bags.length > 0 ? (
         <Text style={{ marginTop: -10 }}></Text>
       ) : (

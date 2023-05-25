@@ -15,6 +15,7 @@ const UserDetailsScreen = ({route, navigation}) => {
   const [donations, setDonations] = useState('');
 
   const params = route.params;
+  console.log(params)
   const approveUser = () => {
     let user_id = params.id
     let dataToSend = {
@@ -77,8 +78,6 @@ const UserDetailsScreen = ({route, navigation}) => {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson.donations);
-
       setDonorType(responseJson[0].type_of_donor);
       setLastDonation(responseJson.last_donation_date);
       setDonations(responseJson.donations);
@@ -129,6 +128,45 @@ const UserDetailsScreen = ({route, navigation}) => {
     });
   }
 
+  const changeToDonor = () => {
+    let user_id = params.id
+    let dataToSend = {
+        user_id: user_id,
+    };
+    let formBody = [];
+    setLoading(true);
+    for (let key in dataToSend) {
+      let encodedKey = encodeURIComponent(key);
+      let encodedValue = encodeURIComponent(dataToSend[key]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+    formBody = formBody.join('&');
+    setLoading(true);
+    fetch(global.url+'changeToDonor.php', {
+      method: 'POST',
+      body: formBody,
+      headers: {
+        'Content-Type':
+        'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      if(responseJson.status = 'success'){
+        alert("User changed to Donor!");
+        setTimeout(function(){
+          navigation.navigate('UsersScreenStack');
+        }, 2000)
+      }else{
+        alert("Failed update!");
+      }
+      setLoading(false);
+    })
+    .catch((error) => {
+      setLoading(false);
+    });
+  }
+
   useEffect(()=>{
     getMedicalInfo();
   }, [])
@@ -153,10 +191,21 @@ const UserDetailsScreen = ({route, navigation}) => {
             <Text style={{color: '#030000'}}>Phone No:</Text>
             <Text style={{color: 'black', fontWeight: 'bold'}} > {params.phone_number ? params.phone_number : 'N/A'} </Text>
           </Text>
-          <Text style={{fontSize: 20, marginBottom: 20}}>
+          <Text style={{fontSize: 20}}>
             <Text style={{color: '#030000'}}>Gender:</Text>
             <Text style={{color: 'black', fontWeight: 'bold'}}> {params.gender ? params.gender : 'N/A'} </Text>
           </Text>
+          <Text style={{fontSize: 20, marginBottom: 20}}>
+            <Text style={{color: '#030000'}}>User Type:</Text>
+            <Text style={{color: 'black', fontWeight: 'bold'}}> {params.access ? params.access : 'N/A'} </Text>
+          </Text>
+          {params.access == 'Donor' ? (
+            <View></View>
+          ) : (
+          <View>
+            <Button onPress={changeToDonor} title="Change to Donor"></Button>
+          </View>
+          )}
           {currentUserData.access == 'Admin' && (params.status == "" ||  params.status == "Pending")? (
             <Button title="Approve" onPress={approveUser} style={{ alignContents: "center", marginTop: 10}}></Button>
           ) : (
