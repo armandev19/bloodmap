@@ -103,7 +103,7 @@ const PastRequestStack = ({navigation}) => {
         name="PastRequest"
         component={PastRequestScreen}
         options={{
-          title: 'Past Requests', //Set Header Title
+          title: 'PAST REQUEST', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
@@ -127,7 +127,7 @@ const MyProfileStack = ({navigation}) => {
         name="ProfileScreen"
         component={ProfileScreen}
         options={{
-          title: 'My Profile', //Set Header Title
+          title: 'MY PROFILE', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
@@ -151,7 +151,7 @@ const AcceptedRequestStack = ({navigation}) => {
         name="AcceptedRequest"
         component={AcceptedScreen}
         options={{
-          title: 'Accepted Requests', //Set Header Title
+          title: 'ACCEPTED REQUESTS', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
@@ -175,7 +175,7 @@ const MyRaisedRequestStack = ({navigation, route}) => {
         name="MyRaisedRequest"
         component={MyRaisedRequestScreen}
         options={{
-          title: 'My Raised Request', //Set Header Title
+          title: 'MY RAISED REQUEST', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
@@ -199,7 +199,7 @@ const DonationHistoryStack = ({navigation}) => {
         name="DonationHistory"
         component={DonationHistoryScreen}
         options={{
-          title: 'Donation History', //Set Header Title
+          title: 'DONATION HISTORY', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
@@ -223,7 +223,7 @@ const UsersScreenStack = ({navigation}) => {
         name="Users List"
         component={UsersScreen}
         options={{
-          title: 'Users List', //Set Header Title
+          title: 'USERS LIST', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
@@ -271,22 +271,22 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
       drawerContent={(props) => <CustomSidebarMenu {...props} />}>
       <Drawer.Screen
         name="HomeScreenStack"
-        options={{drawerLabel: 'Home', drawerIcon: (({focused}) => <Icon name="home" size={30} color="#900" />)}}
+        options={{drawerLabel: 'HOME', drawerIcon: (({focused}) => <Icon name="home" size={30} color="#900" />)}}
         component={HomeScreenStack}
         initialParams={{ params : user_data}}
       />
       <Drawer.Screen
         name="BloodInventoryScreenStack"
-        options={{drawerLabel: 'Blood Inventory', drawerIcon: (({focused}) => <Icon name="invert-colors" size={30} color="#900" />)}}
+        options={{drawerLabel: 'BLOOD INVENTORY', drawerIcon: (({focused}) => <Icon name="invert-colors" size={30} color="#900" />)}}
         component={BloodInventoryScreenStack}
         initialParams={{ params : user_data}}
       />
-    <Drawer.Screen
-        name="DonorsScreenStack"
-        options={{drawerLabel: 'Donors', drawerIcon: (({focused}) => <Icon name="person-add" size={30} color="#900" />)}}
-        component={DonorsScreenStack}
-        initialParams={{ params : user_data}}
-      />
+      {/* <Drawer.Screen
+          name="DonorsScreenStack"
+          options={{drawerLabel: 'Donors', drawerIcon: (({focused}) => <Icon name="person-add" size={30} color="#900" />)}}
+          component={DonorsScreenStack}
+          initialParams={{ params : user_data}}
+        /> */}
       {/* <Drawer.Screen
         name="MapViewScreen"
         options={{drawerLabel: 'Map View', drawerIcon: (({focused}) => <Icon name="map" size={30} color="#900" />)}}
@@ -299,13 +299,13 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
       /> */}
       <Drawer.Screen
         name="AcceptedScreen"
-        options={{drawerLabel: 'Accepted Request', drawerIcon: (({focused}) => <Icon name="check-circle-outline" size={30} color="#900" />)}}
+        options={{drawerLabel: 'ACCEPTED REQUEST', drawerIcon: (({focused}) => <Icon name="check-circle-outline" size={30} color="#900" />)}}
         component={AcceptedRequestStack}
         initialParams={{ params: user_data }}
       />
       <Drawer.Screen
         name="MyRaisedRequestScreen"
-        options={{drawerLabel: 'My Raised Request', drawerIcon: (({focused}) => <Icon name="playlist-add" size={30} color="#900" />)}}
+        options={{drawerLabel: 'MY RAISED REQUEST', drawerIcon: (({focused}) => <Icon name="playlist-add" size={30} color="#900" />)}}
         component={MyRaisedRequestStack}
         initialParams={{ params: user_data }}
       />
@@ -323,7 +323,7 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
       /> */}
       <Drawer.Screen
         name="MyProfileStack"
-        options={{drawerLabel: 'My Profile', drawerIcon: (({focused}) => <Icon name="account-box" size={30} color="#900" />)}}
+        options={{drawerLabel: 'MY PROFILE', drawerIcon: (({focused}) => <Icon name="account-box" size={30} color="#900" />)}}
         component={MyProfileStack}
         initialParams={{ params: user_data }}
       />
@@ -332,7 +332,7 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
             return (
             <Drawer.Screen
               name="UsersScreenStack"
-              options={{drawerLabel: 'Users', drawerIcon: (({focused}) => <Icon name="people" size={30} color="#900" />)}}
+              options={{drawerLabel: 'USERS', drawerIcon: (({focused}) => <Icon name="people" size={30} color="#900" />)}}
               component={UsersScreenStack}
               initialParams={{ params: user_data }}
             />

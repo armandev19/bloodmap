@@ -60,6 +60,10 @@ const ProfileScreen = ({navigation}) => {
           <Text adjustsFontSizeToFit style={styles.textChild}>{userData.address}</Text>
         </View>
         <View style={styles.item}>
+          <Text adjustsFontSizeToFit style={styles.textTitle}>City: </Text>
+          <Text adjustsFontSizeToFit style={styles.textChild}>{userData.city ? userData.city : 'N/A'}</Text>
+        </View>
+        <View style={styles.item}>
           <Text adjustsFontSizeToFit style={styles.textTitle}>Email: </Text>
           <Text adjustsFontSizeToFit style={styles.textChild}>{userData.email}</Text>
         </View>

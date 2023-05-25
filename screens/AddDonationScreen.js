@@ -15,8 +15,7 @@ const AddDonationScreen = ({navigation, route}) => {
     const [test, setTest] = useState([]);
     const [items, setItems] = useState([]);
     const [qty, setQty] = useState('');
-
-
+    
     const getDonors = () => {
       setLoading(true);
       fetch(global.url+'getDonors.php', {
@@ -30,6 +29,38 @@ const AddDonationScreen = ({navigation, route}) => {
         .then((responseJson) => {
           // alert(responseJson)
           setItems(responseJson);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setLoading(false);
+        });
+    }
+
+    const saveDonation = () => {
+      setLoading(true);
+      let dataToSend = { qty: qty, donor_id : value };
+      let formBody = [];
+      for (let key in dataToSend) {
+        let encodedKey = encodeURIComponent(key);
+        let encodedValue = encodeURIComponent(dataToSend[key]);
+        formBody.push(encodedKey + '=' + encodedValue);
+      }
+      formBody = formBody.join('&');
+      fetch(global.url+'saveDonation.php', {
+        method: 'POST',
+        body: formBody,
+        headers: {
+          'Content-Type':
+          'application/x-www-form-urlencoded;charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if(responseJson.status == 'success'){
+            alert('Success!');
+          }else{
+            alert('Failed!');
+          }
           setLoading(false);
         })
         .catch((error) => {
@@ -71,7 +102,7 @@ const AddDonationScreen = ({navigation, route}) => {
         <TouchableOpacity
           style={styles.buttonStyle}
           activeOpacity={0.8}
-          onPress={() => props.navigation.navigate('LoginScreen')}>
+          onPress={() => saveDonation()}>
           <Text style={styles.buttonTextStyle}>SAVE</Text>
         </TouchableOpacity>
         {/* <Button onPress={onToggleSnackBar}>{visible ? 'Hide' : 'Show'}</Button> */}

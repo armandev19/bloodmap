@@ -19,6 +19,7 @@ import UserDetailsScreen from './screens/UserDetailsScreen'
 import DonorsDetailsScreen from './screens/DonorsDetailsScreen'
 import BloodPerCityScreen from './screens/BloodPerCityScreen'
 import AddDonationScreen from './screens/AddDonationScreen'
+import DonorsListScreen from './screens/DonorsListScreen'
 import { Provider } from 'react-redux';
 import { store } from './screens/redux/store';
 
@@ -109,45 +110,51 @@ const App = () => {
         
         <Stack.Screen
           name="DetailScreen"
-          title="Request Details"
+          title="REQUEST DETAILS"
           component={DetailScreen}
-          options={{title: "Request Details"}}
+          options={{title: "REQUEST DETAILS"}}
         />
         <Stack.Screen
           name="DonationDetailsScreen"
-          title="Donation Details"
+          title="DONATION DETAILS"
           component={DonationDetailsScreen}
-          options={{title: "Donation Details"}}
+          options={{title: "DONATION DETAILS"}}
         />
         <Stack.Screen
           name="EditProfileScreen"
-          title="Edit Profile"
+          title="EDIT PROFILE"
           component={EditProfileScreen}
-          options={{title: "Edit Profile"}}
+          options={{title: "EDIT PROFILE"}}
         />
         <Stack.Screen
           name="UserDetailsScreen"
-          title="User Details"
+          title="USER DETAILS"
           component={UserDetailsScreen}
-          options={{title: "User Details"}}
+          options={{title: "USER DETAILS"}}
         />
         <Stack.Screen
           name="DonorsDetailsScreen"
-          title="Donor Details"
+          title="DONOR DETAILS"
           component={DonorsDetailsScreen}
-          options={{title: "Donor Details"}}
+          options={{title: "DONOR DETAILS"}}
         />
         <Stack.Screen
           name="BloodPerCityScreen"
-          title="Bags Per City"
+          title="BLOOD PER CITY"
           component={BloodPerCityScreen}
-          options={{title: "Bags Per City"}}
+          options={{title: "BLOOD PER CITY"}}
         />
         <Stack.Screen
           name="AddDonationScreen"
-          title="New Donation"
+          title="NEW DONATION"
           component={AddDonationScreen}
-          options={{title: "New Donation"}}
+          options={{title: "NEW DONATION"}}
+        />
+        <Stack.Screen
+          name="DonorsListScreen"
+          title="DONORS LIST"
+          component={DonorsListScreen}
+          options={{title: "DONORS LIST"}}
         />
 
       </Stack.Navigator>

@@ -242,14 +242,6 @@ const RegisterScreen = (props) => {
           backgroundColor: '#ff3333',
           justifyContent: 'center',
         }}>
-        {/* <Image
-          source={require('../Image/success.png')}
-          style={{
-            height: 150,
-            resizeMode: 'contain',
-            alignSelf: 'center'
-          }}
-        /> */}
         <Text style={styles.successTextStyle}>
           Registration Successful
         </Text>

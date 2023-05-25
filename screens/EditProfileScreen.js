@@ -17,6 +17,7 @@ const EditProfileScreen = ({navigation, route}) => {
     const [phone_number, setPhoneNumber] = useState(params.phone_number);
     const [email, setEmail] = useState(params.email);
     const [address, setAddress] = useState(params.address);
+    const [city, setCity] = useState(params.city);
     const [visible, setVisible] = useState(false);
 
     const onToggleSnackBar = () => setVisible(!visible);
@@ -24,57 +25,58 @@ const EditProfileScreen = ({navigation, route}) => {
     const onDismissSnackBar = () => setVisible(false);
 
     const updateUserData = () => {
-        let user_id = params.id
-        let dataToSend = {
-            firstname: firstname, 
-            middlename: middlename, 
-            lastname: lastname, 
-            age: age,
-            phone_number: phone_number, 
-            email: email, 
-            address: address,
-            user_id: user_id,
-            bloodtype: bloodtype
-        };
-        let formBody = [];
-        for (let key in dataToSend) {
-          let encodedKey = encodeURIComponent(key);
-          let encodedValue = encodeURIComponent(dataToSend[key]);
-          formBody.push(encodedKey + '=' + encodedValue);
-        }
-        formBody = formBody.join('&');
-        
-        setLoading(true);
-        fetch(global.url+'updateProfile.php', {
-          method: 'POST',
-          body: formBody,
-          headers: {
-            'Content-Type':
-            'application/x-www-form-urlencoded;charset=UTF-8',
-          },
-        })
-          .then((response) => response.json())
-          .then((responseJson) => {
-            AsyncStorage.removeItem('user_id');
-            setLoading(false);
-            AsyncStorage.setItem('user_id', JSON.stringify(responseJson.user_data));
-            
-            setTimeout(async()=> {
-                try {
-                    await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
-                        setUserData(value);
-                    });
-                    } catch (error) {
-                        console.log(error);
-                    }
-            }) 
-            setVisible(true);
-          })
-          .catch((error) => {
-            setLoading(false);
-            console.error(error);
-          });
+      let user_id = params.id
+      let dataToSend = {
+          firstname: firstname, 
+          middlename: middlename, 
+          lastname: lastname, 
+          age: age,
+          phone_number: phone_number, 
+          email: email, 
+          address: address,
+          user_id: user_id,
+          bloodtype: bloodtype,
+          city: city
+      };
+      let formBody = [];
+      for (let key in dataToSend) {
+        let encodedKey = encodeURIComponent(key);
+        let encodedValue = encodeURIComponent(dataToSend[key]);
+        formBody.push(encodedKey + '=' + encodedValue);
       }
+      formBody = formBody.join('&');
+      
+      setLoading(true);
+      fetch(global.url+'updateProfile.php', {
+        method: 'POST',
+        body: formBody,
+        headers: {
+          'Content-Type':
+          'application/x-www-form-urlencoded;charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          AsyncStorage.removeItem('user_id');
+          setLoading(false);
+          AsyncStorage.setItem('user_id', JSON.stringify(responseJson.user_data));
+          
+          setTimeout(async()=> {
+              try {
+                  await AsyncStorage.getItem('user_id').then(JSON.parse).then(value => {
+                      setUserData(value);
+                  });
+                  } catch (error) {
+                      console.log(error);
+                  }
+          }) 
+          setVisible(true);
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error(error);
+        });
+    }
 
     useFocusEffect(
         React.useCallback(() => {
@@ -141,7 +143,12 @@ const EditProfileScreen = ({navigation, route}) => {
           <TextInput value={address} multiline numberOfLines={4} style={styles.textInputChild} onChangeText={(text) =>
                     setAddress(text)}></TextInput>
         </View>
-        
+        <View style={styles.item}>
+          <Text adjustsFontSizeToFit style={styles.textTitle}>City: </Text>
+          <TextInput value={city} style={styles.textInputChild} onChangeText={(text) =>
+                    setCity(text)}></TextInput>
+        </View>
+
         <Button icon="check-underline" buttonColor="black" mode="contained" style={{marginTop: 20}} onPress={() => updateUserData()}>
           Save
         </Button>

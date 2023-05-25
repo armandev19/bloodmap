@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, TextInput, Button, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
 import {Card, Title, Paragraph, Divider, List} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Loader from './Components/loader';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { useFocusEffect } from '@react-navigation/native';
 import { selectUserData, setUserData } from './redux/navSlice';
 import { useSelector } from 'react-redux';
@@ -42,7 +42,6 @@ const BloodPerCityScreen = ({route, navigation}) => {
       .then((responseJson) => {
         setLoading(false);
         setInventoryPerLoc(responseJson);
-        console.log(responseJson);
       })
       .catch((error) => {
         setLoading(false);
@@ -85,18 +84,16 @@ const BloodPerCityScreen = ({route, navigation}) => {
     )
   }
 
-  // useEffect(() => {
-  //   getBloodPerCity();
-    
-  //   console.log(bags);
-  // }, []);
+  useEffect(() => {
+    getBloodPerCity();
+  }, []);
 
-  useFocusEffect(
-    React.useCallback(() => {
+  // useFocusEffect(
+  //   React.useCallback(() => {
         
-      getBloodPerCity();
-    }, []),
-  );
+  //     getBloodPerCity();
+  //   }, []),
+  // );
     return (
       <SafeAreaView style={{padding: 10}}>
         <Text style={{ color: 'black', fontSize: 25 }}>TYPE <Text style={{ color: 'black', fontWeight: 'bold' }}>{params.blood_type}</Text></Text>
@@ -114,16 +111,20 @@ const BloodPerCityScreen = ({route, navigation}) => {
             borderWidth: 1,
             marginTop: 3,
             padding: 5
-          }}>
-            <View style={{flex: 1}}>
-              <Text style={{color: 'black', fontSize: 20}}>
+          }}
+          >
+            <View style={{flex: 2}}>
+              <Text style={{color: 'black', fontSize: 15}}>
                 CITY: <Text style={{fontWeight: 'bold'}}>{value.city ? value.city.toUpperCase() : "N/A"}</Text>
               </Text>
             </View>
             <View style={{flex: 1}}>
-              <Text style={{color: 'black', fontSize: 20}}>
+              <Text style={{color: 'black', fontSize: 15}}>
                 QTY: <Text style={{fontWeight: 'bold'}}>{value.qty}</Text>
               </Text>
+            </View>
+            <View style={{flex: 1}}>
+              <Button onPress={() => navigation.navigate('DonorsListScreen', value.city)} title="Donors"></Button>
             </View>
           </View>
         ))}

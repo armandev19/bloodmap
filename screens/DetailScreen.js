@@ -152,14 +152,16 @@ const DetailScreen = ({route, navigation}) => {
             <Text style={{color: '#030000'}}>Status:</Text>
             <Text style={{color: 'green', fontWeight: 'bold'}}> {params.status} </Text>
           </Text>
+          {currentUserData.access == 'Admin' ? (
           <TextInput 
             placeholder='Enter quantity to donate' 
             placeholderTextColor="black"
             keyboardType="numeric"
             onChangeText={(donated_qty) => setDonatedQty(donated_qty)}
             style={{ color: 'black', fontSize: 20, borderColor: 'black', borderWidth: 1, borderRadius: 5, backgroundColor: 'white', marginTop: 20, marginBottom: 10 }} 
-          />
-          <Button title="Save" style={{ alignContents: "center"}} onPress={()=>saveDonation()}></Button>
+          /> ) : (
+          <Text></Text>
+          )}
         </View>
       </SafeAreaView>
     )

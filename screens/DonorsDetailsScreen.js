@@ -68,11 +68,6 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => {
 useEffect(()=>{
   getDonationData();
 }, [])
-  // useFocusEffect(
-  //   React.useCallback(() => {
-        
-  //   }, []),
-  // );
 
   const params = route.params
     return (
