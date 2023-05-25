@@ -124,7 +124,7 @@ const BloodPerCityScreen = ({route, navigation}) => {
               </Text>
             </View>
             <View style={{flex: 1}}>
-              <Button onPress={() => navigation.navigate('DonorsListScreen', value.city)} title="Donors"></Button>
+              <Button onPress={() => navigation.navigate('DonorsListScreen', value)} title="Donors"></Button>
             </View>
           </View>
         ))}

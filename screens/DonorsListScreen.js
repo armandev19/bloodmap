@@ -12,10 +12,10 @@ const DonorsListScreen = ({navigation, route}) => {
   const [loading, setLoading] = useState(false);
   const [noDonation, setNoDonation] = useState('No Data');
   const [search, setSearch] = useState('');
-  
+
   const getAllBags = () => {
     setLoading(true)
-    let dataToSend = { city: route.params};
+    let dataToSend = { city: route.params.city, blood_type: route.params.blood_type};
       let formBody = [];
       for (let key in dataToSend) {
         let encodedKey = encodeURIComponent(key);
@@ -121,12 +121,6 @@ const DonorsListScreen = ({navigation, route}) => {
   useEffect(() => {
     getAllBags();
   }, []);
-
-//   useFocusEffect(
-//     React.useCallback(() => {
-//       getAllBags();
-//     }, []),
-// );
 
   return (
     <SafeAreaView style={{flex: 1}}>
