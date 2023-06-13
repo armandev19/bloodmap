@@ -8,13 +8,22 @@ const AddDonationScreen = ({navigation, route}) => {
     const [loading, setLoading] = useState(false);
     const [userData, setUserData] = useState('');
       
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
+    
     const [visible, setVisible] = useState(false);
     
     const [test, setTest] = useState([]);
+
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
     const [items, setItems] = useState([]);
+
     const [qty, setQty] = useState('');
+
+
+
+    const [openBB, setOpenBB] = useState(false);
+    const [valueBB, setValueBB] = useState(null);
+    const [banks, setBloodBanks] = useState([]);
     
     const getDonors = () => {
       setLoading(true);
@@ -27,8 +36,26 @@ const AddDonationScreen = ({navigation, route}) => {
       })
         .then((response) => response.json())
         .then((responseJson) => {
-          // alert(responseJson)
           setItems(responseJson);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setLoading(false);
+        });
+    }
+    
+    const getBloodBanks = () => {
+      setLoading(true); 
+      fetch(global.url+'getBloodBanks.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type':
+          'application/x-www-form-urlencoded;charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setBloodBanks(responseJson);
           setLoading(false);
         })
         .catch((error) => {
@@ -38,7 +65,7 @@ const AddDonationScreen = ({navigation, route}) => {
 
     const saveDonation = () => {
       setLoading(true);
-      let dataToSend = { qty: qty, donor_id : value };
+      let dataToSend = { qty: qty, donor_id : value, bank : valueBB };
       let formBody = [];
       for (let key in dataToSend) {
         let encodedKey = encodeURIComponent(key);
@@ -70,6 +97,7 @@ const AddDonationScreen = ({navigation, route}) => {
     
     useEffect(() => {
       getDonors();
+      getBloodBanks();
     }, [])
 
   return (
@@ -79,21 +107,45 @@ const AddDonationScreen = ({navigation, route}) => {
         
         <Text style={{color: 'black', fontWeight: 'bold', fontSize: 25, textAlign: 'center'}}>ADD DONATION FORM</Text>
         <Text style={{color: 'black', fontSize: 15, marginTop: 30}}>DONOR</Text>
+        <View
+            style={{ zIndex: 9999 }}
+        >
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            containerStyle={{ width: "100%", borderRadius: 1, alignItems: 'center' }}
+            style={{ borderRadius: 5 }}
+            labelStyle={{ fontWeight: "bold" }}
+            textStyle={{ fontSize: 15 }}
+            placeholderStyle={{ color: "grey", fontWeight: "bold", textAlign: 'center' }}
+            disableBorderRadius={true}
+            placeholder="Select Donor"
+          />
+        </View>
+        <Text style={{color: 'black', fontSize: 15, marginTop: 10}}>BLOOD BANK</Text>
+        <View
+            style={{ zIndex: 8000 }}
+        >
         <DropDownPicker
-          open={open}
-          value={value}
-          items={items}
-          setOpen={setOpen}
-          setValue={setValue}
-          setItems={setItems}
-          containerStyle={{ width: "100%", borderRadius: 1, alignItems: 'center' }}
+          open={openBB}
+          value={valueBB}
+          items={banks}
+          setOpen={setOpenBB}
+          setValue={setValueBB}
+          setItems={setBloodBanks}
+          containerStyle={{ width: "100%", zIndex: 8000, borderRadius: 1, alignItems: 'center' }}
           style={{ borderRadius: 5 }}
           labelStyle={{ fontWeight: "bold" }}
           textStyle={{ fontSize: 15 }}
           placeholderStyle={{ color: "grey", fontWeight: "bold", textAlign: 'center' }}
           disableBorderRadius={true}
-          placeholder="Select Donor"
+          placeholder="Select Blood Bank"
         />
+        </View>
         <Text style={{color: 'black', fontSize: 15, marginTop: 10}}>QUANTITY</Text>
         <TextInput placeholder="Enter quantity" placeholderTextColor={'black'} keyboardType="numeric" style={styles.inputStyle} onChangeText={(qty) =>
             setQty(qty)

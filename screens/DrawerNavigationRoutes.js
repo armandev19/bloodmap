@@ -17,6 +17,7 @@ import DonorsScreen from './DrawerScreens/DonorsScreen';
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
 import ProfileScreen from './DrawerScreens/ProfileScreen';
 import UsersScreen from './DrawerScreens/UsersScreen';
+import BloodBankScreen from './DrawerScreens/BloodBankScreen';
 
 import NavigationDrawerHeader from './Components/NavigationDrawerHead';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -192,14 +193,14 @@ const MyRaisedRequestStack = ({navigation, route}) => {
   );
 };
 
-const DonationHistoryStack = ({navigation}) => {
+const BloodBankStack = ({navigation}) => {
   return (
-    <Stack.Navigator initialRouteName="DonationHistoryScreen">
+    <Stack.Navigator initialRouteName="BloodBankScreen">
       <Stack.Screen
-        name="DonationHistory"
-        component={DonationHistoryScreen}
+        name="Blood Banks"
+        component={BloodBankScreen}
         options={{
-          title: 'DONATION HISTORY', //Set Header Title
+          title: 'BLOOD BANKS', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
@@ -281,22 +282,6 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
         component={BloodInventoryScreenStack}
         initialParams={{ params : user_data}}
       />
-      {/* <Drawer.Screen
-          name="DonorsScreenStack"
-          options={{drawerLabel: 'Donors', drawerIcon: (({focused}) => <Icon name="person-add" size={30} color="#900" />)}}
-          component={DonorsScreenStack}
-          initialParams={{ params : user_data}}
-        /> */}
-      {/* <Drawer.Screen
-        name="MapViewScreen"
-        options={{drawerLabel: 'Map View', drawerIcon: (({focused}) => <Icon name="map" size={30} color="#900" />)}}
-        component={MapViewStack}
-      /> */}
-      {/* <Drawer.Screen
-        name="MyProfileStack"
-        options={{drawerLabel: 'My Profile', drawerIcon: (({focused}) => <Icon name="user" size={30} color="#900" />)}}
-        component={MyProfileStack}
-      /> */}
       <Drawer.Screen
         name="AcceptedScreen"
         options={{drawerLabel: 'ACCEPTED REQUEST', drawerIcon: (({focused}) => <Icon name="check-circle-outline" size={30} color="#900" />)}}
@@ -309,18 +294,12 @@ const DrawerNavigatorRoutes = ({navgiation, route}) => {
         component={MyRaisedRequestStack}
         initialParams={{ params: user_data }}
       />
-      {/* <Drawer.Screen
-        name="DonationHistoryScreen"
-        options={{drawerLabel: 'Donation History', drawerIcon: (({focused}) => <Icon name="history" size={30} color="#900" />)}}
-        component={DonationHistoryStack}
+      <Drawer.Screen
+        name="BloodBankScreen"
+        options={{drawerLabel: 'BLOOD BANKS', drawerIcon: (({focused}) => <Icon name="domain" size={30} color="#900" />)}}
+        component={BloodBankStack}
         initialParams={{ params: user_data }}
       />
-      <Drawer.Screen
-        name="PastRequestScreen"
-        options={{drawerLabel: 'Past Requests', drawerIcon: (({focused}) => <Icon name="playlist-add-check" size={30} color="#900" />)}}
-        component={PastRequestStack}
-        initialParams={{ params: user_data }}
-      /> */}
       <Drawer.Screen
         name="MyProfileStack"
         options={{drawerLabel: 'MY PROFILE', drawerIcon: (({focused}) => <Icon name="account-box" size={30} color="#900" />)}}

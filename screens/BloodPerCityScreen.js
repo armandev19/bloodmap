@@ -38,10 +38,12 @@ const BloodPerCityScreen = ({route, navigation}) => {
           'application/x-www-form-urlencoded;charset=UTF-8',
       },
     })
-      .then((response) => response.json())
+      .then((response) => response.text())
       .then((responseJson) => {
+        alert(responseJson)
         setLoading(false);
-        setInventoryPerLoc(responseJson);
+        // setInventoryPerLoc(responseJson);  
+        console.log(responseJson)
       })
       .catch((error) => {
         setLoading(false);
@@ -113,8 +115,13 @@ const BloodPerCityScreen = ({route, navigation}) => {
             padding: 5
           }}
           >
-            <View style={{flex: 2}}>
-              <Text style={{color: 'black', fontSize: 15}}>
+            <View style={{flex: 1}}>
+              <Text style={{color: 'black', fontSize: 12}}>
+                BANK: <Text style={{fontWeight: 'bold'}}>{value.blood_bank ? value.blood_bank.toUpperCase() : "N/A"}</Text>
+              </Text>
+            </View>
+            <View style={{flex: 1}}>
+              <Text style={{color: 'black', fontSize: 12}}>
                 CITY: <Text style={{fontWeight: 'bold'}}>{value.city ? value.city.toUpperCase() : "N/A"}</Text>
               </Text>
             </View>

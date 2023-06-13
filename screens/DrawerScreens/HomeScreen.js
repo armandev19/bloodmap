@@ -32,7 +32,7 @@ const HomeScreen = ({navigation, props}) => {
   useFocusEffect(
     React.useCallback(() => {
       getAllBlood();
-      console.log(bags.length)
+      console.log(bags)
     }, []),
   );
 
@@ -57,7 +57,7 @@ const HomeScreen = ({navigation, props}) => {
                   borderColor: '#717275cf',
                   borderWidth: 1,
                   padding: 5,
-                  marginTop: 5
+                  marginTop: 5    
                 }}>
                   <View>
                     <Text style={{color: 'black', fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>

@@ -20,6 +20,8 @@ import DonorsDetailsScreen from './screens/DonorsDetailsScreen'
 import BloodPerCityScreen from './screens/BloodPerCityScreen'
 import AddDonationScreen from './screens/AddDonationScreen'
 import DonorsListScreen from './screens/DonorsListScreen'
+import AddBloodBankScreen from './screens/AddBloodBankScreen'
+
 import { Provider } from 'react-redux';
 import { store } from './screens/redux/store';
 
@@ -55,9 +57,9 @@ const Auth = () => {
 
 const App = () => {
   // global.url = "http://192.168.7.152/bloodmap/";
-  // global.url = "http://192.168.242.46/bloodmap/";
+  global.url = "http://192.168.29.123/bloodmap/";
   
-  global.url = "https://homeworldconstruction.com/mobile/blood_saver/";
+  // global.url = "https://homeworldconstruction.com/mobile/blood_saver/";
   // global.url = "http://192.168.1.10/bloodmap/";
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
@@ -155,6 +157,12 @@ const App = () => {
           title="DONORS LIST"
           component={DonorsListScreen}
           options={{title: "DONORS LIST"}}
+        />
+         <Stack.Screen
+          name="AddBloodBankScreen"
+          title="Add Blood Bank"
+          component={AddBloodBankScreen}
+          options={{title: "ADD BLOOD BANK"}}
         />
 
       </Stack.Navigator>
