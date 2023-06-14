@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, TextInput, Button, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, SafeAreaView, TextInput, Button, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
 import {Card, Title, Paragraph, Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Loader from './Components/loader';
@@ -13,6 +13,15 @@ const UserDetailsScreen = ({route, navigation}) => {
   const [bloodCollection, setBloodCollection] = useState('');
   const [lastDonation, setLastDonation] = useState('');
   const [donations, setDonations] = useState('');
+  
+  const [bodywt, setBodtWt] = useState('');
+  const [bloodpressure, setBloodPressure] = useState('');
+  const [pulserate, setPulseRate] = useState('');
+  const [generalappearance, setGeneralAppearance] = useState('');
+  const [skin, setSkin] = useState('');
+  const [heent, setHeent] = useState('');
+  const [heart_lungs, setHeartLungs] = useState('');
+  const [remarks, setRemarks] = useState('');
 
   const params = route.params;
   console.log(params)
@@ -95,7 +104,15 @@ const UserDetailsScreen = ({route, navigation}) => {
     let dataToSend = {
         user_id: user_id,
         blood_collection: bloodCollection,
-        donor_type: donorType
+        donor_type: donorType,
+        bodywt: bodywt,
+        bloodpressure: bloodpressure,
+        pulserate: pulserate,
+        generalappearance: generalappearance,
+        skin: skin,
+        heent: heent,
+        heart_lungs: heart_lungs,
+        remarks: remarks
     };
     let formBody = [];
     setLoading(true);
@@ -172,7 +189,7 @@ const UserDetailsScreen = ({route, navigation}) => {
   }, [])
 
     return (
-      <SafeAreaView style={{padding: 10}}>
+      <ScrollView style={{padding: 10, marginBottom: 10, paddingBottom: 10}}>
         <View style={{backgroundColor: '#edebeb', borderColor: "#cfcccc", borderWidth: 1, borderRadius: 5, padding: 10}}>
           <Icon style={{color: '#8c8e91', fontSize: 150, textAlign: 'center', marginBottom: 30}} name="account"></Icon>
           <Text style={{fontSize: 20}}>
@@ -232,6 +249,47 @@ const UserDetailsScreen = ({route, navigation}) => {
             <Text adjustsFontSizeToFit style={styles.textTitle}>Last Donation: </Text>
             <TextInput value={lastDonation} editable={false} style={styles.textInputChild} ></TextInput>
           </View>
+
+          <View style={styles.item}>
+            <Text adjustsFontSizeToFit style={styles.textTitle}>Body Wt: </Text>
+            <TextInput value={bodywt} placeholder="Donor Type" style={styles.textInputChild} onChangeText={(bodywt) =>
+                      setBodtWt(bodywt)}/>
+          </View>
+          <View style={styles.item}>
+            <Text adjustsFontSizeToFit style={styles.textTitle}>Blood Pressure: </Text>
+            <TextInput value={bloodpressure} placeholder="Blood Collection" style={styles.textInputChild} onChangeText={(bloodpressure) =>
+                      setBloodPressure(bloodpressure)}></TextInput>
+          </View>
+          <View style={styles.item}>
+            <Text adjustsFontSizeToFit style={styles.textTitle}>Pulse Rate: </Text>
+            <TextInput value={pulserate} style={styles.textInputChild} onChangeText={(pulserate) =>
+                      setPulseRate(pulserate)}></TextInput>
+          </View>
+          <View style={styles.item}>
+            <Text adjustsFontSizeToFit style={styles.textTitle}>General Appearance: </Text>
+            <TextInput value={generalappearance} style={styles.textInputChild} onChangeText={(generalappearance) =>
+                      setGeneralAppearance(generalappearance)}></TextInput>
+          </View>
+          <View style={styles.item}>
+            <Text adjustsFontSizeToFit style={styles.textTitle}>Skin: </Text>
+            <TextInput value={skin} style={styles.textInputChild} onChangeText={(skin) =>
+                      setSkin(skin)}></TextInput>
+          </View>
+          <View style={styles.item}>
+            <Text adjustsFontSizeToFit style={styles.textTitle}>Heent: </Text>
+            <TextInput value={heent} style={styles.textInputChild} onChangeText={(heent) =>
+                      setHeent(heent)}></TextInput>
+          </View>
+          <View style={styles.item}>
+            <Text adjustsFontSizeToFit style={styles.textTitle}>Heart/Lungs: </Text>
+            <TextInput value={heart_lungs} style={styles.textInputChild} onChangeText={(heart_lungs) =>
+                      setHeartLungs(heart_lungs)}></TextInput>
+          </View>
+          <View style={styles.item}>
+            <Text adjustsFontSizeToFit style={styles.textTitle}>Remarks: </Text>
+            <TextInput value={remarks} style={styles.textInputChild} onChangeText={(remarks) =>
+                      setRemarks(remarks)}></TextInput>
+          </View>
           <View style={{flexDirection: 'row', alignSelf: 'center'}}>
             <Button title="Update Medical Info" onPress={saveMedicalInfo}></Button>
           </View>
@@ -239,7 +297,7 @@ const UserDetailsScreen = ({route, navigation}) => {
         ) : (
           <View></View>
         )}
-      </SafeAreaView>
+      </ScrollView>
     )  
 };
 

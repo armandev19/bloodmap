@@ -162,7 +162,7 @@ useEffect(()=>{
             </View>
         </View>
         <View style={{backgroundColor: 'white', borderColor: "#cfcccc", borderWidth: 1, borderRadius: 5, padding: 8, marginBottom: 5}}>
-          <Text style={{color: '#030000', fontSize: 18, fontWeight: 'bold'}}>Donation Details</Text>
+          <Text style={{color: '#030000', fontSize: 18, fontWeight: 'bold'}}>Medical History</Text>
             {donationLists.map(value => (
               <View style={{
                 width: '100%',

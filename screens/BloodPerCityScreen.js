@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, TextInput, Button, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
 import {Card, Title, Paragraph, Divider, List} from 'react-native-paper';
 import Loader from './Components/loader';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useFocusEffect } from '@react-navigation/native';
 import { selectUserData, setUserData } from './redux/navSlice';
@@ -19,7 +18,6 @@ const BloodPerCityScreen = ({route, navigation}) => {
   const [inventBag, setInventoryPerLoc] = useState([]);
 
   const params = route.params
-  
   const getBloodPerCity = () => {
     setLoading(true)
     let postData = { blood_type: params.blood_type };
@@ -38,11 +36,11 @@ const BloodPerCityScreen = ({route, navigation}) => {
           'application/x-www-form-urlencoded;charset=UTF-8',
       },
     })
-      .then((response) => response.text())
+      .then((response) => response.json())
       .then((responseJson) => {
-        alert(responseJson)
+        // alert(responseJson)
         setLoading(false);
-        // setInventoryPerLoc(responseJson);  
+        setInventoryPerLoc(responseJson);  
         console.log(responseJson)
       })
       .catch((error) => {
@@ -101,7 +99,27 @@ const BloodPerCityScreen = ({route, navigation}) => {
         <Text style={{ color: 'black', fontSize: 25 }}>TYPE <Text style={{ color: 'black', fontWeight: 'bold' }}>{params.blood_type}</Text></Text>
         <Text style={{ color: 'black', fontSize: 20, marginTop: 10 }}>Available supply:</Text>
 
-        {inventBag.map(value => (
+        {inventBag.map((category) => (
+          <View style={{backgroundColor: 'white', marginTop: 5, padding: 5}} key={category.category}>
+            <View >
+              <Text style={{color: 'black', fontWeight: 'bold', textTransform: 'uppercase', fontSize: 20}}>BLOOD BANK: {category.bank}</Text>
+            </View>
+            {category.items.map((item) => (
+              <View style={{flexDirection: 'row', borderBottomColor: 'lightgray', borderBottomWidth: 1, padding: 2}}>
+                <View style={{flex: 1}}>
+                  <Text style={{color: 'black', fontWeight: 'bold', textTransform: 'uppercase'}} key={item.id}>CITY: {item.city}</Text>
+                </View>
+                <View style={{flex: 1}}>
+                  <Text style={{color: 'black', fontWeight: 'bold', textTransform: 'uppercase'}} key={item.id}>QTY: {item.qty}</Text>
+                </View>
+                <View style={{flex: 1, padding: 5}}>
+                  <Button onPress={() => navigation.navigate('DonorsListScreen', item)} title="Donors"></Button>
+                </View>
+              </View>
+            ))}
+          </View>
+        ))}
+        {/* {inventBag.map((value)=> (
           <View style={{
             width: '100%',
             backgroundColor: 'white',
@@ -115,26 +133,29 @@ const BloodPerCityScreen = ({route, navigation}) => {
             padding: 5
           }}
           >
-            <View style={{flex: 1}}>
+            <View key={value.id} style={{flex: 1}}>
               <Text style={{color: 'black', fontSize: 12}}>
-                BANK: <Text style={{fontWeight: 'bold'}}>{value.blood_bank ? value.blood_bank.toUpperCase() : "N/A"}</Text>
+                {value.blood_bank}
               </Text>
-            </View>
-            <View style={{flex: 1}}>
-              <Text style={{color: 'black', fontSize: 12}}>
-                CITY: <Text style={{fontWeight: 'bold'}}>{value.city ? value.city.toUpperCase() : "N/A"}</Text>
-              </Text>
-            </View>
-            <View style={{flex: 1}}>
-              <Text style={{color: 'black', fontSize: 15}}>
-                QTY: <Text style={{fontWeight: 'bold'}}>{value.qty}</Text>
-              </Text>
-            </View>
-            <View style={{flex: 1}}>
-              <Button onPress={() => navigation.navigate('DonorsListScreen', value)} title="Donors"></Button>
+           
+            
+          {value.length > 0 ? (
+            value.data.map((data_val, index) => {
+              <View style={{flex: 1}}>
+                <Text style={{color: 'black', fontSize: 12}}>
+                  {data_val}
+                </Text>
+              </View>
+            })
+            ) : (
+                
+            <Text style={{color: 'black', fontWeight: 'bold', textAlign: 'center'}}>No results found.</Text>
+            )
+          }
+          
             </View>
           </View>
-        ))}
+        ))} */}
       </SafeAreaView>
     )  
 };

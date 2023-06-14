@@ -23,6 +23,7 @@ const HomeScreen = ({navigation, props}) => {
       .then((responseJson) => {
         setLoading(false);
         setBags(responseJson);
+        console.log(responseJson)
       })
       .catch((error) => {
         setLoading(false);
@@ -32,7 +33,6 @@ const HomeScreen = ({navigation, props}) => {
   useFocusEffect(
     React.useCallback(() => {
       getAllBlood();
-      console.log(bags)
     }, []),
   );
 
@@ -49,27 +49,26 @@ const HomeScreen = ({navigation, props}) => {
             style={{
               justifyContent: 'center',
             }}>
-              {bags.map((value) => (
-                <View style={{
-                  width: '100%',
-                  backgroundColor: 'white',
-                  borderRadius: 5,
-                  borderColor: '#717275cf',
-                  borderWidth: 1,
-                  padding: 5,
-                  marginTop: 5    
-                }}>
-                  <View>
-                    <Text style={{color: 'black', fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>
-                      TYPE {value.blood_type ? value.blood_type : "N/A"}
-                    </Text>
-                    
-                    {value.data.map((item) =>
-                    <View style={{color: 'black'}}>
-                      <Text style={{color: 'black', textAlign: 'center', fontWeight: 'bold', fontSize: 18}}>{item.city} - {item.quantity}</Text>
-                    </View>
-                      )}
+              {bags.map((category) => (
+                <View style={{backgroundColor: 'white', marginTop: 5, padding: 5}} key={category.category}>
+                  <View >
+                    <Text style={{color: 'black', fontWeight: 'bold', textTransform: 'uppercase', fontSize: 20}}>BLOOD BANK: {category.bank}</Text>
                   </View>
+                  {category.items.length > 0 ? (
+                    category.items.map((item) => (
+                      <View style={{flexDirection: 'row', borderBottomColor: 'lightgray', borderBottomWidth: 1, padding: 2}}>
+                      <View style={{flex: 1}}>
+                        <Text style={{color: 'black', fontWeight: 'bold', textTransform: 'uppercase'}} key={item.id}>CITY: {item.city}</Text>
+                      </View>
+                      <View style={{flex: 1}}>
+                        <Text style={{color: 'black', fontWeight: 'bold', textTransform: 'uppercase'}} key={item.id}>QTY: {item.qty}</Text>
+                      </View>
+                    </View>
+                  ))
+                  ):(
+                    <Text style={{color: 'black', fontSize: 15, textAlign: 'center'}}>No Data Found</Text>
+                  )}
+                  
                 </View>
               ))}
             </View> 
