@@ -13,15 +13,6 @@ const UserDetailsScreen = ({route, navigation}) => {
   const [bloodCollection, setBloodCollection] = useState('');
   const [lastDonation, setLastDonation] = useState('');
   const [donations, setDonations] = useState('');
-  
-  const [bodywt, setBodtWt] = useState('');
-  const [bloodpressure, setBloodPressure] = useState('');
-  const [pulserate, setPulseRate] = useState('');
-  const [generalappearance, setGeneralAppearance] = useState('');
-  const [skin, setSkin] = useState('');
-  const [heent, setHeent] = useState('');
-  const [heart_lungs, setHeartLungs] = useState('');
-  const [remarks, setRemarks] = useState('');
 
   const params = route.params;
   console.log(params)
@@ -105,14 +96,6 @@ const UserDetailsScreen = ({route, navigation}) => {
         user_id: user_id,
         blood_collection: bloodCollection,
         donor_type: donorType,
-        bodywt: bodywt,
-        bloodpressure: bloodpressure,
-        pulserate: pulserate,
-        generalappearance: generalappearance,
-        skin: skin,
-        heent: heent,
-        heart_lungs: heart_lungs,
-        remarks: remarks
     };
     let formBody = [];
     setLoading(true);
@@ -248,47 +231,6 @@ const UserDetailsScreen = ({route, navigation}) => {
           <View style={styles.item}>
             <Text adjustsFontSizeToFit style={styles.textTitle}>Last Donation: </Text>
             <TextInput value={lastDonation} editable={false} style={styles.textInputChild} ></TextInput>
-          </View>
-
-          <View style={styles.item}>
-            <Text adjustsFontSizeToFit style={styles.textTitle}>Body Wt: </Text>
-            <TextInput value={bodywt} placeholder="Donor Type" style={styles.textInputChild} onChangeText={(bodywt) =>
-                      setBodtWt(bodywt)}/>
-          </View>
-          <View style={styles.item}>
-            <Text adjustsFontSizeToFit style={styles.textTitle}>Blood Pressure: </Text>
-            <TextInput value={bloodpressure} placeholder="Blood Collection" style={styles.textInputChild} onChangeText={(bloodpressure) =>
-                      setBloodPressure(bloodpressure)}></TextInput>
-          </View>
-          <View style={styles.item}>
-            <Text adjustsFontSizeToFit style={styles.textTitle}>Pulse Rate: </Text>
-            <TextInput value={pulserate} style={styles.textInputChild} onChangeText={(pulserate) =>
-                      setPulseRate(pulserate)}></TextInput>
-          </View>
-          <View style={styles.item}>
-            <Text adjustsFontSizeToFit style={styles.textTitle}>General Appearance: </Text>
-            <TextInput value={generalappearance} style={styles.textInputChild} onChangeText={(generalappearance) =>
-                      setGeneralAppearance(generalappearance)}></TextInput>
-          </View>
-          <View style={styles.item}>
-            <Text adjustsFontSizeToFit style={styles.textTitle}>Skin: </Text>
-            <TextInput value={skin} style={styles.textInputChild} onChangeText={(skin) =>
-                      setSkin(skin)}></TextInput>
-          </View>
-          <View style={styles.item}>
-            <Text adjustsFontSizeToFit style={styles.textTitle}>Heent: </Text>
-            <TextInput value={heent} style={styles.textInputChild} onChangeText={(heent) =>
-                      setHeent(heent)}></TextInput>
-          </View>
-          <View style={styles.item}>
-            <Text adjustsFontSizeToFit style={styles.textTitle}>Heart/Lungs: </Text>
-            <TextInput value={heart_lungs} style={styles.textInputChild} onChangeText={(heart_lungs) =>
-                      setHeartLungs(heart_lungs)}></TextInput>
-          </View>
-          <View style={styles.item}>
-            <Text adjustsFontSizeToFit style={styles.textTitle}>Remarks: </Text>
-            <TextInput value={remarks} style={styles.textInputChild} onChangeText={(remarks) =>
-                      setRemarks(remarks)}></TextInput>
           </View>
           <View style={{flexDirection: 'row', alignSelf: 'center'}}>
             <Button title="Update Medical Info" onPress={saveMedicalInfo}></Button>

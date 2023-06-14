@@ -39,6 +39,16 @@ const RegisterScreen = (props) => {
   const [userLatitude, setUserLatitude] = useState('');
   const [userLongitude, setUserLongitude] = useState('');
 
+  const [bodywt, setBodtWt] = useState('');
+  const [bloodpressure, setBloodPressure] = useState('');
+  const [pulserate, setPulseRate] = useState('');
+  const [generalappearance, setGeneralAppearance] = useState('');
+  const [skin, setSkin] = useState('');
+  const [heent, setHeent] = useState('');
+  const [heart_lungs, setHeartLungs] = useState('');
+  const [remarks, setRemarks] = useState('');
+  const [disease, setDisease] = useState('');
+
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
   const [
@@ -197,7 +207,17 @@ const RegisterScreen = (props) => {
       gender: userGender,
       latitude: userLatitude,
       longitude: userLongitude,
-      city: userCity
+      city: userCity,
+      bodywt: bodywt,
+      bloodpressure: bloodpressure,
+      pulserate: pulserate,
+      generalappearance: generalappearance,
+      skin: skin,
+      heent: heent,
+      heart_lungs: heart_lungs,
+      remarks: remarks,
+      disease: disease
+
     };
     var formBody = [];
     for (var key in dataToSend) {
@@ -218,7 +238,6 @@ const RegisterScreen = (props) => {
       .then((response) => response.json())
       .then((responseJson) => {
         setLoading(false);
-        console.log(responseJson);
         if (responseJson.status === 'success') {
           setIsRegistraionSuccess(true);
           console.log(
@@ -484,6 +503,35 @@ const RegisterScreen = (props) => {
               }
               blurOnSubmit={false}
             />
+          </View>
+
+
+          <View style={styles.SectionStyle}>
+            <TextInput style={styles.inputStyle} onChangeText={(bodywt) => setBodtWt(bodywt) } underlineColorAndroid="#f000" placeholder="Body Wt" placeholderTextColor="#8b9cb5"/>
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput style={styles.inputStyle} onChangeText={(bloodpressure) => setBloodPressure(bloodpressure) } underlineColorAndroid="#f000" placeholder="Blood Pressure" placeholderTextColor="#8b9cb5"/>
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput style={styles.inputStyle} onChangeText={(pulserate) => setPulseRate(pulserate) } underlineColorAndroid="#f000" placeholder="Pulse Rate" placeholderTextColor="#8b9cb5"/>
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput style={styles.inputStyle} onChangeText={(generalappearance) => setGeneralAppearance(generalappearance) } underlineColorAndroid="#f000" placeholder="General Appearance" placeholderTextColor="#8b9cb5"/>
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput style={styles.inputStyle} onChangeText={(skin) => setSkin(skin) } underlineColorAndroid="#f000" placeholder="Skin" placeholderTextColor="#8b9cb5"/>
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput style={styles.inputStyle} onChangeText={(heent) => setHeent(heent) } underlineColorAndroid="#f000" placeholder="Heent" placeholderTextColor="#8b9cb5"/>
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput style={styles.inputStyle} onChangeText={(heart_and_lungs) => setHeartLungs(heart_and_lungs) } underlineColorAndroid="#f000" placeholder="Heart & Lungs" placeholderTextColor="#8b9cb5"/>
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput style={styles.inputStyle} onChangeText={(remarks) => setRemarks(remarks) } underlineColorAndroid="#f000" placeholder="Remarks" placeholderTextColor="#8b9cb5"/>
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput style={styles.inputStyle} onChangeText={(disease) => setDisease(disease) } underlineColorAndroid="#f000" placeholder="Disease/s" placeholderTextColor="#8b9cb5"/>
           </View>
           {errortext != '' ? (
             <Text style={styles.errorTextStyle}>
